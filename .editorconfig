@@ -1,0 +1,24 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+
+[*.{js,jsx,ts,tsx,css,json}]
+indent_style = space
+indent_size = 2
+
+[*.html]
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+indent_style = space
+indent_size = 2
+
+[{package.json,.env*,.eslintrc,.prettierrc}]
+indent_style = space
+indent_size = 2
