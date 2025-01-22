@@ -1,16 +1,14 @@
-# QChat - Real-time Local Network Chat
+# QChat - Real-time Secure Network Chat
 
-QChat is a lightweight, real-time chat application designed for local network communication. Built with modern web technologies, it provides a seamless and responsive chatting experience within your home or office network.
+QChat is a secure, real-time chat application designed for local network communication. Built with modern web technologies and emphasizing security, it provides a seamless, encrypted chatting experience within your network.
 
-## Features
+## 🔐 Security Features
 
-- **Real-time Messaging**: Instant message delivery using Socket.IO
-- **Modern UI**: Clean and responsive interface built with Tailwind CSS
-- **User Presence**: Real-time user connection/disconnection notifications
-- **Local Network**: Optimized for home/office network communication
-- **Auto-scrolling**: Messages automatically scroll to keep the latest messages in view
-- **Message Timestamps**: Each message displays the time it was sent
-- **User Identifiers**: Unique user IDs with visual avatars
+- **SSL/TLS Encryption**: Secure WebSocket (WSS) communications
+- **Message Signing**: HMAC-SHA256 signature verification for message integrity
+- **Rate Limiting**: Protection against message flooding (5 messages/10 seconds)
+- **Environment Configuration**: Secure configuration management
+- **Static File Protection**: ESLint ignore patterns for compiled assets
 
 ## 🚀 Getting Started
 
@@ -18,24 +16,31 @@ QChat is a lightweight, real-time chat application designed for local network co
 
 - Node.js (v14 or higher)
 - npm (Node Package Manager)
+- SSL Certificate and Key
 
 ### Installation
 
-1. Clone the repository:
-```sh
-git clone https://github.com/GitCoder052023/QChat.git
-cd QChat
-```
-
+1. Clone the repository
 2. Install dependencies:
 ```sh
 npm install
 ```
 
-3. Create an environment file:
+3. Configure environment variables:
 ```sh
 cp .env.example .env
 ```
+
+Update the following
+
+- .env
+- PORT (default: 3000)
+- `NODE_ENV`
+- `JWT_SECRET`
+- `ALLOWED_ORIGINS`
+- SSL_KEY
+- SSL_CERT
+- SECRET_KEY
 
 4. Start the development server:
 ```sh
@@ -47,61 +52,43 @@ npm start
 npm run build:css
 ```
 
-The application will be available at 
-
-http://localhost:3000
-
-
-
 ## 🛠️ Technology Stack
 
 - **Frontend**:
-  - HTML5
-  - JavaScript (Vanilla)
-  - Tailwind CSS
-  - Socket.IO Client
+  - Tailwind CSS for styling
+  - Socket.IO Client for real-time communication
+  - Vanilla JavaScript
 
 - **Backend**:
-  - Node.js
-  - Express.js
-  - Socket.IO
-  - express-session
-  - helmet for security
+  - Express.js server
+  - Socket.IO for WebSocket handling
+  - HTTPS for secure communication
+  - Crypto for message signing
+
+## 💻 Development
+
+- Run linting:
+```sh
+npm run lint
+```
+
+- Fix linting issues:
+```sh
+npm run lint:fix
+```
+
+## 📜 License
+
+MIT Licensed © 2025 Hamdan Khubaib
 
 ## 🤝 Contributing
 
 Please read our Contributing Guide and Code of Conduct before submitting pull requests.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## 🔒 Security
 
-## 📝 License
-
-This project is licensed under the MIT License - see the 
-
-LICENSE.md
-
- file for details.
-
-## 🔐 Security
-
-QChat includes several security features:
-- CORS protection
-- Rate limiting
-- Helmet security headers
-- Environment variable configuration
-
-## 🙏 Acknowledgments
-
-- Socket.IO team for the real-time engine
-- Tailwind CSS team for the utility-first CSS framework
-- All contributors who help improve this project
+For security concerns, please review our Security Policy and report any vulnerabilities following the outlined procedure.
 
 ---
 
-For issues, feature requests, or questions, please use the [GitHub issue tracker](https://github.com/GitCoder052023/QChat/issues).
-
-*Built with ❤️ for the open-source community*
+Built with ❤️ by Hamdan Khubaib
