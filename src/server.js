@@ -4,15 +4,15 @@ const fs = require('fs');
 const socketIO = require('socket.io');
 const path = require('path');
 const crypto = require('crypto');
-require('dotenv').config(); 
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const RATE_LIMIT = 5; 
+const RATE_LIMIT = 5;
 
 const sslOptions = {
   key: fs.readFileSync(process.env.SSL_KEY || path.join(__dirname, '../ssl/key.pem')),
-  cert: fs.readFileSync(process.env.SSL_CERT || path.join(__dirname, '../ssl/cert.pem'))
+  cert: fs.readFileSync(process.env.SSL_CERT || path.join(__dirname, '../ssl/cert.pem')),
 };
 
 const server = https.createServer(sslOptions, app);
@@ -24,13 +24,12 @@ const userMessageCount = {};
 app.use(express.static(path.join(__dirname, '../public')));
 
 function signMessage(message) {
-  return crypto.createHmac("sha256", secretKey)
+  return crypto.createHmac('sha256', secretKey)
     .update(message)
-    .digest("hex");
+    .digest('hex');
 }
 
 io.on('connection', (socket) => {
-
   socket.on('chat-message', (message) => {
     const userId = socket.id;
     const now = Date.now();
@@ -54,7 +53,7 @@ io.on('connection', (socket) => {
       id: socket.id,
       message,
       signature,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   });
 
