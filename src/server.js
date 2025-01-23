@@ -7,16 +7,17 @@ require('dotenv').config();
 const app = require('./app');
 const PORT = process.env.PORT;
 const RATE_LIMIT = 5;
+const MAX_MESSAGE_LENGTH = 5000; 
 
 const sslOptions = {
-  key: fs.readFileSync(process.env.SSL_KEY || path.join(__dirname, '/path/to/your/key.pem')),
-  cert: fs.readFileSync(process.env.SSL_CERT || path.join(__dirname, '/path/to/your/cert.pem')),
+  key: fs.readFileSync(process.env.SSL_KEY),
+  cert: fs.readFileSync(process.env.SSL_CERT),
 };
 
 const server = https.createServer(sslOptions, app);
 const io = socketIO(server);
 
-const secretKey = process.env.SECRET_KEY;
+const secretKey = process.env.SECRET_KEY; 
 const userMessageCount = {};
 
 function signMessage(message) {
@@ -26,6 +27,8 @@ function signMessage(message) {
 }
 
 io.on('connection', (socket) => {
+  console.log(`User connected: ${socket.id}`);
+
   socket.on('chat-message', (message) => {
     const userId = socket.id;
     const now = Date.now();
@@ -39,6 +42,12 @@ io.on('connection', (socket) => {
     }
 
     if (userMessageCount[userId].count >= RATE_LIMIT) {
+      console.log(`Rate limit exceeded for user: ${userId}`);
+      return;
+    }
+
+    if (message.length > MAX_MESSAGE_LENGTH) {
+      console.log(`Message from user ${userId} exceeds maximum length`);
       return;
     }
 
@@ -54,7 +63,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    delete userMessageCount[socket.id];
+    console.log(`User disconnected: ${socket.id}`);
+    delete userMessageCount[socket.id]; 
   });
 });
 

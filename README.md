@@ -4,11 +4,15 @@ QChat is a secure, real-time chat application designed for local network communi
 
 ## 🔐 Security Features
 
-- **SSL/TLS Encryption**: Secure WebSocket (WSS) communications
-- **Message Signing**: HMAC-SHA256 signature verification for message integrity
-- **Rate Limiting**: Protection against message flooding (5 messages/10 seconds)
-- **Environment Configuration**: Secure configuration management
-- **Static File Protection**: ESLint ignore patterns for compiled assets
+- **SSL/TLS Encryption**: Secure communication using HTTPS and WSS (WebSocket Secure) with custom SSL certificates
+- **Message Rate Limiting**: Protection against spam (limited to 5 messages per 10 seconds per user)
+- **Message Size Limits**: Maximum message length of 5000 characters to prevent large payloads
+- **Message Signing**: HMAC-SHA256 signature verification for message integrity using a secret key
+- **Environment Security**: Sensitive configuration stored in `.env` files (SSL paths, secrets, ports)
+- **HTTP Security Headers**: Using helmet middleware for enhanced HTTP security
+- **CORS Protection**: Configurable allowed origins through environment variables
+- **Input Sanitization**: Client-side message sanitization to prevent XSS attacks
+- **Error Handling**: Custom 404 page and error routes to prevent information leakage
 
 ## 🚀 Getting Started
 
