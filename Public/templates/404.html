@@ -1,37 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 - QChat</title>
-  <link href="../style.css" rel="stylesheet">
-  <style>
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .fade-in {
-      animation: fadeIn 1s ease-in-out;
-    }
-  </style>
-</head>
-<body class="bg-gray-900 text-white flex items-center justify-center h-screen">
-  <div class="text-center fade-in">
-    <!-- 404 Error Message -->
-    <h1 class="text-9xl font-bold text-gray-100">404</h1>
-    <p class="text-xl text-gray-300 mt-4">Oops! The page you’re looking for doesn’t exist.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - QChat</title>
+    <link href="../style.css" rel="stylesheet" />
+    <style>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .fade-in {
+        animation: fadeIn 1s ease-in-out;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white flex items-center justify-center h-screen">
+    <div class="text-center fade-in">
+      <!-- 404 Error Message -->
+      <h1 class="text-9xl font-bold text-gray-100">404</h1>
+      <p class="text-xl text-gray-300 mt-4">Oops! The page you’re looking for doesn’t exist.</p>
 
-    <!-- Abstract Graphic -->
-    <div class="mt-8">
-      <svg class="w-48 h-48 mx-auto text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-      </svg>
+      <!-- Abstract Graphic -->
+      <div class="mt-8">
+        <svg
+          class="w-48 h-48 mx-auto text-blue-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+          ></path>
+        </svg>
+      </div>
+
+      <!-- Call-to-Action Button -->
+      <a
+        href="/"
+        class="mt-8 inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 hover:scale-105 transition-transform duration-300"
+      >
+        Go Back Home
+      </a>
     </div>
-
-    <!-- Call-to-Action Button -->
-    <a href="/" class="mt-8 inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 hover:scale-105 transition-transform duration-300">
-      Go Back Home
-    </a>
-  </div>
-</body>
+  </body>
 </html>

@@ -5,9 +5,10 @@ const crypto = require('crypto');
 require('dotenv').config();
 
 const app = require('./app');
-const PORT = process.env.PORT;
+
+const { PORT } = process.env;
 const RATE_LIMIT = 5;
-const MAX_MESSAGE_LENGTH = 5000; 
+const MAX_MESSAGE_LENGTH = 5000;
 
 const sslOptions = {
   key: fs.readFileSync(process.env.SSL_KEY),
@@ -17,17 +18,16 @@ const sslOptions = {
 const server = https.createServer(sslOptions, app);
 const io = socketIO(server);
 
-const secretKey = process.env.SECRET_KEY; 
+const secretKey = process.env.SECRET_KEY;
 const userMessageCount = {};
 
 function signMessage(message) {
-  return crypto.createHmac('sha256', secretKey)
-    .update(message)
-    .digest('hex');
+  return crypto.createHmac('sha256', secretKey).update(message).digest('hex');
 }
 
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
+  io.emit('user-connected', socket.id);
 
   socket.on('chat-message', (message) => {
     const userId = socket.id;
@@ -64,7 +64,8 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${socket.id}`);
-    delete userMessageCount[socket.id]; 
+    io.emit('user-disconnected', socket.id);
+    delete userMessageCount[socket.id];
   });
 });
 
