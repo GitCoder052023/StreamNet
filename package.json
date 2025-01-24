@@ -16,15 +16,10 @@
   "description": "",
   "dependencies": {
     "autoprefixer": "^10.4.20",
-    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "express-rate-limit": "^7.5.0",
-    "express-session": "^1.18.1",
-    "helmet": "^8.0.0",
     "https": "^1.0.0",
-    "jsonwebtoken": "^9.0.2",
     "postcss": "^8.4.49",
     "socket.io": "^4.8.1",
     "tailwindcss": "^3.4.17"

@@ -3,6 +3,7 @@ const socket = io();
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const chat = document.getElementById('chat');
+let mySocketId = null;
 
 function sanitizeMessage(message) {
   const div = document.createElement('div');
@@ -49,24 +50,26 @@ function getColorClass(userId) {
 }
 
 socket.on('chat-message', (data) => {
+  const isMyMessage = data.id === mySocketId;
+  
   const messageElement = document.createElement('div');
-  messageElement.className = 'flex items-start space-x-3 mb-4';
+  messageElement.className = `flex items-start gap-3 mb-4 ${isMyMessage ? 'justify-end' : ''}`;
 
   const sanitizedMessage = sanitizeMessage(data.message);
   const time = new Date(data.timestamp).toLocaleTimeString();
 
   messageElement.innerHTML = `
-        <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
-            ${data.id.slice(0, 2)}
+    <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
+        ${data.id.slice(0, 2)}
+    </div>
+    <div class="${isMyMessage ? 'text-right' : ''}">
+        <p class="text-sm text-gray-400 mb-1 text-left">${isMyMessage ? 'You' : `User ${data.id}`}</p>
+        <div class="${isMyMessage ? 'bg-blue-500' : 'bg-gray-700'} p-3 rounded-lg max-w-md shadow-md">
+            <p class="text-left">${sanitizedMessage}</p>
         </div>
-        <div>
-            <p class="text-sm text-gray-400 mb-1">User ${data.id}</p>
-            <div class="bg-gray-700 p-3 rounded-lg max-w-md shadow-md">
-                <p>${sanitizedMessage}</p>
-            </div>
-            <p class="text-xs text-gray-500 mt-1">${time}</p>
-        </div>
-    `;
+        <p class="text-xs text-gray-500 mt-1">${time}</p>
+    </div>
+  `;
 
   chat.appendChild(messageElement);
   scrollToBottom();
@@ -99,6 +102,7 @@ socket.on('user-disconnected', (userId) => {
 });
 
 socket.on('connect', () => {
+  mySocketId = socket.id;
   console.log('Connected to server');
 });
 
