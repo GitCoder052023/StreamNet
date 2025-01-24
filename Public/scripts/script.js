@@ -32,6 +32,22 @@ messageInput.addEventListener('keypress', (e) => {
 
 sendButton.addEventListener('click', sendMessage);
 
+function getColorClass(userId) {
+  const colors = [
+    'bg-red-500', 'bg-green-500', 'bg-yellow-500', 'bg-blue-500',
+    'bg-indigo-500', 'bg-purple-500', 'bg-pink-500', 'bg-teal-500',
+    'bg-orange-500', 'bg-red-600', 'bg-green-600', 'bg-yellow-600',
+    'bg-blue-600', 'bg-indigo-600', 'bg-purple-600', 'bg-pink-600',
+    'bg-teal-600', 'bg-orange-600'
+  ];
+  let hash = 0;
+  for (let i = 0; i < userId.length; i++) {
+    hash = userId.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % colors.length;
+  return colors[index];
+}
+
 socket.on('chat-message', (data) => {
   const messageElement = document.createElement('div');
   messageElement.className = 'flex items-start space-x-3 mb-4';
@@ -40,7 +56,7 @@ socket.on('chat-message', (data) => {
   const time = new Date(data.timestamp).toLocaleTimeString();
 
   messageElement.innerHTML = `
-        <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center font-bold shadow-md">
+        <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
             ${data.id.slice(0, 2)}
         </div>
         <div>
