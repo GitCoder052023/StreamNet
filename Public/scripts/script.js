@@ -3,7 +3,9 @@ const socket = io();
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const chat = document.getElementById('chat');
+const messagesCache = {};
 let mySocketId = null;
+let currentReplyId = null;
 
 function sanitizeMessage(message) {
   const div = document.createElement('div');
@@ -18,10 +20,29 @@ function scrollToBottom() {
 function sendMessage() {
   const message = messageInput.value.trim();
   if (message && message.length <= 5000) {
-    socket.emit('chat-message', message);
+    const messageData = {
+      content: message,
+      replyTo: currentReplyId,
+      messageId: crypto.randomUUID()
+    };
+    socket.emit('chat-message', messageData);
     messageInput.value = '';
+    currentReplyId = null;
+    document.getElementById('reply-preview').classList.add('hidden');
   } else if (message.length > 5000) {
     alert('Message exceeds the maximum length of 5000 characters.');
+  }
+}
+
+function handleMessageClick(messageId) {
+  currentReplyId = messageId;
+  const original = messagesCache[messageId];
+  if (original) {
+    const preview = document.getElementById('reply-preview');
+    preview.classList.remove('hidden');
+    document.getElementById('reply-user').textContent = 
+      original.senderId === mySocketId ? 'You' : `User ${original.senderId.slice(0,2)}`;
+    document.getElementById('reply-content').textContent = original.content;
   }
 }
 
@@ -49,11 +70,38 @@ function getColorClass(userId) {
   return colors[index];
 }
 
+document.getElementById('cancel-reply').addEventListener('click', () => {
+  currentReplyId = null;
+  document.getElementById('reply-preview').classList.add('hidden');
+});
+
 socket.on('chat-message', (data) => {
+  messagesCache[data.messageId] = {
+    content: data.message,
+    senderId: data.id,
+    timestamp: data.timestamp
+  };
+
   const isMyMessage = data.id === mySocketId;
   
   const messageElement = document.createElement('div');
-  messageElement.className = `flex items-start gap-3 mb-4 ${isMyMessage ? 'justify-end' : ''}`;
+  messageElement.className = `message-container flex items-start gap-3 mb-4 ${isMyMessage ? 'justify-end' : ''}`;
+  
+  messageElement.addEventListener('click', () => handleMessageClick(data.messageId));
+
+  let replyPreview = '';
+  if (data.replyTo) {
+    const original = messagesCache[data.replyTo];
+    const replyClass = isMyMessage ? 'my-message' : 'other-message';
+    replyPreview = `
+      <div class="reply-preview ${replyClass} bg-gray-600 p-2 rounded mb-2 text-sm border-l-4 border-blue-500">
+        ${original ? `
+          <p class="text-gray-300">Replying to ${original.senderId === data.id ? 'You' : `User ${original.senderId.slice(0,2)}`}</p>
+          <p class="text-gray-400 truncate">${sanitizeMessage(original.content)}</p>
+        ` : '<p class="text-gray-400">Original message unavailable</p>'}
+      </div>
+    `;
+  }
 
   const sanitizedMessage = sanitizeMessage(data.message);
   const time = new Date(data.timestamp).toLocaleTimeString();
@@ -64,6 +112,7 @@ socket.on('chat-message', (data) => {
     </div>
     <div class="${isMyMessage ? 'text-right' : ''}">
         <p class="text-sm text-gray-400 mb-1 text-left">${isMyMessage ? 'You' : `User ${data.id}`}</p>
+        ${replyPreview}
         <div class="${isMyMessage ? 'bg-blue-500' : 'bg-gray-700'} p-3 rounded-lg max-w-md shadow-md">
             <p class="text-left">${sanitizedMessage}</p>
         </div>

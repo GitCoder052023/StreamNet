@@ -29,36 +29,39 @@ io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
   io.emit('user-connected', socket.id);
 
-  socket.on('chat-message', (message) => {
+  socket.on('chat-message', (messageData) => {
     const userId = socket.id;
     const now = Date.now();
-
+  
     if (!userMessageCount[userId]) {
       userMessageCount[userId] = { count: 0, lastReset: now };
     }
-
+  
     if (now - userMessageCount[userId].lastReset > 10000) {
       userMessageCount[userId] = { count: 0, lastReset: now };
     }
-
+  
     if (userMessageCount[userId].count >= RATE_LIMIT) {
       console.log(`Rate limit exceeded for user: ${userId}`);
       return;
     }
-
-    if (message.length > MAX_MESSAGE_LENGTH) {
+  
+    if (messageData.content.length > MAX_MESSAGE_LENGTH) {
       console.log(`Message from user ${userId} exceeds maximum length`);
       return;
     }
-
+  
     userMessageCount[userId].count++;
-
-    const signature = signMessage(message);
+  
+    const signature = signMessage(messageData.content);
+  
     io.emit('chat-message', {
-      id: socket.id,
-      message,
-      signature,
-      timestamp: new Date().toISOString(),
+      id: socket.id, 
+      message: messageData.content, 
+      messageId: messageData.messageId, 
+      replyTo: messageData.replyTo, 
+      signature: signature, 
+      timestamp: new Date().toISOString() 
     });
   });
 
