@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QChat - Revolutionize Local Communication</title>
+    <link href="../style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        nav.sticky-glass {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+
+<body class="font-sans">
+    <nav class="sticky top-0 z-50 bg-white shadow-sm py-3 px-4 md:py-4 md:px-6 flex items-center justify-between sticky-glass transition-all">
+        <div class="text-xl md:text-2xl font-bold">QChat</div>
+        
+        <div class="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6">
+            <a href="#" class="text-gray-600 hover:text-gray-800 transition">Features</a>
+            <a href="#" class="text-gray-600 hover:text-gray-800 transition">Pricing</a>
+            <a href="#" class="text-gray-600 hover:text-gray-800 transition">Testimonials</a>
+        </div>
+    
+        <div class="flex items-center gap-4">
+            <button class="hidden md:block bg-white border border-gray-300 rounded-md px-4 py-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                Sign In
+            </button>
+    
+            <div class="flex items-center gap-2 md:hidden">
+                <button id="mobile-menu-button" class="p-2 rounded-md text-gray-600 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <button class="bg-white border border-gray-300 rounded-md px-4 py-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Sign In
+                </button>
+            </div>
+        </div>
+    
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 bg-white border-t shadow-lg py-2 px-4">
+            <div class="flex flex-col space-y-3">
+                <a href="#" class="text-gray-600 hover:text-gray-800 py-2">Features</a>
+                <a href="#" class="text-gray-600 hover:text-gray-800 py-2">Pricing</a>
+                <a href="#" class="text-gray-600 hover:text-gray-800 py-2">Testimonials</a>
+            </div>
+        </div>
+    </nav>
+    
+    <section class="text-center py-12 px-4 md:py-20 bg-gray-50">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 md:mb-6">
+            Revolutionize Local Communication with<br>
+            <span class="text-blue-600">QChat</span>
+        </h1>
+        <p class="text-base md:text-xl text-gray-600 mb-6 md:mb-8 max-w-2xl mx-auto">
+            Secure, seamless communication on local networks. Group chats, direct
+            messaging, admin controls, file sharing, and offline Bluetooth-based
+            communication.
+        </p>
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 justify-center">
+            <button class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700" id="GetStarted_Btn">
+                Get Started
+            </button>
+            <button class="border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-full hover:bg-blue-50">
+                Learn More
+            </button>
+        </div>
+    </section>
+
+    <section class="py-20 px-6 max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12">Powerful Features for Local Communication</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center">
+                <i class="fas fa-comments text-blue-600 text-4xl mb-4"></i>
+                <h3 class="font-bold mb-2">Group & Direct Messaging</h3>
+                <p class="text-gray-600">Seamless communication with group chats and private messaging.</p>
+            </div>
+            <div class="text-center">
+                <i class="fas fa-lock text-blue-600 text-4xl mb-4"></i>
+                <h3 class="font-bold mb-2">Enhanced Privacy</h3>
+                <p class="text-gray-600">Secure, encrypted communication within your local network.</p>
+            </div>
+            <div class="text-center">
+                <i class="fas fa-wifi text-blue-600 text-4xl mb-4"></i>
+                <h3 class="font-bold mb-2">Offline Support</h3>
+                <p class="text-gray-600">Stay connected with Bluetooth-based communication when offline.</p>
+            </div>
+            <div class="text-center">
+                <i class="fas fa-cogs text-blue-600 text-4xl mb-4"></i>
+                <h3 class="font-bold mb-2">Admin Controls</h3>
+                <p class="text-gray-600">Customizable settings and powerful admin tools for your network.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">Choose the Perfect Plan for Your Team</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Basic</h3>
+                    <p class="text-4xl font-bold mb-6">$9<span class="text-lg text-gray-500">/month</span></p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="text-gray-600">Up to 10 users</li>
+                        <li class="text-gray-600">Group chats</li>
+                        <li class="text-gray-600">Direct messaging</li>
+                        <li class="text-gray-600">File sharing up to 100MB</li>
+                    </ul>
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-full hover:bg-blue-700">Get
+                        Started</button>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Pro</h3>
+                    <p class="text-4xl font-bold mb-6">$29<span class="text-lg text-gray-500">/month</span></p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="text-gray-600">Up to 50 users</li>
+                        <li class="text-gray-600">Advanced admin controls</li>
+                        <li class="text-gray-600">Offline communication</li>
+                        <li class="text-gray-600">File sharing up to 1GB</li>
+                    </ul>
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-full hover:bg-blue-700">Get
+                        Started</button>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold mb-4">Enterprise</h3>
+                    <p class="text-4xl font-bold mb-6">Custom</p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="text-gray-600">Unlimited users</li>
+                        <li class="text-gray-600">Dedicated support</li>
+                        <li class="text-gray-600">Custom integrations</li>
+                        <li class="text-gray-600">Advanced security features</li>
+                    </ul>
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-full hover:bg-blue-700">Get
+                        Started</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white">
+        <div class="bg-[rgb(0_84_199)] text-white">
+            <div class="max-w-6xl mx-auto py-20 px-6">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold mb-6">Ready to Transform Your Local Communication?</h2>
+                    <p class="text-gray-200 mb-8">Join thousands of teams already using QChat for secure and seamless messaging.</p>
+                    <div class="space-x-4">
+                        <button class="bg-white text-blue-600 px-6 py-3 rounded-full hover:bg-blue-100">Sign Up Now</button>
+                        <button class="border-2 border-white text-white px-6 py-3 rounded-full hover:bg-blue-900">Book a Demo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="max-w-6xl mx-auto py-20 px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 border-t border-gray-800 pt-12">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">QChat</h3>
+                    <p class="text-gray-400">Revolutionizing local communication with secure and seamless messaging.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Features</a></li>
+                        <li><a href="#" class="hover:text-white">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white">Testimonials</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Email: info@qchat.com</li>
+                        <li>Phone: (123) 456-7890</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4 text-gray-400">
+                        <a href="#" class="hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="hover:text-white"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 QChat. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>  
+    <script src="../scripts/LandingPage.js"></script>  
+</body>
+
+</html>

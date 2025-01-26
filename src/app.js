@@ -6,11 +6,15 @@ const app = express();
 app.use(express.static(path.join(__dirname, '../Public')));
 
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../Public/templates/LandingPage.html'));
+});
+
+app.get('/chat', (req, res) => {
   res.sendFile(path.join(__dirname, '../Public/templates/index.html'));
 });
 
 app.get('/styles', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Public/templates/index.html'));
+  res.sendFile(path.join(__dirname, '../Public/style.css'));
 });
 
 app.use((req, res) => {
