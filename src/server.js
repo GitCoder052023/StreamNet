@@ -26,7 +26,6 @@ function signMessage(message) {
 }
 
 io.on('connection', (socket) => {
-  console.log(`User connected: ${socket.id}`);
   io.emit('user-connected', { 
     userId: socket.id, 
     timestamp: new Date().toISOString() 
