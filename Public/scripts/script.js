@@ -124,26 +124,26 @@ socket.on('chat-message', (data) => {
   scrollToBottom();
 });
 
-socket.on('user-connected', (userId) => {
-  const shortId = userId.slice(0, 5);
+socket.on('user-connected', (data) => {
+  const time = new Date(data.timestamp).toLocaleTimeString();
   const messageElement = document.createElement('div');
   messageElement.className = 'text-center text-sm text-gray-400 my-2';
   messageElement.innerHTML = `
     <span class="bg-gray-700 px-3 py-1 rounded-full">
-      User ${shortId} connected
+      User ${data.userId.slice(0, 5)} connected • ${time}
     </span>
   `;
   chat.appendChild(messageElement);
   scrollToBottom();
 });
 
-socket.on('user-disconnected', (userId) => {
-  const shortId = userId.slice(0, 5);
+socket.on('user-disconnected', (data) => {
+  const time = new Date(data.timestamp).toLocaleTimeString();
   const messageElement = document.createElement('div');
   messageElement.className = 'text-center text-sm text-gray-400 my-2';
   messageElement.innerHTML = `
     <span class="bg-gray-700 px-3 py-1 rounded-full">
-      User ${shortId} disconnected
+      User ${data.userId.slice(0, 5)} disconnected • ${time}
     </span>
   `;
   chat.appendChild(messageElement);

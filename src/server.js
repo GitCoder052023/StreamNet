@@ -26,8 +26,10 @@ function signMessage(message) {
 }
 
 io.on('connection', (socket) => {
-  console.log(`User connected: ${socket.id}`);
-  io.emit('user-connected', socket.id);
+  io.emit('user-connected', { 
+    userId: socket.id, 
+    timestamp: new Date().toISOString() 
+  });
 
   socket.on('chat-message', (messageData) => {
     const userId = socket.id;
@@ -66,8 +68,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log(`User disconnected: ${socket.id}`);
-    io.emit('user-disconnected', socket.id);
+    io.emit('user-disconnected', { 
+      userId: socket.id, 
+      timestamp: new Date().toISOString() 
+    });
     delete userMessageCount[socket.id];
   });
 });
