@@ -74,7 +74,6 @@ io.on('connection', (socket) => {
       timestamp: new Date().toISOString(),
     });
 
-    // Stop typing indicator when message is sent
     socket.broadcast.emit('typing', {
       userId: socket.id,
       typing: false,

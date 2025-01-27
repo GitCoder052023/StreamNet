@@ -2,96 +2,117 @@
 
 QChat is a secure, real-time chat application designed for local network communication. Built with modern web technologies and emphasizing security, it provides a seamless, encrypted chatting experience within your network.
 
-## 🔐 Security Features
+## Features
 
-- **SSL/TLS Encryption**: Secure communication using HTTPS and WSS (WebSocket Secure) with custom SSL certificates
-- **Message Rate Limiting**: Protection against spam (limited to 5 messages per 10 seconds per user)
-- **Message Size Limits**: Maximum message length of 5000 characters to prevent large payloads
-- **Message Signing**: HMAC-SHA256 signature verification for message integrity using a secret key
-- **Environment Security**: Sensitive configuration stored in `.env` files (SSL paths, secrets, ports)
-- **HTTP Security Headers**: Using helmet middleware for enhanced HTTP security
-- **CORS Protection**: Configurable allowed origins through environment variables
-- **Input Sanitization**: Client-side message sanitization to prevent XSS attacks
-- **Error Handling**: Custom 404 page and error routes to prevent information leakage
+### 💬 Chat Features
+- Real-time messaging using WebSocket
+- Reply to messages
+- Typing indicators
+- User presence notifications
+- Message rate limiting
+- Support for long messages (up to 5000 characters)
 
-## 🚀 Getting Started
+### 🎨 UI Features
+- Modern, responsive design with Tailwind CSS
+- Dark mode interface
+- Smooth animations and transitions
+- User-friendly landing page
+- Custom 404 error page
+
+### 🔐 Security Features
+- SSL/TLS encryption with custom certificates
+- Message signing with HMAC-SHA256
+- Rate limiting (5 messages/10 seconds)
+- Input sanitization against XSS
+- Configurable CORS protection
+- Environment-based configuration
+
+## 🚀 Quick Start
 
 ### Prerequisites
-
-- Node.js (v14 or higher)
-- npm (Node Package Manager)
-- SSL Certificate and Key
+- Node.js (v14+)
+- npm
+- SSL certificate and key files
 
 ### Installation
 
-1. Clone the repository
+1. Clone the repository:
+```bash
+git clone https://github.com/GitCoder052023/QChat.git
+cd QChat
+```
+
 2. Install dependencies:
-```sh
+```bash
 npm install
 ```
 
-3. Configure environment variables:
-```sh
+3. Set up environment variables:
+```bash
 cp .env.example .env
 ```
 
-Update the following
+4. Update .env with your configuration:
 
-- .env
-- PORT (default: 3000)
-- `NODE_ENV`
-- `JWT_SECRET`
-- `ALLOWED_ORIGINS`
-- SSL_KEY
-- SSL_CERT
-- SECRET_KEY
+```env
+PORT=3000
+NODE_ENV=development
+ALLOWED_ORIGINS=https://localhost:3000
+SSL_KEY=/path/to/your/ssl/key.pem
+SSL_CERT=/path/to/your/ssl/cert.pem
+SECRET_KEY=your_secret_key_here
+```
 
-4. Start the development server:
-```sh
+5. Start the development server:
+```bash
 npm start
 ```
 
-5. Build CSS (in a separate terminal):
-```sh
+6. In a separate terminal, build CSS:
+```bash
 npm run build:css
 ```
 
-## 🛠️ Technology Stack
+## 🛠️ Development
+
+### Available Scripts
+
+- `npm start` - Start the development server
+- `npm run build:css` - Build Tailwind CSS
+- `npm run lint` - Run ESLint
+- `npm run lint:fix` - Fix ESLint issues
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check code formatting
+
+
+## 🔧 Technologies
 
 - **Frontend**:
-  - Tailwind CSS for styling
-  - Socket.IO Client for real-time communication
   - Vanilla JavaScript
+  - Tailwind CSS
+  - Socket.IO Client
 
 - **Backend**:
-  - Express.js server
-  - Socket.IO for WebSocket handling
-  - HTTPS for secure communication
-  - Crypto for message signing
+  - Node.js
+  - Express.js
+  - Socket.IO
+  - HTTPS
 
-## 💻 Development
+## 📝 Contributing
 
-- Run linting:
-```sh
-npm run lint
-```
-
-- Fix linting issues:
-```sh
-npm run lint:fix
-```
-
-## 📜 License
-
-MIT Licensed © 2025 Hamdan Khubaib
-
-## 🤝 Contributing
-
-Please read our Contributing Guide and Code of Conduct before submitting pull requests.
+1. Read our Contributing Guide
+2. Fork the repository
+3. Create a feature branch
+4. Make your changes
+5. Submit a pull request
 
 ## 🔒 Security
 
-For security concerns, please review our Security Policy and report any vulnerabilities following the outlined procedure.
+Please report security vulnerabilities as described in our Security Policy.
+
+## 📄 License
+
+MIT License © 2025 Hamdan Khubaib
 
 ---
 

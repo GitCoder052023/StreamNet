@@ -125,7 +125,6 @@ socket.on('chat-message', (data) => {
   scrollToBottom();
 });
 
-// Detect typing
 let typingTimeout;
 messageInput.addEventListener('input', () => {
   socket.emit('typing', true);
@@ -136,7 +135,6 @@ messageInput.addEventListener('input', () => {
   }, 1000);
 });
 
-// Listen for typing events
 socket.on('typing', (data) => {
   const { userId, typing } = data;
 
