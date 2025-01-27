@@ -4,6 +4,7 @@ const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const chat = document.getElementById('chat');
 const messagesCache = {};
+const typingIndicators = {};
 let mySocketId = null;
 let currentReplyId = null;
 
@@ -123,6 +124,52 @@ socket.on('chat-message', (data) => {
   chat.appendChild(messageElement);
   scrollToBottom();
 });
+
+// Detect typing
+let typingTimeout;
+messageInput.addEventListener('input', () => {
+  socket.emit('typing', true);
+
+  clearTimeout(typingTimeout);
+  typingTimeout = setTimeout(() => {
+    socket.emit('typing', false);
+  }, 1000);
+});
+
+// Listen for typing events
+socket.on('typing', (data) => {
+  const { userId, typing } = data;
+
+  if (typing) {
+    if (!typingIndicators[userId]) {
+      const typingElement = document.createElement('div');
+      typingElement.className = 'message-container flex items-start gap-3 mb-4';
+      typingElement.id = `typing-${userId}`;
+
+      typingElement.innerHTML = `
+        <div class="w-10 h-10 ${getColorClass(userId)} rounded-full flex items-center justify-center font-bold shadow-md">
+          ${userId.slice(0, 2)}
+        </div>
+        <div class="bg-gray-700 p-3 rounded-lg max-w-md shadow-md flex items-center">
+          <div class="typing-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      `;
+
+      chat.appendChild(typingElement);
+      typingIndicators[userId] = typingElement;
+      scrollToBottom();
+    }
+  } else {
+    const typingElement = typingIndicators[userId];
+    if (typingElement) {
+      chat.removeChild(typingElement);
+      delete typingIndicators[userId];
+    }
+  }
+});
+
 
 socket.on('user-connected', (data) => {
   const time = new Date(data.timestamp).toLocaleTimeString();

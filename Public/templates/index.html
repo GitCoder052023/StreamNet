@@ -29,19 +29,50 @@
       cursor: pointer;
       transition: background-color 0.2s ease;
     }
+
+    .typing-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .typing-dots span {
+      width: 8px;
+      height: 8px;
+      background-color: #cbd5e0;
+      border-radius: 50%;
+      animation: blink 1.4s infinite;
+    }
+
+    .typing-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes blink {
+
+      0%,
+      80%,
+      100% {
+        opacity: 0;
+      }
+
+      40% {
+        opacity: 1;
+      }
+    }
   </style>
 </head>
 
 <body class="bg-gradient-to-br from-gray-900 to-gray-800 flex flex-col h-screen text-white font-sans">
-  <!-- Chat Header -->
   <div class="p-4 bg-gray-800 border-b border-gray-700 shadow-lg">
     <h1 class="text-2xl font-bold">QChat</h1>
     <p class="text-sm text-gray-400">Real-time messaging for your home network</p>
   </div>
 
-  <!-- Chat Messages Container -->
   <div class="flex-1 p-4 overflow-y-auto space-y-4" id="chat">
-    <!-- Messages will appear here dynamically -->
   </div>
 
   <div id="reply-preview" class="hidden bg-gray-700 p-2 mx-4 mb-2 rounded-lg border-l-4 border-blue-500">
@@ -56,7 +87,6 @@
     </div>
   </div>
 
-  <!-- Message Input Container -->
   <div class="p-4 bg-gray-800 border-t border-gray-700 shadow-lg">
     <div class="flex items-center space-x-2">
       <input type="text" id="message-input" placeholder="Type a message..."
