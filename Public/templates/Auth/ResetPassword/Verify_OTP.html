@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QChat - Verify OTP</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="../../style.css" rel="stylesheet" />
+    <style>
+        html { scroll-behavior: smooth; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .pattern-bg {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#e2e8f0 0.5px, transparent 0.5px);
+            background-size: 10px 10px;
+        }
+    </style>
+</head>
+<body class="font-sans pattern-bg">
+    <nav class="sticky top-0 z-50 glass-effect shadow-sm py-4 px-6">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i data-lucide="message-circle" class="w-8 h-8 text-blue-600"></i>
+                <span class="text-2xl font-bold text-gray-900">QChat</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="min-h-screen flex items-center justify-center py-20 px-4">
+        <div class="w-full max-w-md">
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                <div class="text-center mb-8">
+                    <div class="flex justify-center mb-4">
+                        <div class="p-3 bg-blue-50 rounded-full">
+                            <i data-lucide="shield-check" class="w-8 h-8 text-blue-600"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Verify Code</h1>
+                    <p class="text-gray-600">We sent a 4-digit code to your@email.com</p>
+                </div>
+                
+                <form id="resetForm2" class="space-y-6">
+                    <div class="flex justify-center space-x-3">
+                        <input type="text" maxlength="1" 
+                            class="w-16 h-16 text-center text-2xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                            pattern="\d*">
+                        <input type="text" maxlength="1" 
+                            class="w-16 h-16 text-center text-2xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                            pattern="\d*">
+                        <input type="text" maxlength="1" 
+                            class="w-16 h-16 text-center text-2xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                            pattern="\d*">
+                        <input type="text" maxlength="1" 
+                            class="w-16 h-16 text-center text-2xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                            pattern="\d*">
+                    </div>
+
+                    <button type="submit" 
+                        class="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2">
+                        <span>Verify Code</span>
+                        <i data-lucide="check-circle" class="w-5 h-5"></i>
+                    </button>
+
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">or</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center text-sm text-gray-600">
+                        Didn't receive code? 
+                        <button type="button" class="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center">
+                            <i data-lucide="refresh-cw" class="w-4 h-4 mr-1"></i>
+                            Resend
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        
+        const inputs = document.querySelectorAll('input[type="text"]');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && index > 0 && !e.target.value) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        document.getElementById('resetForm2').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.location.href = '/reset-password-3';
+        });
+    </script>
+</body>
+</html>

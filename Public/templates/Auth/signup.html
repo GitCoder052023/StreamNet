@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QChat - Sign Up</title>
+    <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="../../style.css" rel="stylesheet" />
+    <style>
+        html { scroll-behavior: smooth; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .pattern-bg {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#e2e8f0 0.5px, transparent 0.5px);
+            background-size: 10px 10px;
+        }
+    </style>
+</head>
+
+<body class="font-sans pattern-bg">
+    <nav class="sticky top-0 z-50 glass-effect shadow-sm py-4 px-6">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i data-lucide="message-circle" class="w-8 h-8 text-blue-600"></i>
+                <span class="text-2xl font-bold text-gray-900">QChat</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="min-h-screen flex items-center justify-center py-20 px-4">
+        <div class="w-full max-w-md">
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                <div class="text-center mb-8">
+                    <div class="flex justify-center mb-4">
+                        <div class="p-3 bg-blue-50 rounded-full">
+                            <i data-lucide="user-plus" class="w-8 h-8 text-blue-600"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Get Started</h1>
+                    <p class="text-gray-600">Create your QChat account</p>
+                </div>
+                
+                <form id="signupForm" class="space-y-6">
+                    <div>
+                        <label for="fullname" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <div class="relative">
+                            <i data-lucide="user" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="text" id="fullname" required
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                placeholder="Enter your full name">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <div class="relative">
+                            <i data-lucide="mail" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="email" id="email" required
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                placeholder="Enter your email">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <div class="relative">
+                            <i data-lucide="lock" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="password" id="password" required
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                placeholder="Create a password">
+                        </div>
+                    </div>
+
+                    <button type="submit" 
+                        class="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2">
+                        <span>Create Account</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+
+                    <p class="text-center text-sm text-gray-600 flex items-center justify-center space-x-1">
+                        <i data-lucide="shield" class="w-4 h-4"></i>
+                        <span>By creating an account, you agree to our</span>
+                    </p>
+                    <p class="text-center text-sm">
+                        <a href="#" class="text-blue-600 hover:text-blue-700">Terms of Service</a>
+                    </p>
+
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">or</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center text-sm text-gray-600">
+                        Already have an account? 
+                        <a href="/auth/login" class="text-blue-600 hover:text-blue-700 font-medium">
+                            Sign in
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.location.href = '/chat';
+        });
+    </script>
+</body>
+</html>

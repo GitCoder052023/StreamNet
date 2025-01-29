@@ -1,4 +1,5 @@
 const GetStarted_Btn = document.getElementById("GetStarted_Btn");
+const loginBtn = document.getElementById("signInButton");
 
 document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -13,4 +14,8 @@ document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
 
 GetStarted_Btn.addEventListener("click", function () {
     window.location.href = "/chat";
+});
+
+loginBtn.addEventListener("click", function () {
+    window.location.href = "/auth/login";
 });

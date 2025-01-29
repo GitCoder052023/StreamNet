@@ -1,16 +1,18 @@
 const express = require('express');
 const path = require('path');
 
+const authRoutes = require('../Routes/auth');
+const chatRoutes = require('../Routes/chat');
+
 const app = express();
 
 app.use(express.static(path.join(__dirname, '../Public')));
 
+app.use('/auth', authRoutes); 
+app.use('/chat', chatRoutes);  
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../Public/templates/LandingPage.html'));
-});
-
-app.get('/chat', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Public/templates/index.html'));
 });
 
 app.get('/styles', (req, res) => {
