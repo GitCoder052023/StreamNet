@@ -13,5 +13,5 @@ const io = socketIO(server);
 setupSocketIO(io);
 
 server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Engine is running on port ${PORT}`);
 });

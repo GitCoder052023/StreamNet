@@ -1,6 +1,10 @@
 const GetStarted_Btn = document.getElementById("GetStarted_Btn");
 const loginBtn = document.getElementById("signInButton");
 
+function redirectToLogin() {
+    window.location.href = "/auth/login";
+}
+
 document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -12,10 +16,5 @@ document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
     });
 });
 
-GetStarted_Btn.addEventListener("click", function () {
-    window.location.href = "/chat";
-});
-
-loginBtn.addEventListener("click", function () {
-    window.location.href = "/auth/login";
-});
+GetStarted_Btn.addEventListener("click", redirectToLogin);
+loginBtn.addEventListener("click", redirectToLogin);

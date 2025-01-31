@@ -5,6 +5,8 @@
   "scripts": {
     "start": "nodemon src/Engine/Engine.js",
     "build:css": "npx tailwindcss -i ./src/tailwind.css -o ./Public/style.css --watch",
+    "server": "cd Server && nodemon server.js",
+    "dev": "concurrently \"npm:build:css\" \"npm:server\" \"npm:start\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -30,6 +32,7 @@
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^10.0.1",

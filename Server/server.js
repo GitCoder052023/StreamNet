@@ -70,6 +70,6 @@ connectToDb((err) => {
 
   const server = https.createServer(sslOptions, app);
   server.listen(PORT, HOST, () => {
-    console.log(`Server running on https://${HOST}:${PORT}`);
+    console.log(`Server is running on https://${HOST}:${PORT}`);
   });
 });
