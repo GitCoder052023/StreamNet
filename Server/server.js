@@ -6,6 +6,10 @@ const cors = require('cors')
 const { connectToDb } = require('./config/db');
 const User = require('./models/User');
 const AuthController = require('./controllers/authController');
+const { updateEnvFile } = require('./utils/ipConfig');
+
+updateEnvFile();
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const app = express();
 
@@ -17,8 +21,16 @@ const sslOptions = {
   cert: fs.readFileSync(process.env.SSL_CERT)
 };
 
+const allowedOrigins = [
+  'https://localhost:3000',
+  `https://${process.env.HOST}:3000`
+];
+
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', `https://${process.env.HOST}:3000`);
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Credentials', true);
@@ -29,7 +41,13 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: [`https://${HOST}:3000`], 
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
@@ -52,6 +70,6 @@ connectToDb((err) => {
 
   const server = https.createServer(sslOptions, app);
   server.listen(PORT, HOST, () => {
-    console.log(`Secure server running on https://${HOST}:${PORT}`);
+    console.log(`Server running on https://${HOST}:${PORT}`);
   });
 });

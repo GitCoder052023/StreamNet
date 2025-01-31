@@ -55,12 +55,17 @@ cp .env.example .env
 4. Update .env with your configuration:
 
 ```env
+HOST=YOUR_IP_ADDRESS
 PORT=3000
+SPORT=4000
 NODE_ENV=development
-ALLOWED_ORIGINS=https://localhost:3000
-SSL_KEY=/path/to/your/ssl/key.pem
-SSL_CERT=/path/to/your/ssl/cert.pem
-SECRET_KEY=your_secret_key_here
+ALLOWED_ORIGINS="https://<YOUR_IP_ADDRESS>:3000"
+SSL_KEY="/path/to/your/ssl/key.pem"
+SSL_CERT="/path/to/your/ssl/cert.pem"
+SECRET_KEY="your_secret_key_here"
+JWT_SECRET="your_jwt_secret_here"
+TOKEN_EXPIRY="24h"
+SALT_ROUNDS=10
 ```
 
 5. Start the development server:

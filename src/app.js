@@ -1,10 +1,15 @@
 const express = require('express');
 const path = require('path');
+const ejs = require('ejs');
 
 const authRoutes = require('../Routes/auth');
 const chatRoutes = require('../Routes/chat');
 
 const app = express();
+
+app.engine('html', ejs.renderFile);
+app.set('view engine', 'html');
+app.set('views', path.join(__dirname, '../Public/templates'));
 
 app.use(express.static(path.join(__dirname, '../Public')));
 

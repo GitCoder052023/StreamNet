@@ -3,12 +3,26 @@ const path = require('path');
 const router = express.Router();
 
 router.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Public/templates/Auth/login.html'));
+    res.render('Auth/login.html', {
+        process: {
+            env: {
+                HOST: process.env.HOST
+            }
+        }
+    });
 });
 
 router.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Public/templates/Auth/signup.html'));
+    res.render('Auth/signup.html', {
+        process: {
+            env: {
+                HOST: process.env.HOST
+            }
+        }
+    });
 });
+
+// ... rest of your routes
 
 router.get('/forgot-password', (req, res) => {
   res.sendFile(path.join(__dirname, '../Public/templates/Auth/ResetPassword/Submit_Email.html')); 

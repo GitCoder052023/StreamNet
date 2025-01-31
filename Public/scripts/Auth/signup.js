@@ -12,16 +12,18 @@ document.getElementById('signupForm').addEventListener('submit', async function 
     submitButton.innerHTML = `<span>Creating Account...</span>`;
 
     try {
-        const response = await fetch(`https://${window.location.hostname}:4000/api/auth/signup`, {
+        // Get the backend URL from a meta tag that we'll add to the HTML
+        const backendHost = document.querySelector('meta[name="backend-host"]').content;
+        const response = await fetch(`https://${backendHost}:4000/api/auth/signup`, {
             method: 'POST',
             credentials: 'include',
             headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'Origin': `https://${window.location.hostname}:3000`
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Origin': `https://${backendHost}:3000`
             },
             body: JSON.stringify({ fullName: fullname, email, password })
-          });
+        });
 
         const data = await response.json();
 
