@@ -1,4 +1,9 @@
-const socket = io();
+const token = localStorage.getItem('qchat_token');
+const socket = io({
+  auth: {
+    token: token
+  }
+});
 
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
@@ -76,6 +81,10 @@ document.getElementById('cancel-reply').addEventListener('click', () => {
   document.getElementById('reply-preview').classList.add('hidden');
 });
 
+function getInitial(username) {
+  return username.charAt(0).toUpperCase();
+}
+
 socket.on('chat-message', (data) => {
   messagesCache[data.messageId] = {
     content: data.message,
@@ -107,14 +116,27 @@ socket.on('chat-message', (data) => {
   const sanitizedMessage = sanitizeMessage(data.message);
   const time = new Date(data.timestamp).toLocaleTimeString();
 
-  messageElement.innerHTML = `
-    <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
-        ${data.id.slice(0, 2)}
-    </div>
-    <div class="${isMyMessage ? 'text-right' : ''}">
-        <p class="text-sm text-gray-400 mb-1 text-left">${isMyMessage ? 'You' : `User ${data.id}`}</p>
+  messageElement.innerHTML = isMyMessage ? `
+    <div class="flex-grow"></div>
+    <div class="text-right">
+        <p class="text-sm text-gray-400 mb-1">You</p>
         ${replyPreview}
-        <div class="${isMyMessage ? 'bg-blue-500' : 'bg-gray-700'} p-3 rounded-lg max-w-md shadow-md">
+        <div class="bg-blue-500 p-3 rounded-lg max-w-md shadow-md">
+            <p class="text-left">${sanitizedMessage}</p>
+        </div>
+        <p class="text-xs text-gray-500 mt-1">${time}</p>
+    </div>
+    <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
+        ${getInitial(data.username)}
+    </div>
+  ` : `
+    <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
+        ${getInitial(data.username)}
+    </div>
+    <div>
+        <p class="text-sm text-gray-400 mb-1">${data.username}</p>
+        ${replyPreview}
+        <div class="bg-gray-700 p-3 rounded-lg max-w-md shadow-md">
             <p class="text-left">${sanitizedMessage}</p>
         </div>
         <p class="text-xs text-gray-500 mt-1">${time}</p>

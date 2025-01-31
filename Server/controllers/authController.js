@@ -15,24 +15,28 @@ class AuthController {
       if (existingUser) {
         return res.status(400).json({ message: 'User already exists' });
       }
-
+  
       const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-
+  
       const newUser = {
         fullName,
         email,
         password: hashedPassword,
         createdAt: new Date()
       };
-
+  
       await this.User.createUser(newUser);
-
+  
+      // Fix: Use newUser instead of undefined user
       const token = jwt.sign(
-        { userId: email },
+        { 
+          userId: newUser.email,
+          fullName: newUser.fullName
+        },
         JWT_SECRET,
         { expiresIn: TOKEN_EXPIRY }
       );
-
+  
       res.status(201).json({ token });
     } catch (error) {
       console.error('Signup error:', error);
@@ -55,7 +59,10 @@ class AuthController {
       }
 
       const token = jwt.sign(
-        { userId: user.email },
+        { 
+          userId: user.email,
+          fullName: user.fullName  // Add this
+        },
         JWT_SECRET,
         { expiresIn: TOKEN_EXPIRY }
       );
