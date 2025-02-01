@@ -11,7 +11,6 @@ document.getElementById('loginForm').addEventListener('submit', async function (
     submitButton.innerHTML = `<span>Signing In...</span>`;
 
     try {
-        // Get the backend URL from a meta tag that we'll add to the HTML
         const backendHost = document.querySelector('meta[name="backend-host"]').content;
         const response = await fetch(`https://${backendHost}:4000/api/auth/login`, {
             method: 'POST',

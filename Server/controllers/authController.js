@@ -27,7 +27,6 @@ class AuthController {
   
       await this.User.createUser(newUser);
   
-      // Fix: Use newUser instead of undefined user
       const token = jwt.sign(
         { 
           userId: newUser.email,
@@ -61,7 +60,7 @@ class AuthController {
       const token = jwt.sign(
         { 
           userId: user.email,
-          fullName: user.fullName  // Add this
+          fullName: user.fullName
         },
         JWT_SECRET,
         { expiresIn: TOKEN_EXPIRY }

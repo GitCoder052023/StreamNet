@@ -39,6 +39,22 @@
     animation-delay: 0.4s;
 }
 
+.sent-message-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .sent-avatar {
+    margin-top: 8px;
+  }
+  
+  .received-message-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
 @keyframes blink {
 
     0%,

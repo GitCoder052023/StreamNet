@@ -12,6 +12,7 @@ const messagesCache = {};
 const typingIndicators = {};
 let mySocketId = null;
 let currentReplyId = null;
+let myEmail = null;
 
 function sanitizeMessage(message) {
   const div = document.createElement('div');
@@ -47,7 +48,7 @@ function handleMessageClick(messageId) {
     const preview = document.getElementById('reply-preview');
     preview.classList.remove('hidden');
     document.getElementById('reply-user').textContent = 
-      original.senderId === mySocketId ? 'You' : `User ${original.senderId.slice(0,2)}`;
+      original.senderId === mySocketId ? 'You' : `${original.senderId.slice(0,2)}`;
     document.getElementById('reply-content').textContent = original.content;
   }
 }
@@ -92,7 +93,7 @@ socket.on('chat-message', (data) => {
     timestamp: data.timestamp
   };
 
-  const isMyMessage = data.id === mySocketId;
+  const isMyMessage = data.id === myEmail;
   
   const messageElement = document.createElement('div');
   messageElement.className = `message-container flex items-start gap-3 mb-4 ${isMyMessage ? 'justify-end' : ''}`;
@@ -117,8 +118,12 @@ socket.on('chat-message', (data) => {
   const time = new Date(data.timestamp).toLocaleTimeString();
 
   messageElement.innerHTML = isMyMessage ? `
-    <div class="flex-grow"></div>
-    <div class="text-right">
+  <div class="flex-grow"></div>
+  <div class="sent-message-container flex items-start gap-3">
+    <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md sent-avatar">
+      ${getInitial(data.username)}
+    </div>
+    <div class="text-left">
         <p class="text-sm text-gray-400 mb-1">You</p>
         ${replyPreview}
         <div class="bg-blue-500 p-3 rounded-lg max-w-md shadow-md">
@@ -126,12 +131,11 @@ socket.on('chat-message', (data) => {
         </div>
         <p class="text-xs text-gray-500 mt-1">${time}</p>
     </div>
+  </div>
+` : `
+  <div class="received-message-container flex items-start gap-3">
     <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
-        ${getInitial(data.username)}
-    </div>
-  ` : `
-    <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
-        ${getInitial(data.username)}
+      ${getInitial(data.username)}
     </div>
     <div>
         <p class="text-sm text-gray-400 mb-1">${data.username}</p>
@@ -141,7 +145,8 @@ socket.on('chat-message', (data) => {
         </div>
         <p class="text-xs text-gray-500 mt-1">${time}</p>
     </div>
-  `;
+  </div>
+`;
 
   chat.appendChild(messageElement);
   scrollToBottom();
@@ -218,7 +223,9 @@ socket.on('user-disconnected', (data) => {
 });
 
 socket.on('connect', () => {
-  mySocketId = socket.id;
+  const token = localStorage.getItem('qchat_token');
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  myEmail = payload.userId;
   console.log('Connected to server');
 });
 

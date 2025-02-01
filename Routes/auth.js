@@ -22,8 +22,6 @@ router.get('/signup', (req, res) => {
     });
 });
 
-// ... rest of your routes
-
 router.get('/forgot-password', (req, res) => {
   res.sendFile(path.join(__dirname, '../Public/templates/Auth/ResetPassword/Submit_Email.html')); 
 });
