@@ -126,10 +126,10 @@ socket.on('chat-message', (data) => {
     <div class="text-left">
         <p class="text-sm text-gray-400 mb-1">You</p>
         ${replyPreview}
-        <div class="bg-blue-500 p-3 rounded-lg max-w-md shadow-md">
+        <div class="bg-blue-500 p-3 rounded-lg max-w-md shadow-md max-w-fit-content">
             <p class="text-left">${sanitizedMessage}</p>
         </div>
-        <p class="text-xs text-gray-500 mt-1">${time}</p>
+        <p class="text-xs text-gray-500 mt-1 text-right">${time}</p>
     </div>
   </div>
 ` : `
