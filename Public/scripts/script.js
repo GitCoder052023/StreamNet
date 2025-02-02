@@ -306,7 +306,7 @@ logoutButton.addEventListener('click', async () => {
     }
     
     localStorage.removeItem('qchat_token');
-    window.location.href = '/auth/login';
+    window.location.href = '/';
   } catch (error) {
     console.error('Logout failed:', error);
   }

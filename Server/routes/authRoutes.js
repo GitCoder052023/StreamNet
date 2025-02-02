@@ -22,7 +22,6 @@ module.exports = (authController) => {
     authController.login.bind(authController)
   );
 
-  // Add the logout route
   router.post(
     '/logout',
     authenticate,
