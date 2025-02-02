@@ -10,6 +10,10 @@ class User {
     async findUserByEmail(email) {
       return this.collection.findOne({ email });
     }
+
+    async deleteUserByEmail(email) {
+      return this.collection.deleteOne({ email });
+    }
   }
   
   module.exports = User;

@@ -3,7 +3,13 @@ const path = require('path');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Public/templates/index.html'));
+  res.render('index.html', {
+    process: {
+      env: {
+        HOST: process.env.HOST
+      }
+    }
+  });
 });
 
 module.exports = router;

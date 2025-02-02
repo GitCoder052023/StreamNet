@@ -5,6 +5,7 @@ const {
   validateLogin,
   handleValidationErrors
 } = require('../utils/validation');
+const { authenticate } = require('../utils/authMiddleware');
 
 module.exports = (authController) => {
   router.post(
@@ -19,6 +20,13 @@ module.exports = (authController) => {
     validateLogin,
     handleValidationErrors,
     authController.login.bind(authController)
+  );
+
+  // Add the logout route
+  router.post(
+    '/logout',
+    authenticate,
+    authController.logout.bind(authController)
   );
 
   return router;

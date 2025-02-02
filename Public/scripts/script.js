@@ -287,7 +287,27 @@ document.addEventListener('click', (e) => {
   }
 });
 
-logoutButton.addEventListener('click', () => {
-  localStorage.removeItem('qchat_token');
-  window.location.href = '/auth/login';
+logoutButton.addEventListener('click', async () => {
+  try {
+    const token = localStorage.getItem('qchat_token');
+    const backendHost = document.querySelector('meta[name="backend-host"]')?.content || process.env.HOST || window.location.hostname;
+    
+    const response = await fetch(`https://${backendHost}:4000/api/auth/logout`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      throw new Error('Logout failed');
+    }
+    
+    localStorage.removeItem('qchat_token');
+    window.location.href = '/auth/login';
+  } catch (error) {
+    console.error('Logout failed:', error);
+  }
 });

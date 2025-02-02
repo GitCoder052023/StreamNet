@@ -72,6 +72,23 @@ class AuthController {
       res.status(500).json({ message: 'Server error' });
     }
   }
+
+  async logout(req, res) {
+    try {
+      const { userId } = req.user;
+      
+      const result = await this.User.deleteUserByEmail(userId);
+      
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      res.status(200).json({ message: 'Successfully logged out' });
+    } catch (error) {
+      console.error('Logout error:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  }
 }
 
 module.exports = AuthController;
