@@ -5,6 +5,13 @@ const socket = io({
   }
 });
 
+const profileButton = document.getElementById('profile-button');
+const profilePopup = document.getElementById('profile-popup');
+const profileName = document.getElementById('profile-name');
+const profileEmail = document.getElementById('profile-email');
+const logoutButton = document.getElementById('logout-button');
+const profileAvatar = document.getElementById('profile-avatar');
+const profilePopupAvatar = document.getElementById('profile-popup-avatar');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const chat = document.getElementById('chat');
@@ -18,6 +25,17 @@ function sanitizeMessage(message) {
   const div = document.createElement('div');
   div.textContent = message;
   return div.innerHTML;
+}
+
+function updateAvatars(userId, username) {
+  const colorClass = getColorClass(userId);
+  const initial = getInitial(username);
+
+  profileAvatar.className = `w-full h-full rounded-full flex items-center justify-center ${colorClass}`;
+  profileAvatar.textContent = initial;
+
+  profilePopupAvatar.className = `w-16 h-16 rounded-full flex items-center justify-center ${colorClass}`;
+  profilePopupAvatar.textContent = initial;
 }
 
 function scrollToBottom() {
@@ -47,8 +65,8 @@ function handleMessageClick(messageId) {
   if (original) {
     const preview = document.getElementById('reply-preview');
     preview.classList.remove('hidden');
-    document.getElementById('reply-user').textContent = 
-      original.senderId === mySocketId ? 'You' : `${original.senderId.slice(0,2)}`;
+    document.getElementById('reply-user').textContent =
+      original.senderId === mySocketId ? 'You' : `${original.senderId.slice(0, 2)}`;
     document.getElementById('reply-content').textContent = original.content;
   }
 }
@@ -94,10 +112,10 @@ socket.on('chat-message', (data) => {
   };
 
   const isMyMessage = data.id === myEmail;
-  
+
   const messageElement = document.createElement('div');
   messageElement.className = `message-container flex items-start gap-3 mb-4 ${isMyMessage ? 'justify-end' : ''}`;
-  
+
   messageElement.addEventListener('click', () => handleMessageClick(data.messageId));
 
   let replyPreview = '';
@@ -107,7 +125,7 @@ socket.on('chat-message', (data) => {
     replyPreview = `
       <div class="reply-preview ${replyClass} bg-gray-600 p-2 rounded mb-2 text-sm border-l-4 border-blue-500">
         ${original ? `
-          <p class="text-gray-300">Replying to ${original.senderId === data.id ? 'You' : `User ${original.senderId.slice(0,2)}`}</p>
+          <p class="text-gray-300">Replying to ${original.senderId === data.id ? 'You' : `User ${original.senderId.slice(0, 2)}`}</p>
           <p class="text-gray-400 truncate">${sanitizeMessage(original.content)}</p>
         ` : '<p class="text-gray-400">Original message unavailable</p>'}
       </div>
@@ -163,7 +181,7 @@ messageInput.addEventListener('input', () => {
 });
 
 socket.on('typing', (data) => {
-  const { userId, typing, username } = data; 
+  const { userId, typing, username } = data;
 
   if (typing) {
     if (!typingIndicators[userId]) {
@@ -226,7 +244,11 @@ socket.on('connect', () => {
   const token = localStorage.getItem('qchat_token');
   const payload = JSON.parse(atob(token.split('.')[1]));
   myEmail = payload.userId;
-  console.log('Connected to server');
+
+  profileName.textContent = payload.fullName;
+  profileEmail.textContent = payload.userId;
+
+  updateAvatars(payload.userId, payload.fullName);
 });
 
 socket.on('disconnect', () => {
@@ -253,4 +275,19 @@ socket.on('reconnect_attempt', () => {
 socket.on('reconnect', () => {
   console.log('Reconnected to server');
   reconnectAttempts = 0;
+});
+
+profileButton.addEventListener('click', () => {
+  profilePopup.classList.toggle('hidden');
+});
+
+document.addEventListener('click', (e) => {
+  if (!profileButton.contains(e.target) && !profilePopup.contains(e.target)) {
+    profilePopup.classList.add('hidden');
+  }
+});
+
+logoutButton.addEventListener('click', () => {
+  localStorage.removeItem('qchat_token');
+  window.location.href = '/auth/login';
 });

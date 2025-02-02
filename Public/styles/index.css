@@ -43,17 +43,42 @@
     display: flex;
     align-items: flex-start;
     gap: 8px;
-  }
-  
-  .sent-avatar {
+}
+
+.sent-avatar {
     margin-top: 8px;
-  }
-  
-  .received-message-container {
+}
+
+.received-message-container {
     display: flex;
     align-items: flex-start;
     gap: 8px;
-  }
+}
+
+#profile-button {
+    transform-origin: center;
+}
+
+#profile-button:hover {
+    transform: scale(1.05);
+}
+
+#profile-popup {
+    transform-origin: top right;
+    transition: all 0.2s ease-in-out;
+}
+
+#profile-popup.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+}
+
+#profile-avatar,
+#profile-popup-avatar {
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
 
 @keyframes blink {
 
