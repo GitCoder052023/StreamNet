@@ -143,7 +143,7 @@ socket.on('chat-message', (data) => {
         <div class="bg-gray-700 p-3 rounded-lg max-w-md shadow-md">
             <p class="text-left">${sanitizedMessage}</p>
         </div>
-        <p class="text-xs text-gray-500 mt-1">${time}</p>
+        <p class="text-xs text-gray-500 mt-1 text-right">${time}</p>
     </div>
   </div>
 `;
@@ -163,7 +163,7 @@ messageInput.addEventListener('input', () => {
 });
 
 socket.on('typing', (data) => {
-  const { userId, typing } = data;
+  const { userId, typing, username } = data; 
 
   if (typing) {
     if (!typingIndicators[userId]) {
@@ -173,7 +173,7 @@ socket.on('typing', (data) => {
 
       typingElement.innerHTML = `
         <div class="w-10 h-10 ${getColorClass(userId)} rounded-full flex items-center justify-center font-bold shadow-md">
-          ${userId.slice(0, 2)}
+          ${getInitial(username)}  <!-- Use the real username initial -->
         </div>
         <div class="bg-gray-700 p-3 rounded-lg max-w-md shadow-md flex items-center">
           <div class="typing-dots">

@@ -29,7 +29,8 @@ module.exports = (io) => {
 
     socket.on('typing', (isTyping) => {
       socket.broadcast.emit('typing', {
-        userId: socket.id,
+        userId: socket.user.userId,  
+        username: socket.user.fullName,
         typing: isTyping,
       });
     });
