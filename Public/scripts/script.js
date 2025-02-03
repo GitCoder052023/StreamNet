@@ -66,7 +66,7 @@ function handleMessageClick(messageId) {
     const preview = document.getElementById('reply-preview');
     preview.classList.remove('hidden');
     document.getElementById('reply-user').textContent =
-      original.senderId === mySocketId ? 'You' : `${original.senderId.slice(0, 2)}`;
+      original.senderId === mySocketId ? 'You' : original.senderName;
     document.getElementById('reply-content').textContent = original.content;
   }
 }
@@ -108,6 +108,7 @@ socket.on('chat-message', (data) => {
   messagesCache[data.messageId] = {
     content: data.message,
     senderId: data.id,
+    senderName: data.username,
     timestamp: data.timestamp
   };
 
@@ -121,11 +122,12 @@ socket.on('chat-message', (data) => {
   let replyPreview = '';
   if (data.replyTo) {
     const original = messagesCache[data.replyTo];
-    const replyClass = isMyMessage ? 'my-message' : 'other-message';
     replyPreview = `
-      <div class="reply-preview ${replyClass} bg-gray-600 p-2 rounded mb-2 text-sm border-l-4 border-blue-500">
+      <div class="reply-preview bg-gray-600 p-2 rounded mb-2 text-sm border-l-4 border-blue-500 max-w-md">
         ${original ? `
-          <p class="text-gray-300">Replying to ${original.senderId === data.id ? 'You' : `User ${original.senderId.slice(0, 2)}`}</p>
+          <p class="text-gray-300 font-medium">
+            ${original.senderId === data.id ? 'You' : original.senderId === myEmail ? 'You' : original.senderName}
+          </p>
           <p class="text-gray-400 truncate">${sanitizeMessage(original.content)}</p>
         ` : '<p class="text-gray-400">Original message unavailable</p>'}
       </div>
@@ -136,35 +138,35 @@ socket.on('chat-message', (data) => {
   const time = new Date(data.timestamp).toLocaleTimeString();
 
   messageElement.innerHTML = isMyMessage ? `
-  <div class="flex-grow"></div>
-  <div class="sent-message-container flex items-start gap-3">
-    <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md sent-avatar">
-      ${getInitial(data.username)}
-    </div>
-    <div class="text-left">
+    <div class="flex-grow"></div>
+    <div class="sent-message-container flex items-start gap-3">
+      <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md sent-avatar">
+        ${getInitial(data.username)}
+      </div>
+      <div class="text-left max-w-md">
         <p class="text-sm text-gray-400 mb-1">You</p>
         ${replyPreview}
-        <div class="bg-blue-500 p-3 rounded-lg max-w-md shadow-md max-w-fit-content">
-            <p class="text-left">${sanitizedMessage}</p>
+        <div class="bg-blue-500 p-3 rounded-lg shadow-md">
+          <p class="text-left">${sanitizedMessage}</p>
         </div>
         <p class="text-xs text-gray-500 mt-1 text-right">${time}</p>
+      </div>
     </div>
-  </div>
-` : `
-  <div class="received-message-container flex items-start gap-3">
-    <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
-      ${getInitial(data.username)}
-    </div>
-    <div>
+  ` : `
+    <div class="received-message-container flex items-start gap-3">
+      <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
+        ${getInitial(data.username)}
+      </div>
+      <div class="max-w-md">
         <p class="text-sm text-gray-400 mb-1">${data.username}</p>
         ${replyPreview}
-        <div class="bg-gray-700 p-3 rounded-lg max-w-md shadow-md">
-            <p class="text-left">${sanitizedMessage}</p>
+        <div class="bg-gray-700 p-3 rounded-lg shadow-md">
+          <p class="text-left">${sanitizedMessage}</p>
         </div>
         <p class="text-xs text-gray-500 mt-1 text-right">${time}</p>
+      </div>
     </div>
-  </div>
-`;
+  `;
 
   chat.appendChild(messageElement);
   scrollToBottom();
@@ -216,11 +218,13 @@ socket.on('typing', (data) => {
 
 socket.on('user-connected', (data) => {
   const time = new Date(data.timestamp).toLocaleTimeString();
+  const firstName = data.username.split(' ')[0];
+  
   const messageElement = document.createElement('div');
   messageElement.className = 'text-center text-sm text-gray-400 my-2';
   messageElement.innerHTML = `
     <span class="bg-gray-700 px-3 py-1 rounded-full">
-      User ${data.userId.slice(0, 5)} connected • ${time}
+      ${firstName} connected • ${time}
     </span>
   `;
   chat.appendChild(messageElement);
@@ -229,11 +233,13 @@ socket.on('user-connected', (data) => {
 
 socket.on('user-disconnected', (data) => {
   const time = new Date(data.timestamp).toLocaleTimeString();
+  const firstName = data.username.split(' ')[0];
+  
   const messageElement = document.createElement('div');
   messageElement.className = 'text-center text-sm text-gray-400 my-2';
   messageElement.innerHTML = `
     <span class="bg-gray-700 px-3 py-1 rounded-full">
-      User ${data.userId.slice(0, 5)} disconnected • ${time}
+      ${firstName} disconnected • ${time}
     </span>
   `;
   chat.appendChild(messageElement);
