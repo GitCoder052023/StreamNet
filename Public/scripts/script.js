@@ -20,6 +20,17 @@ const typingIndicators = {};
 let mySocketId = null;
 let currentReplyId = null;
 let myEmail = null;
+let onlineUsers = new Map();
+
+document.querySelector('.app-title').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.remove('-translate-x-full');
+  document.getElementById('sidebar-backdrop').classList.remove('opacity-0', 'invisible');
+});
+
+document.getElementById('close-sidebar').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebar-backdrop').classList.add('opacity-0', 'invisible');
+});
 
 function sanitizeMessage(message) {
   const div = document.createElement('div');
@@ -36,6 +47,26 @@ function updateAvatars(userId, username) {
 
   profilePopupAvatar.className = `w-16 h-16 rounded-full flex items-center justify-center ${colorClass}`;
   profilePopupAvatar.textContent = initial;
+}
+
+function updateUsersList() {
+  const usersList = document.getElementById('users-list');
+  usersList.innerHTML = '';
+  
+  onlineUsers.forEach((user, userId) => {
+    const userElement = document.createElement('div');
+    userElement.className = 'flex items-center gap-3 p-3 hover:bg-white/10 rounded-lg transition-colors';
+    userElement.innerHTML = `
+      <div class="relative">
+        <div class="w-10 h-10 ${user.colorClass} rounded-full flex items-center justify-center font-bold">
+          ${user.avatar}
+        </div>
+        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-800"></div>
+      </div>
+      <span class="text-white font-medium">${user.username}</span>
+    `;
+    usersList.appendChild(userElement);
+  });
 }
 
 function scrollToBottom() {
@@ -217,6 +248,13 @@ socket.on('typing', (data) => {
 
 
 socket.on('user-connected', (data) => {
+  onlineUsers.set(data.userId, {
+    username: data.username,
+    avatar: getInitial(data.username),
+    colorClass: getColorClass(data.userId)
+  });
+  updateUsersList();
+
   const time = new Date(data.timestamp).toLocaleTimeString();
   const firstName = data.username.split(' ')[0];
   
@@ -232,6 +270,9 @@ socket.on('user-connected', (data) => {
 });
 
 socket.on('user-disconnected', (data) => {
+  onlineUsers.delete(data.userId);
+  updateUsersList();
+
   const time = new Date(data.timestamp).toLocaleTimeString();
   const firstName = data.username.split(' ')[0];
   

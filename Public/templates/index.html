@@ -14,8 +14,26 @@
 </head>
 
 <body class="bg-gradient-to-br from-gray-900 to-gray-800 flex flex-col h-screen text-white font-sans">
+  <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm invisible opacity-0 transition-all duration-300"></div>
+  <div id="sidebar" class="fixed inset-y-0 left-0 w-[70%] md:w-[40%] bg-gray-800/90 backdrop-blur-md shadow-xl transition-transform duration-300 transform -translate-x-full">
+    <div class="p-4 border-b border-gray-700/50">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold">Online Users</h2>
+        <button id="close-sidebar" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <div id="users-list" class="p-4 space-y-2 overflow-y-auto max-h-[calc(100vh-5rem)]">
+      <!-- Users will be inserted here -->
+    </div>
+  </div>
+
   <div class="p-4 bg-gray-800 border-b border-gray-700 shadow-lg flex justify-between items-center">
-    <h1 class="text-2xl font-bold">QChat</h1>
+    <h1 class="text-2xl font-bold app-title cursor-pointer hover:text-blue-400 transition-colors">QChat</h1>
 
 <div class="relative">
   <button id="profile-button" class="w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-md hover:scale-105 transition-transform">
