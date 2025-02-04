@@ -63,7 +63,10 @@ function updateUsersList() {
         </div>
         <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-800"></div>
       </div>
-      <span class="text-white font-medium">${user.username}</span>
+      <div class="flex flex-col">
+        <span class="text-white font-medium">${user.username}</span>
+        <span class="text-xs text-gray-400">Active now</span>
+      </div>
     `;
     usersList.appendChild(userElement);
   });
@@ -267,6 +270,15 @@ socket.on('user-connected', (data) => {
   `;
   chat.appendChild(messageElement);
   scrollToBottom();
+
+  const token = localStorage.getItem('qchat_token');
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  const userId = payload.userId;
+  const fullName = payload.fullName;
+
+  profileName.textContent = fullName;
+  profileEmail.textContent = userId;
+  updateAvatars(userId, fullName);
 });
 
 socket.on('user-disconnected', (data) => {
@@ -292,10 +304,38 @@ socket.on('connect', () => {
   const payload = JSON.parse(atob(token.split('.')[1]));
   myEmail = payload.userId;
 
-  profileName.textContent = payload.fullName;
-  profileEmail.textContent = payload.userId;
+  socket.emit('request-users-list');
+  
+  socket.emit('user-status-update', {
+    userId: myEmail,
+    status: 'online'
+  });
+});
 
-  updateAvatars(payload.userId, payload.fullName);
+window.addEventListener('beforeunload', () => {
+  socket.emit('user-status-update', {
+    userId: myEmail,
+    status: 'offline'
+  });
+});
+
+setInterval(() => {
+  if (socket.connected) {
+    socket.emit('heartbeat');
+  }
+}, 30000);
+
+socket.on('users-list-update', (users) => {
+  onlineUsers.clear();
+  users.forEach(user => {
+    onlineUsers.set(user.userId, {
+      username: user.username,
+      avatar: getInitial(user.username),
+      colorClass: getColorClass(user.userId),
+      lastSeen: user.lastSeen
+    });
+  });
+  updateUsersList();
 });
 
 socket.on('disconnect', () => {
