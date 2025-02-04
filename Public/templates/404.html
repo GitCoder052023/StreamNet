@@ -1,52 +1,105 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>404 - QChat</title>
-    <link href="../style.css" rel="stylesheet" />
-    <style>
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      .fade-in {
-        animation: fadeIn 1s ease-in-out;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-900 text-white flex items-center justify-center h-screen">
-    <div class="text-center fade-in">
-      <h1 class="text-9xl font-bold text-gray-100">404</h1>
-      <p class="text-xl text-gray-300 mt-4">Oops! The page you’re looking for doesn’t exist.</p>
 
-      <div class="mt-8">
-        <svg
-          class="w-48 h-48 mx-auto text-blue-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-          ></path>
-        </svg>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 - Page Not Found | QChat</title>
+  <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"></script>
+  <link href="../style.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/LandingPage.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
 
-      <a
-        href="/chat"
-        class="mt-8 inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 hover:scale-105 transition-transform duration-300"
-      >
-        Go Back Home
+<body class="font-sans">
+  <!-- Navigation (same as in your landing page) -->
+  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm py-3 px-4 md:py-4 md:px-6 flex items-center justify-between transition-all">
+    <div class="text-xl md:text-2xl font-bold text-gray-900">QChat</div>
+    <div class="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-6">
+      <a href="/" class="text-gray-600 hover:text-gray-900 transition-colors duration-200">Home</a>
+      <a href="/#features" class="text-gray-600 hover:text-gray-900 transition-colors duration-200">Features</a>
+      <a href="/#pricing" class="text-gray-600 hover:text-gray-900 transition-colors duration-200">Pricing</a>
+      <a href="/#testimonials" class="text-gray-600 hover:text-gray-900 transition-colors duration-200">Testimonials</a>
+    </div>
+    <div class="flex items-center">
+      <button type="button" id="signUpButton"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+        Register
+      </button>
+    </div>
+  </nav>
+
+  <!-- 404 Section -->
+  <section class="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
+    <div class="text-center">
+      <h1 class="text-6xl md:text-8xl font-bold text-blue-600 mb-4">404</h1>
+      <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6">Page Not Found</h2>
+      <p class="text-lg md:text-xl text-gray-600 mb-8">
+        Sorry, the page you are looking for doesn't exist.
+      </p>
+      <a href="/"
+        class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors duration-200">
+        Return Home
       </a>
     </div>
-  </body>
+  </section>
+
+  <!-- Footer (matching the landing page style) -->
+  <footer class="bg-gray-900 text-white">
+    <div class="bg-[rgb(0_84_199)] text-white">
+      <div class="max-w-6xl mx-auto py-20 px-6">
+        <div class="text-center">
+          <h2 class="text-3xl font-bold mb-6">Ready to Transform Your Local Communication?</h2>
+          <p class="text-gray-200 mb-8">Join thousands of teams already using QChat for secure and seamless messaging.</p>
+          <div class="space-x-4">
+            <button class="border-2 border-white text-white px-6 py-3 rounded-full hover:bg-blue-900">
+              Book a Demo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto py-20 px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 border-t border-gray-800 pt-12">
+        <div>
+          <h3 class="text-xl font-bold mb-4">QChat</h3>
+          <p class="text-gray-400">
+            Revolutionizing local communication with secure and seamless messaging.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="/html#features" class="hover:text-white">Features</a></li>
+            <li><a href="/html#pricing" class="hover:text-white">Pricing</a></li>
+            <li><a href="/html#testimonials" class="hover:text-white">Testimonials</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Contact</h4>
+          <ul class="space-y-2 text-gray-400">
+            <li>Email: info@qchat.com</li>
+            <li>Phone: (123) 456-7890</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Follow Us</h4>
+          <div class="flex space-x-4 text-gray-400">
+            <a href="#" class="hover:text-white"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="hover:text-white"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="hover:text-white"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+        <p>&copy; 2023 QChat. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../scripts/LandingPage.js"></script>
+</body>
+
 </html>

@@ -8,16 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"></script>
     <link href="../style.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-
-        nav.sticky-glass {
-            backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-    </style>
+    <link rel="stylesheet" href="../styles/LandingPage.css">
 </head>
 
 <body class="font-sans">
@@ -34,9 +25,9 @@
 
         <div class="flex items-center">
             <button type="button"
-                id="signInButton"
+                id="signUpButton"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                Sign In
+                Register
             </button>
         </div>
     </nav>
@@ -63,7 +54,7 @@
 
     <section id="features" class="py-20 px-6 max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold text-center mb-12">Powerful Features for Local Communication</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
             <div class="text-center">
                 <i class="fas fa-comments text-blue-600 text-4xl mb-4"></i>
                 <h3 class="font-bold mb-2">Group & Direct Messaging</h3>
@@ -75,17 +66,12 @@
                 <p class="text-gray-600">Secure, encrypted communication within your local network.</p>
             </div>
             <div class="text-center">
-                <i class="fas fa-wifi text-blue-600 text-4xl mb-4"></i>
-                <h3 class="font-bold mb-2">Offline Support</h3>
-                <p class="text-gray-600">Stay connected with Bluetooth-based communication when offline.</p>
-            </div>
-            <div class="text-center">
                 <i class="fas fa-cogs text-blue-600 text-4xl mb-4"></i>
                 <h3 class="font-bold mb-2">Admin Controls</h3>
                 <p class="text-gray-600">Customizable settings and powerful admin tools for your network.</p>
             </div>
         </div>
-    </section>
+    </section>    
 
     <section id="pricing" class="py-20 px-6 bg-gray-50">
         <div class="max-w-6xl mx-auto">
@@ -93,7 +79,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-white p-8 rounded-xl shadow-sm">
                     <h3 class="text-xl font-bold mb-4">Basic</h3>
-                    <p class="text-4xl font-bold mb-6">$9<span class="text-lg text-gray-500">/month</span></p>
+                    <p class="text-4xl font-bold mb-6">Free</p>
                     <ul class="space-y-4 mb-8">
                         <li class="text-gray-600">Up to 10 users</li>
                         <li class="text-gray-600">Group chats</li>
@@ -164,9 +150,9 @@
                 <div>
                     <h4 class="font-bold mb-4">Quick Links</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white">Features</a></li>
-                        <li><a href="#" class="hover:text-white">Pricing</a></li>
-                        <li><a href="#" class="hover:text-white">Testimonials</a></li>
+                        <li><a href="#features" class="hover:text-white">Features</a></li>
+                        <li><a href="#pricing" class="hover:text-white">Pricing</a></li>
+                        <li><a href="#testimonials" class="hover:text-white">Testimonials</a></li>
                     </ul>
                 </div>
                 <div>

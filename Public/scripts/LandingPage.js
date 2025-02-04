@@ -1,9 +1,5 @@
 const GetStarted_Btn = document.getElementById("GetStarted_Btn");
-const loginBtn = document.getElementById("signInButton");
-
-function redirectToLogin() {
-    window.location.href = "/auth/login";
-}
+const RegisterBtn = document.getElementById("signUpButton");
 
 document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -16,5 +12,10 @@ document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
     });
 });
 
-GetStarted_Btn.addEventListener("click", redirectToLogin);
-loginBtn.addEventListener("click", redirectToLogin);
+GetStarted_Btn.addEventListener("click", () => {
+    window.location.href = "/auth/login";
+});
+
+RegisterBtn.addEventListener("click", () => {
+    window.location.href = "/auth/signup";
+});
