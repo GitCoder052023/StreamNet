@@ -5,6 +5,7 @@ const fs = require('fs');
 const cors = require('cors')
 const { connectToDb } = require('./config/db');
 const User = require('./models/User');
+const OTP = require('./models/OTP');
 const AuthController = require('./controllers/authController');
 const { updateEnvFile } = require('./utils/ipConfig');
 
@@ -63,10 +64,12 @@ connectToDb((err) => {
     process.exit(1);
   }
 
-  const userModel = new User(require('./config/db').getDb());
+  const db = require('./config/db').getDb();
+  const userModel = new User(db);
+  const otpModel = new OTP(db);
   const authController = new AuthController(userModel);
-  
-  app.use('/api/auth', require('./routes/authRoutes')(authController));
+
+  app.use('/api/auth', require('./routes/authRoutes')(authController, otpModel));
 
   const server = https.createServer(sslOptions, app);
   server.listen(PORT, HOST, () => {

@@ -1,9 +1,12 @@
 document.getElementById('signupForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const fullname = document.getElementById('fullname').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const formData = {
+        fullName: document.getElementById('fullname').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+    };
+
     const submitButton = this.querySelector('button[type="submit"]');
     const errorDiv = document.getElementById('error-message') || createErrorElement(this);
 
@@ -13,30 +16,23 @@ document.getElementById('signupForm').addEventListener('submit', async function 
 
     try {
         const backendHost = document.querySelector('meta[name="backend-host"]').content;
-        const response = await fetch(`https://${backendHost}:4000/api/auth/signup`, {
+
+        const otpResponse = await fetch(`https://${backendHost}:4000/api/auth/send-signup-otp`, {
             method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Origin': `https://${backendHost}:3000`
-            },
-            body: JSON.stringify({ fullName: fullname, email, password })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: formData.email })
         });
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || 'Registration failed');
+        if (!otpResponse.ok) {
+            throw new Error('Failed to send OTP');
         }
 
-        localStorage.setItem('qchat_token', data.token);
-        window.location.href = '/chat';
+        sessionStorage.setItem('pendingSignup', JSON.stringify(formData));
+
+        window.location.href = '/auth/verify-otp?purpose=signup';
+
     } catch (error) {
         errorDiv.textContent = error.message;
-        submitButton.innerHTML = `<span>Create Account</span><i data-lucide="arrow-right" class="w-5 h-5"></i>`;
-        lucide.createIcons();
-    } finally {
         submitButton.disabled = false;
     }
 });

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="backend-host" content="<%= process.env.HOST %>">
     <title>QChat - Verify OTP</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="../../style.css" rel="stylesheet" />
@@ -39,26 +40,26 @@
                         </div>
                     </div>
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Verify Code</h1>
-                    <p class="text-gray-600">We sent a 4-digit code to your@email.com</p>
+                    <p class="text-gray-600">We sent a 4-digit code to <span id="email-display"></span></p>
                 </div>
-                
+
                 <form id="resetForm2" class="space-y-6">
                     <div class="flex justify-center space-x-3">
-                        <input type="text" maxlength="1" 
+                        <input type="text" maxlength="1"
                             class="w-16 h-16 text-center text-2xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                             pattern="\d*">
-                        <input type="text" maxlength="1" 
+                        <input type="text" maxlength="1"
                             class="w-16 h-16 text-center text-2xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                             pattern="\d*">
-                        <input type="text" maxlength="1" 
+                        <input type="text" maxlength="1"
                             class="w-16 h-16 text-center text-2xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                             pattern="\d*">
-                        <input type="text" maxlength="1" 
+                        <input type="text" maxlength="1"
                             class="w-16 h-16 text-center text-2xl rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                             pattern="\d*">
                     </div>
 
-                    <button type="submit" 
+                    <button type="submit"
                         class="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2">
                         <span>Verify Code</span>
                         <i data-lucide="check-circle" class="w-5 h-5"></i>
@@ -74,7 +75,7 @@
                     </div>
 
                     <div class="text-center text-sm text-gray-600">
-                        Didn't receive code? 
+                        Didn't receive code?
                         <button type="button" class="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center">
                             <i data-lucide="refresh-cw" class="w-4 h-4 mr-1"></i>
                             Resend
@@ -85,28 +86,6 @@
         </div>
     </main>
 
-    <script>
-        lucide.createIcons();
-        
-        const inputs = document.querySelectorAll('input[type="text"]');
-        inputs.forEach((input, index) => {
-            input.addEventListener('input', (e) => {
-                if (e.target.value.length === 1 && index < inputs.length - 1) {
-                    inputs[index + 1].focus();
-                }
-            });
-            
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && index > 0 && !e.target.value) {
-                    inputs[index - 1].focus();
-                }
-            });
-        });
-
-        document.getElementById('resetForm2').addEventListener('submit', function(e) {
-            e.preventDefault();
-            window.location.href = '/reset-password-3';
-        });
-    </script>
+    <script src="../../../scripts/Auth/verifyOtp.js"></script>
 </body>
 </html>

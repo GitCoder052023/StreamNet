@@ -4,15 +4,21 @@ let dbConnection;
 
 module.exports = {
   connectToDb: (cb) => {
-    MongoClient.connect('mongodb://localhost:27017/QChat')
+    MongoClient.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/QChat')
       .then(client => {
+        console.log('Connected to MongoDB');
         dbConnection = client.db();
         return cb();
       })
       .catch(err => {
-        console.error('Connection error:', err);
+        console.error('MongoDB connection error:', err);
         return cb(err);
       });
   },
-  getDb: () => dbConnection
-};
+  getDb: () => {
+    if (!dbConnection) {
+      throw new Error('No database connection established');
+    }
+    return dbConnection;
+  }
+};  

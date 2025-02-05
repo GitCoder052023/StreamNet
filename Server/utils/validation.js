@@ -2,7 +2,15 @@ const { body, validationResult } = require('express-validator');
 
 exports.validateSignup = [
   body('fullName').trim().notEmpty().withMessage('Full name is required'),
-  body('email').isEmail().normalizeEmail().withMessage('Invalid email'),
+  body('email')
+    .isEmail()
+    .normalizeEmail()
+    .custom(email => {
+      if (!email.endsWith('@gmail.com')) {
+        throw new Error('Only Gmail addresses are allowed');
+      }
+      return true;
+    }),
   body('password')
     .isLength({ min: 8 })
     .withMessage('Password must be at least 8 characters')

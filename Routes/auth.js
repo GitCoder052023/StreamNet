@@ -32,11 +32,43 @@ router.get('/forgot-password', (req, res) => {
 });
 
 router.get('/verify-otp', (req, res) => {
-    res.sendFile(path.join(__dirname, '../Public/templates/Auth/ResetPassword/Verify_OTP.html'));
+    res.render('Auth/ResetPassword/Verify_OTP.html', {
+        process: {
+            env: {
+                HOST: process.env.HOST
+            }
+        }
+    });
 });
 
 router.get('/reset-password', (req, res) => {
     res.sendFile(path.join(__dirname, '../Public/templates/Auth/ResetPassword/Reset_Password.html'));
+});
+
+router.post('/send-signup-otp', async (req, res) => {
+    const { email } = req.body;
+
+    // Generate 4-digit OTP
+    const otp = Math.floor(1000 + Math.random() * 9000);
+
+    try {
+        // Store in otps collection with purpose
+        await otpModel.create({
+            email,
+            otp,
+            purpose: 'signup',
+            createdAt: new Date(),
+            expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 min expiry
+        });
+
+        // Send email with OTP
+        await sendEmail(email, 'QChat Registration OTP',
+            `Your OTP for registration is: ${otp}`);
+
+        res.json({ message: 'OTP sent successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Failed to send OTP' });
+    }
 });
 
 module.exports = router;
