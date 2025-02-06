@@ -5,8 +5,9 @@ const { authenticate } = require('../utils/authMiddleware');
 const { sendEmail } = require('../utils/emailService');
 
 module.exports = (authController, otpModel) => {
+
   router.post('/send-signup-otp', async (req, res) => {
-    const { email } = req.body;
+    const { email, fullName } = req.body;
 
     if (!email.endsWith('@gmail.com')) {
       return res.status(400).json({ message: 'Only Gmail addresses are allowed' });
@@ -15,23 +16,38 @@ module.exports = (authController, otpModel) => {
     try {
       const otp = Math.floor(1000 + Math.random() * 9000);
 
-      // Delete any existing OTPs for this email and purpose
       await otpModel.deleteOTP(email, 'signup');
-
-      // Store new OTP
       await otpModel.createOTP({
         email,
         otp,
         purpose: 'signup',
         createdAt: new Date(),
-        expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 min expiry
+        expiresAt: new Date(Date.now() + 10 * 60 * 1000)
       });
 
-      // Send email
+      const emailText = `
+Dear ${fullName},
+
+Welcome to QChat!
+
+To complete your registration, please use the following verification code:
+
+${otp}
+
+This code will expire in 10 minutes for security purposes.
+
+If you did not attempt to create a QChat account, please ignore this email.
+
+Best regards,
+The QChat Team
+
+Note: This is an automated message, please do not reply to this email.
+`;
+
       const emailSent = await sendEmail(
         email,
-        'QChat Registration OTP',
-        `Your OTP for registration is: ${otp}`
+        'Welcome to QChat - Verify Your Email',
+        emailText
       );
 
       if (!emailSent) {
@@ -39,6 +55,7 @@ module.exports = (authController, otpModel) => {
       }
 
       res.json({ message: 'OTP sent successfully' });
+
     } catch (err) {
       console.error('OTP error:', err);
       res.status(500).json({ message: 'Failed to send OTP' });
@@ -55,7 +72,6 @@ module.exports = (authController, otpModel) => {
         return res.status(400).json({ message: 'Invalid or expired OTP' });
       }
 
-      // Delete used OTP
       await otpModel.deleteOTP(email, purpose);
 
       res.json({ message: 'OTP verified successfully' });

@@ -20,7 +20,10 @@ document.getElementById('signupForm').addEventListener('submit', async function 
         const otpResponse = await fetch(`https://${backendHost}:4000/api/auth/send-signup-otp`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: formData.email })
+            body: JSON.stringify({
+                email: formData.email,
+                fullName: formData.fullName 
+            })
         });
 
         if (!otpResponse.ok) {

@@ -1,5 +1,7 @@
 # QChat - Real-time Secure Network Chat
 
+![QChat Interface](Media/preview.jpeg)
+
 QChat is a secure, real-time chat application designed for local network communication. Built with modern web technologies and emphasizing security, it provides a seamless, encrypted chatting experience within your network.
 
 ## ✨ Key Features

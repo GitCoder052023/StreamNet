@@ -8,6 +8,9 @@ const User = require('./models/User');
 const OTP = require('./models/OTP');
 const AuthController = require('./controllers/authController');
 const { updateEnvFile } = require('./utils/ipConfig');
+const QueryController = require('./controllers/queryController');
+const Query = require('./models/Query');
+const queryRoutes = require('./routes/queryRoutes');
 
 updateEnvFile();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -68,8 +71,11 @@ connectToDb((err) => {
   const userModel = new User(db);
   const otpModel = new OTP(db);
   const authController = new AuthController(userModel);
+  const queryModel = new Query(db);
+  const queryController = new QueryController(queryModel, userModel);
 
   app.use('/api/auth', require('./routes/authRoutes')(authController, otpModel));
+  app.use('/api/query', queryRoutes(queryController));
 
   const server = https.createServer(sslOptions, app);
   server.listen(PORT, HOST, () => {

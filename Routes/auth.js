@@ -32,7 +32,7 @@ router.get('/forgot-password', (req, res) => {
 });
 
 router.get('/verify-otp', (req, res) => {
-    res.render('Auth/Utility/Verify_OTP.html', {
+    res.render('Utility/Verify_OTP.html', {
         process: {
             env: {
                 HOST: process.env.HOST

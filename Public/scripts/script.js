@@ -212,18 +212,28 @@ function handleMessageClick(messageId) {
   }
 }
 
-function initUserProfile() {
+async function initUserProfile() {
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    myEmail = payload.userId;
-    profileName.textContent = payload.fullName;
-    profileEmail.textContent = payload.userId;
-    updateAvatars(payload.userId, payload.fullName);
+    const backendHost = document.querySelector('meta[name="backend-host"]').content;
+    const response = await fetch(`https://${backendHost}:4000/api/auth/user-info`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch user info');
+    }
+
+    const userData = await response.json();
+    myEmail = userData.email;
+    profileName.textContent = userData.fullName;
+    profileEmail.textContent = userData.email;
+    updateAvatars(userData.email, userData.fullName);
     socket.emit('request-users-list');
     socket.emit('user-status-update', { userId: myEmail, status: 'online' });
   } catch (error) {
     console.error('Error initializing connection:', error);
-    window.location.href = '/auth/login';
   }
 }
 
