@@ -10,8 +10,6 @@ QChat is a secure, real-time chat application designed for local network communi
 - Typing indicators and presence detection
 - Rate limiting (5 messages/10 seconds)
 - Support for messages up to 5000 characters
-- Offline messaging capabilities
-- File sharing up to 1GB (Pro plan)
 
 ### 🛡️ Security
 - End-to-end SSL/TLS encryption
@@ -25,7 +23,7 @@ QChat is a secure, real-time chat application designed for local network communi
 - Modern responsive design with Tailwind CSS
 - Dark mode support
 - Animated transitions and interactions
-- User avatars with initials
+- User avatars
 - Online/offline status indicators
 - Mobile-friendly layout
 
