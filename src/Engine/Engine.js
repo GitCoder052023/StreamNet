@@ -1,17 +1,24 @@
 const https = require('https');
 const socketIO = require('socket.io');
-require('dotenv').config();
+const { connectToDb } = require('../../Server/config/db');
 
-const app = require('../app');
-const sslOptions = require('./config/ssl.config');
-const { PORT } = require('./config/app.config');
-const setupSocketIO = require('./sockets/connectionHandler');
+connectToDb((err) => {
+  if (err) {
+    console.error('Failed to connect to database:', err);
+    process.exit(1);
+  }
 
-const server = https.createServer(sslOptions, app);
-const io = socketIO(server);
+  const app = require('../app');
+  const sslOptions = require('./config/ssl.config');
+  const { PORT } = require('./config/app.config');
+  const setupSocketIO = require('./sockets/connectionHandler');
 
-setupSocketIO(io);
+  const server = https.createServer(sslOptions, app);
+  const io = socketIO(server);
 
-server.listen(PORT, () => {
-  console.log(`Engine is running on port ${PORT}`);
+  setupSocketIO(io);
+
+  server.listen(PORT, () => {
+    console.log(`Engine is running on port ${PORT}`);
+  });
 });

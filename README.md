@@ -2,120 +2,115 @@
 
 QChat is a secure, real-time chat application designed for local network communication. Built with modern web technologies and emphasizing security, it provides a seamless, encrypted chatting experience within your network.
 
-![QChat Interface](Media/preview.jpeg)
+## ✨ Key Features
 
-## Features
-
-### 💬 Chat Features
-- Real-time messaging using WebSocket
-- Reply to messages
-- Typing indicators
-- User presence notifications
-- Message rate limiting
-- Support for long messages (up to 5000 characters)
-
-### 🎨 UI Features
-- Modern, responsive design with Tailwind CSS
-- Dark mode interface
-- Smooth animations and transitions
-- User-friendly landing page
-- Custom 404 error page
-
-### 🔐 Security Features
-- SSL/TLS encryption with custom certificates
-- Message signing with HMAC-SHA256
+### 💬 Messaging
+- Real-time messaging with WebSocket encryption
+- Message threading and replies
+- Typing indicators and presence detection
 - Rate limiting (5 messages/10 seconds)
-- Input sanitization against XSS
-- Configurable CORS protection
-- Environment-based configuration
+- Support for messages up to 5000 characters
+- Offline messaging capabilities
+- File sharing up to 1GB (Pro plan)
 
-## 🚀 Quick Start
+### 🛡️ Security
+- End-to-end SSL/TLS encryption
+- Message signing with HMAC-SHA256
+- Input sanitization against XSS attacks
+- Configurable CORS protection
+- Rate limiting and spam prevention
+- Secure user authentication
+
+### 🎨 Interface
+- Modern responsive design with Tailwind CSS
+- Dark mode support
+- Animated transitions and interactions
+- User avatars with initials
+- Online/offline status indicators
+- Mobile-friendly layout
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v14+)
-- npm
-- SSL certificate and key files
+- Node.js v14 or higher
+- MongoDB
+- SSL certificate and key
+- npm or yarn
+- Gmail account (for sending OTP emails)
 
-### Installation
+### Installation Steps
 
-1. Clone the repository:
+1. Clone the repository
 ```bash
 git clone https://github.com/GitCoder052023/QChat.git
 cd QChat
 ```
 
-2. Install dependencies:
+2. Install dependencies
 ```bash
 npm install
 ```
 
-3. Set up environment variables:
+3. Configure environment
 ```bash
 cp .env.example .env
 ```
 
-4. Update .env with your configuration:
+### Database Setup
 
+1. Install and start MongoDB
+2. Open MongoDB Compass or shell
+3. Create a new connection using: `mongodb://localhost:27017`
+4. Create a new database named `QChat`
+5. Inside QChat database, create these collections:
+   - `Users` - Stores user accounts
+   - `Messages` - Stores chat messages
+   - `otps` - Stores OTP verification codes
+
+### Gmail App Password Setup
+
+1. Go to your Google Account settings
+2. Navigate to Security → 2-Step Verification
+3. At the bottom, select "App passwords"
+4. Select "Other" as app and give it a name (e.g. "QChat")
+5. Copy the generated 16-character password
+
+### Environment Configuration
+
+#### Update .env with your settings:
 ```env
 HOST=YOUR_IP_ADDRESS
 PORT=3000
 SPORT=4000
 NODE_ENV=development
-ALLOWED_ORIGINS="https://<YOUR_IP_ADDRESS>:3000"
-SSL_KEY="/path/to/your/ssl/key.pem"
-SSL_CERT="/path/to/your/ssl/cert.pem"
-SECRET_KEY="your_secret_key_here"
-JWT_SECRET="your_jwt_secret_here"
-TOKEN_EXPIRY="24h"
-SALT_ROUNDS=10
+MONGODB_URI=mongodb://localhost:27017/QChat
+SSL_KEY=/path/to/key.pem
+SSL_CERT=/path/to/cert.pem
+JWT_SECRET=your_jwt_secret
+EMAIL_USER=your.email@gmail.com
+EMAIL_PASSWORD=your-16-char-app-password
 ```
 
-5. Start the development server:
+### Start Development Server
 ```bash
-npm start
-```
-
-6. In a separate terminal, build CSS:
-```bash
-npm run build:css
+npm run dev
 ```
 
 ## 🛠️ Development
 
 ### Available Scripts
-
-- `npm start` - Start the development server
+- `npm run dev` - Start development server
 - `npm run build:css` - Build Tailwind CSS
 - `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint issues
-- `npm run format` - Format code with Prettier
-- `npm run format:check` - Check code formatting
-
-
-## 🔧 Technologies
-
-- **Frontend**:
-  - Vanilla JavaScript
-  - Tailwind CSS
-  - Socket.IO Client
-
-- **Backend**:
-  - Node.js
-  - Express.js
-  - Socket.IO
-  - HTTPS
+- `npm run format` - Format with Prettier
 
 ## 📝 Contributing
 
-1. Read our Contributing Guide
-2. Fork the repository
-3. Create a feature branch
-4. Make your changes
-5. Submit a pull request
+Please read our Contributing Guide and Code of Conduct before submitting pull requests.
 
 ## 🔒 Security
 
-Please report security vulnerabilities as described in our Security Policy.
+For security issues, please review our Security Policy and report vulnerabilities to hamdankhuabib959@gmail.com.
 
 ## 📄 License
 

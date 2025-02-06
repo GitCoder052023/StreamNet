@@ -1,24 +1,36 @@
 const { MongoClient } = require('mongodb');
 
 let dbConnection;
+let isConnecting = false;
+let connectionPromise = null;
 
 module.exports = {
   connectToDb: (cb) => {
-    MongoClient.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/QChat')
+    if (isConnecting) {
+      return connectionPromise.then(() => cb()).catch(cb);
+    }
+
+    isConnecting = true;
+    connectionPromise = MongoClient.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/QChat')
       .then(client => {
         console.log('Connected to MongoDB');
         dbConnection = client.db();
-        return cb();
+        isConnecting = false;
+        cb();
       })
       .catch(err => {
         console.error('MongoDB connection error:', err);
-        return cb(err);
+        isConnecting = false;
+        cb(err);
       });
+
+    return connectionPromise;
   },
+
   getDb: () => {
     if (!dbConnection) {
       throw new Error('No database connection established');
     }
     return dbConnection;
   }
-};  
+};

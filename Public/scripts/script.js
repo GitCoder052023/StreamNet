@@ -1,8 +1,9 @@
 const token = localStorage.getItem('qchat_token');
 const socket = io({
-  auth: {
-    token: token
-  }
+  auth: { token },
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 1000
 });
 
 const profileButton = document.getElementById('profile-button');
@@ -15,103 +16,22 @@ const profilePopupAvatar = document.getElementById('profile-popup-avatar');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const chat = document.getElementById('chat');
+const usersListEl = document.getElementById('users-list');
 const messagesCache = {};
 const typingIndicators = {};
 let mySocketId = null;
 let currentReplyId = null;
 let myEmail = null;
 let onlineUsers = new Map();
-
-document.querySelector('.app-title').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.remove('-translate-x-full');
-  document.getElementById('sidebar-backdrop').classList.remove('opacity-0', 'invisible');
-});
-
-document.getElementById('close-sidebar').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.add('-translate-x-full');
-  document.getElementById('sidebar-backdrop').classList.add('opacity-0', 'invisible');
-});
+let reconnectAttempts = 0;
+const maxReconnectAttempts = 5;
+let typingTimeout;
 
 function sanitizeMessage(message) {
   const div = document.createElement('div');
   div.textContent = message;
   return div.innerHTML;
 }
-
-function updateAvatars(userId, username) {
-  const colorClass = getColorClass(userId);
-  const initial = getInitial(username);
-
-  profileAvatar.className = `w-full h-full rounded-full flex items-center justify-center ${colorClass}`;
-  profileAvatar.textContent = initial;
-
-  profilePopupAvatar.className = `w-16 h-16 rounded-full flex items-center justify-center ${colorClass}`;
-  profilePopupAvatar.textContent = initial;
-}
-
-function updateUsersList() {
-  const usersList = document.getElementById('users-list');
-  usersList.innerHTML = '';
-  
-  onlineUsers.forEach((user, userId) => {
-    const userElement = document.createElement('div');
-    userElement.className = 'flex items-center gap-3 p-3 hover:bg-white/10 rounded-lg transition-colors';
-    userElement.innerHTML = `
-      <div class="relative">
-        <div class="w-10 h-10 ${user.colorClass} rounded-full flex items-center justify-center font-bold">
-          ${user.avatar}
-        </div>
-        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-800"></div>
-      </div>
-      <div class="flex flex-col">
-        <span class="text-white font-medium">${user.username}</span>
-        <span class="text-xs text-gray-400">Active now</span>
-      </div>
-    `;
-    usersList.appendChild(userElement);
-  });
-}
-
-function scrollToBottom() {
-  chat.scrollTop = chat.scrollHeight;
-}
-
-function sendMessage() {
-  const message = messageInput.value.trim();
-  if (message && message.length <= 5000) {
-    const messageData = {
-      content: message,
-      replyTo: currentReplyId,
-      messageId: crypto.randomUUID()
-    };
-    socket.emit('chat-message', messageData);
-    messageInput.value = '';
-    currentReplyId = null;
-    document.getElementById('reply-preview').classList.add('hidden');
-  } else if (message.length > 5000) {
-    alert('Message exceeds the maximum length of 5000 characters.');
-  }
-}
-
-function handleMessageClick(messageId) {
-  currentReplyId = messageId;
-  const original = messagesCache[messageId];
-  if (original) {
-    const preview = document.getElementById('reply-preview');
-    preview.classList.remove('hidden');
-    document.getElementById('reply-user').textContent =
-      original.senderId === mySocketId ? 'You' : original.senderName;
-    document.getElementById('reply-content').textContent = original.content;
-  }
-}
-
-messageInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    sendMessage();
-  }
-});
-
-sendButton.addEventListener('click', sendMessage);
 
 function getColorClass(userId) {
   const colors = [
@@ -129,105 +49,289 @@ function getColorClass(userId) {
   return colors[index];
 }
 
-document.getElementById('cancel-reply').addEventListener('click', () => {
-  currentReplyId = null;
-  document.getElementById('reply-preview').classList.add('hidden');
-});
-
 function getInitial(username) {
   return username.charAt(0).toUpperCase();
 }
 
-socket.on('chat-message', (data) => {
+function scrollToBottom() {
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function updateAvatars(userId, username) {
+  const colorClass = getColorClass(userId);
+  const initial = getInitial(username);
+  profileAvatar.className = `w-full h-full rounded-full flex items-center justify-center ${colorClass}`;
+  profileAvatar.textContent = initial;
+  profilePopupAvatar.className = `w-16 h-16 rounded-full flex items-center justify-center ${colorClass}`;
+  profilePopupAvatar.textContent = initial;
+}
+
+function updateUsersList() {
+  usersListEl.innerHTML = '';
+  onlineUsers.forEach((user, userId) => {
+    const userElement = document.createElement('div');
+    userElement.className =
+      'flex items-center gap-3 p-3 hover:bg-white/10 rounded-lg transition-colors';
+    userElement.innerHTML = `
+      <div class="relative">
+        <div class="w-10 h-10 ${user.colorClass} rounded-full flex items-center justify-center font-bold">
+          ${user.avatar}
+        </div>
+        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-800"></div>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-white font-medium">${user.username}</span>
+        <span class="text-xs text-gray-400">Active now</span>
+      </div>
+    `;
+    usersListEl.appendChild(userElement);
+  });
+}
+
+function createStatusMessage(username, action, timestamp) {
+  const time = new Date(timestamp).toLocaleTimeString();
+  const firstName = username.split(' ')[0];
+  const messageElement = document.createElement('div');
+  messageElement.className = 'text-center text-sm text-gray-400 my-2';
+  messageElement.innerHTML = `
+    <span class="bg-gray-700 px-3 py-1 rounded-full">
+      ${firstName} ${action} • ${time}
+    </span>
+  `;
+  return messageElement;
+}
+
+function storeMessage(data) {
   messagesCache[data.messageId] = {
     content: data.message,
     senderId: data.id,
     senderName: data.username,
     timestamp: data.timestamp
   };
+}
 
-  const isMyMessage = data.id === myEmail;
+function generateReplyPreview(original, senderId) {
+  if (!original) {
+    return '';
+  }
+  const replyUser = original.senderId === senderId || original.senderId === myEmail
+    ? 'You'
+    : original.senderName;
+  return `
+    <div class="reply-preview bg-gray-600 p-2 rounded mb-2 text-sm border-l-4 border-blue-500 max-w-md">
+      <p class="text-gray-300 font-medium">${replyUser}</p>
+      <p class="text-gray-400 truncate">${sanitizeMessage(original.content)}</p>
+    </div>
+  `;
+}
 
-  const messageElement = document.createElement('div');
-  messageElement.className = `message-container flex items-start gap-3 mb-4 ${isMyMessage ? 'justify-end' : ''}`;
-
-  messageElement.addEventListener('click', () => handleMessageClick(data.messageId));
-
-  let replyPreview = '';
-  if (data.replyTo) {
-    const original = messagesCache[data.replyTo];
-    replyPreview = `
-      <div class="reply-preview bg-gray-600 p-2 rounded mb-2 text-sm border-l-4 border-blue-500 max-w-md">
-        ${original ? `
-          <p class="text-gray-300 font-medium">
-            ${original.senderId === data.id ? 'You' : original.senderId === myEmail ? 'You' : original.senderName}
-          </p>
-          <p class="text-gray-400 truncate">${sanitizeMessage(original.content)}</p>
-        ` : '<p class="text-gray-400">Original message unavailable</p>'}
+function generateMessageHTML(data, isMyMessage, replyPreview, time) {
+  const senderNameDisplay = isMyMessage ? 'You' : data.username;
+  const messageContent = sanitizeMessage(data.message);
+  if (isMyMessage) {
+    return `
+      <div class="flex-grow"></div>
+      <div class="sent-message-container flex items-start gap-3">
+        <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md sent-avatar">
+          ${getInitial(data.username)}
+        </div>
+        <div class="text-left max-w-md">
+          <p class="text-sm text-gray-400 mb-1">${senderNameDisplay}</p>
+          ${replyPreview}
+          <div class="bg-blue-500 p-3 rounded-lg shadow-md">
+            <p class="text-left">${messageContent}</p>
+          </div>
+          <p class="text-xs text-gray-500 mt-1 text-right">${time}</p>
+        </div>
+      </div>
+    `;
+  } else {
+    return `
+      <div class="received-message-container flex items-start gap-3">
+        <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
+          ${getInitial(data.username)}
+        </div>
+        <div class="max-w-md">
+          <p class="text-sm text-gray-400 mb-1">${data.username}</p>
+          ${replyPreview}
+          <div class="bg-gray-700 p-3 rounded-lg shadow-md">
+            <p class="text-left">${messageContent}</p>
+          </div>
+          <p class="text-xs text-gray-500 mt-1 text-right">${time}</p>
+        </div>
       </div>
     `;
   }
+}
 
-  const sanitizedMessage = sanitizeMessage(data.message);
+function createMessageElement(data) {
+  const isMyMessage = data.id === myEmail;
+  const messageElement = document.createElement('div');
+  messageElement.className = `message-container flex items-start gap-3 mb-4 ${isMyMessage ? 'justify-end' : ''}`;
+  messageElement.addEventListener('click', () => handleMessageClick(data.messageId));
+  const replyPreview = data.replyTo ? generateReplyPreview(messagesCache[data.replyTo], data.id) : '';
   const time = new Date(data.timestamp).toLocaleTimeString();
+  messageElement.innerHTML = generateMessageHTML(data, isMyMessage, replyPreview, time);
+  return messageElement;
+}
 
-  messageElement.innerHTML = isMyMessage ? `
-    <div class="flex-grow"></div>
-    <div class="sent-message-container flex items-start gap-3">
-      <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md sent-avatar">
-        ${getInitial(data.username)}
-      </div>
-      <div class="text-left max-w-md">
-        <p class="text-sm text-gray-400 mb-1">You</p>
-        ${replyPreview}
-        <div class="bg-blue-500 p-3 rounded-lg shadow-md">
-          <p class="text-left">${sanitizedMessage}</p>
-        </div>
-        <p class="text-xs text-gray-500 mt-1 text-right">${time}</p>
-      </div>
-    </div>
-  ` : `
-    <div class="received-message-container flex items-start gap-3">
-      <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
-        ${getInitial(data.username)}
-      </div>
-      <div class="max-w-md">
-        <p class="text-sm text-gray-400 mb-1">${data.username}</p>
-        ${replyPreview}
-        <div class="bg-gray-700 p-3 rounded-lg shadow-md">
-          <p class="text-left">${sanitizedMessage}</p>
-        </div>
-        <p class="text-xs text-gray-500 mt-1 text-right">${time}</p>
-      </div>
-    </div>
-  `;
-
+function processIncomingMessage(data) {
+  storeMessage(data);
+  const messageElement = createMessageElement(data);
   chat.appendChild(messageElement);
   scrollToBottom();
+}
+
+function sendMessage() {
+  const message = messageInput.value.trim();
+  if (!message) return;
+  if (message.length > 5000) {
+    alert('Message exceeds the maximum length of 5000 characters.');
+    return;
+  }
+  const messageData = {
+    content: message,
+    replyTo: currentReplyId,
+    messageId: crypto.randomUUID()
+  };
+  socket.emit('chat-message', messageData);
+  messageInput.value = '';
+  currentReplyId = null;
+  document.getElementById('reply-preview').classList.add('hidden');
+}
+
+function handleMessageClick(messageId) {
+  currentReplyId = messageId;
+  const original = messagesCache[messageId];
+  if (original) {
+    const preview = document.getElementById('reply-preview');
+    preview.classList.remove('hidden');
+    document.getElementById('reply-user').textContent =
+      original.senderId === mySocketId || original.senderId === myEmail ? 'You' : original.senderName;
+    document.getElementById('reply-content').textContent = original.content;
+  }
+}
+
+function initUserProfile() {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    myEmail = payload.userId;
+    profileName.textContent = payload.fullName;
+    profileEmail.textContent = payload.userId;
+    updateAvatars(payload.userId, payload.fullName);
+    socket.emit('request-users-list');
+    socket.emit('user-status-update', { userId: myEmail, status: 'online' });
+  } catch (error) {
+    console.error('Error initializing connection:', error);
+    window.location.href = '/auth/login';
+  }
+}
+
+document.querySelector('.app-title').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.remove('-translate-x-full');
+  document.getElementById('sidebar-backdrop').classList.remove('opacity-0', 'invisible');
 });
 
-let typingTimeout;
+document.getElementById('close-sidebar').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebar-backdrop').classList.add('opacity-0', 'invisible');
+});
+
+messageInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});
+
+sendButton.addEventListener('click', sendMessage);
+
+document.getElementById('cancel-reply').addEventListener('click', () => {
+  currentReplyId = null;
+  document.getElementById('reply-preview').classList.add('hidden');
+});
+
 messageInput.addEventListener('input', () => {
   socket.emit('typing', true);
-
   clearTimeout(typingTimeout);
   typingTimeout = setTimeout(() => {
     socket.emit('typing', false);
   }, 1000);
 });
 
+profileButton.addEventListener('click', () => {
+  profilePopup.classList.toggle('hidden');
+});
+
+document.addEventListener('click', (e) => {
+  if (!profileButton.contains(e.target) && !profilePopup.contains(e.target)) {
+    profilePopup.classList.add('hidden');
+  }
+});
+
+logoutButton.addEventListener('click', async () => {
+  try {
+    const backendHost =
+      document.querySelector('meta[name="backend-host"]')?.content ||
+      process.env.HOST ||
+      window.location.hostname;
+    const response = await fetch(`https://${backendHost}:4000/api/auth/logout`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
+    if (!response.ok) {
+      throw new Error('Logout failed');
+    }
+    localStorage.removeItem('qchat_token');
+    window.location.href = '/';
+  } catch (error) {
+    console.error('Logout failed:', error);
+  }
+});
+
+window.addEventListener('beforeunload', () => {
+  socket.emit('user-status-update', { userId: myEmail, status: 'offline' });
+});
+
+socket.on('connect', () => {
+  if (!myEmail) {
+    initUserProfile();
+  }
+});
+
+socket.on('chat-message', (data) => {
+  processIncomingMessage(data);
+});
+
+socket.on('chat-history', (messages) => {
+  chat.innerHTML = '';
+  Object.keys(messagesCache).forEach((key) => delete messagesCache[key]);
+  if (!messages || !Array.isArray(messages)) {
+    console.error('Invalid chat history received');
+    return;
+  }
+  messages.forEach((data) => {
+    try {
+      processIncomingMessage(data);
+    } catch (error) {
+      console.error('Error processing message:', error, data);
+    }
+  });
+});
+
 socket.on('typing', (data) => {
   const { userId, typing, username } = data;
-
   if (typing) {
     if (!typingIndicators[userId]) {
       const typingElement = document.createElement('div');
       typingElement.className = 'message-container flex items-start gap-3 mb-4';
       typingElement.id = `typing-${userId}`;
-
       typingElement.innerHTML = `
         <div class="w-10 h-10 ${getColorClass(userId)} rounded-full flex items-center justify-center font-bold shadow-md">
-          ${getInitial(username)}  <!-- Use the real username initial -->
+          ${getInitial(username)}
         </div>
         <div class="bg-gray-700 p-3 rounded-lg max-w-md shadow-md flex items-center">
           <div class="typing-dots">
@@ -235,7 +339,6 @@ socket.on('typing', (data) => {
           </div>
         </div>
       `;
-
       chat.appendChild(typingElement);
       typingIndicators[userId] = typingElement;
       scrollToBottom();
@@ -249,7 +352,6 @@ socket.on('typing', (data) => {
   }
 });
 
-
 socket.on('user-connected', (data) => {
   onlineUsers.set(data.userId, {
     username: data.username,
@@ -257,77 +359,29 @@ socket.on('user-connected', (data) => {
     colorClass: getColorClass(data.userId)
   });
   updateUsersList();
-
-  const time = new Date(data.timestamp).toLocaleTimeString();
-  const firstName = data.username.split(' ')[0];
-  
-  const messageElement = document.createElement('div');
-  messageElement.className = 'text-center text-sm text-gray-400 my-2';
-  messageElement.innerHTML = `
-    <span class="bg-gray-700 px-3 py-1 rounded-full">
-      ${firstName} connected • ${time}
-    </span>
-  `;
-  chat.appendChild(messageElement);
+  chat.appendChild(createStatusMessage(data.username, 'connected', data.timestamp));
   scrollToBottom();
 
-  const token = localStorage.getItem('qchat_token');
-  const payload = JSON.parse(atob(token.split('.')[1]));
-  const userId = payload.userId;
-  const fullName = payload.fullName;
-
-  profileName.textContent = fullName;
-  profileEmail.textContent = userId;
-  updateAvatars(userId, fullName);
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    profileName.textContent = payload.fullName;
+    profileEmail.textContent = payload.userId;
+    updateAvatars(payload.userId, payload.fullName);
+  } catch (error) {
+    console.error('Error updating profile info:', error);
+  }
 });
 
 socket.on('user-disconnected', (data) => {
   onlineUsers.delete(data.userId);
   updateUsersList();
-
-  const time = new Date(data.timestamp).toLocaleTimeString();
-  const firstName = data.username.split(' ')[0];
-  
-  const messageElement = document.createElement('div');
-  messageElement.className = 'text-center text-sm text-gray-400 my-2';
-  messageElement.innerHTML = `
-    <span class="bg-gray-700 px-3 py-1 rounded-full">
-      ${firstName} disconnected • ${time}
-    </span>
-  `;
-  chat.appendChild(messageElement);
+  chat.appendChild(createStatusMessage(data.username, 'disconnected', data.timestamp));
   scrollToBottom();
 });
 
-socket.on('connect', () => {
-  const token = localStorage.getItem('qchat_token');
-  const payload = JSON.parse(atob(token.split('.')[1]));
-  myEmail = payload.userId;
-
-  socket.emit('request-users-list');
-  
-  socket.emit('user-status-update', {
-    userId: myEmail,
-    status: 'online'
-  });
-});
-
-window.addEventListener('beforeunload', () => {
-  socket.emit('user-status-update', {
-    userId: myEmail,
-    status: 'offline'
-  });
-});
-
-setInterval(() => {
-  if (socket.connected) {
-    socket.emit('heartbeat');
-  }
-}, 30000);
-
 socket.on('users-list-update', (users) => {
   onlineUsers.clear();
-  users.forEach(user => {
+  users.forEach((user) => {
     onlineUsers.set(user.userId, {
       username: user.username,
       avatar: getInitial(user.username),
@@ -346,9 +400,6 @@ socket.on('connect_error', (error) => {
   console.error('Connection error:', error);
 });
 
-let reconnectAttempts = 0;
-const maxReconnectAttempts = 5;
-
 socket.on('reconnect_attempt', () => {
   if (reconnectAttempts < maxReconnectAttempts) {
     reconnectAttempts++;
@@ -362,39 +413,4 @@ socket.on('reconnect_attempt', () => {
 socket.on('reconnect', () => {
   console.log('Reconnected to server');
   reconnectAttempts = 0;
-});
-
-profileButton.addEventListener('click', () => {
-  profilePopup.classList.toggle('hidden');
-});
-
-document.addEventListener('click', (e) => {
-  if (!profileButton.contains(e.target) && !profilePopup.contains(e.target)) {
-    profilePopup.classList.add('hidden');
-  }
-});
-
-logoutButton.addEventListener('click', async () => {
-  try {
-    const token = localStorage.getItem('qchat_token');
-    const backendHost = document.querySelector('meta[name="backend-host"]')?.content || process.env.HOST || window.location.hostname;
-    
-    const response = await fetch(`https://${backendHost}:4000/api/auth/logout`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    });
-
-    if (!response.ok) {
-      throw new Error('Logout failed');
-    }
-    
-    localStorage.removeItem('qchat_token');
-    window.location.href = '/';
-  } catch (error) {
-    console.error('Logout failed:', error);
-  }
 });
