@@ -4,6 +4,7 @@ const ejs = require('ejs');
 
 const authRoutes = require('../Routes/auth');
 const chatRoutes = require('../Routes/chat');
+const staticRoutes = require('../Routes/static');
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.set('views', path.join(__dirname, '../Public/templates'));
 
 app.use(express.static(path.join(__dirname, '../Public')));
 
+app.use('/', staticRoutes);
 app.use('/auth', authRoutes);
 app.use('/chat', chatRoutes);
 
@@ -26,6 +28,16 @@ app.get('/styles', (req, res) => {
 
 app.get('/support/contact', (req, res) => {
   res.render('support/contact.html', {
+    process: {
+      env: {
+        HOST: process.env.HOST
+      }
+    }
+  });
+});
+
+app.get('/terms', (req, res) => {
+  res.render('info/terms.html', {
     process: {
       env: {
         HOST: process.env.HOST

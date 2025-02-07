@@ -112,10 +112,6 @@ Please read our Contributing Guide and Code of Conduct before submitting pull re
 
 For security issues, please review our Security Policy and report vulnerabilities to hamdankhuabib959@gmail.com.
 
-## 📄 License
-
-MIT License © 2025 Hamdan Khubaib
-
 ---
 
 Built with ❤️ by Hamdan Khubaib
