@@ -1,94 +1,91 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="backend-host" content="<%= process.env.HOST %>">
+    <title>QChat - Real-time messaging for your home network</title>
+    <link href="../style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles/index.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl.min.js"></script>
+    <script type="module" src="../scripts/main.js"></script>
+  </head>
+  <body class="bg-gradient-to-br from-gray-900 to-gray-800 flex flex-col h-screen text-white font-sans">
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm invisible opacity-0 transition-all duration-300"></div>
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-[70%] md:w-[40%] bg-gray-800/90 backdrop-blur-md shadow-xl transition-transform duration-300 transform -translate-x-full">
+      <div class="p-4 border-b border-gray-700/50">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-bold">Online Users</h2>
+          <button id="close-sidebar" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="backend-host" content="<%= process.env.HOST %>">
-  <title>QChat - Real-time messaging for your home network</title>
-  <link href="../style.css" rel="stylesheet" />
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl.min.js"></script>
-  <script defer src="../scripts/script.js"></script>
-  <link rel="stylesheet" href="../styles/index.css">
-</head>
+      <div id="users-list" class="p-4 space-y-2 overflow-y-auto max-h-[calc(100vh-5rem)]">
+        <!-- Users will be inserted here -->
+      </div>
+    </div>
 
-<body class="bg-gradient-to-br from-gray-900 to-gray-800 flex flex-col h-screen text-white font-sans">
-  <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm invisible opacity-0 transition-all duration-300"></div>
-  <div id="sidebar" class="fixed inset-y-0 left-0 w-[70%] md:w-[40%] bg-gray-800/90 backdrop-blur-md shadow-xl transition-transform duration-300 transform -translate-x-full">
-    <div class="p-4 border-b border-gray-700/50">
-      <div class="flex items-center justify-between">
-        <h2 class="text-xl font-bold">Online Users</h2>
-        <button id="close-sidebar" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+    <div class="p-4 bg-gray-800 border-b border-gray-700 shadow-lg flex justify-between items-center">
+      <h1 class="text-2xl font-bold app-title cursor-pointer hover:text-blue-400 transition-colors">QChat</h1>
+
+      <div class="relative">
+        <button id="profile-button" class="w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-md hover:scale-105 transition-transform">
+          <div id="profile-avatar" class="w-full h-full rounded-full flex items-center justify-center"></div>
+        </button>
+
+        <div id="profile-popup" class="hidden absolute right-0 top-12 w-72 bg-gray-800 rounded-xl shadow-xl border border-gray-700 p-4 z-50">
+          <div class="flex flex-col items-center space-y-3">
+            <div id="profile-popup-avatar" class="w-16 h-16 rounded-full flex items-center justify-center font-bold shadow-md">
+              <!-- Avatar will be set via JavaScript -->
+            </div>
+            <div class="text-center">
+              <h3 id="profile-name" class="font-semibold text-lg"></h3>
+              <p id="profile-email" class="text-gray-400 text-sm"></p>
+            </div>
+            <button id="logout-button"
+              class="w-full mt-4 bg-red-500/10 hover:bg-red-500/30 text-red-500 py-2 rounded-lg transition-colors flex items-center justify-center space-x-2">
+              <i class="ph ph-sign-out text-lg"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-1 p-4 overflow-y-auto space-y-4" id="chat">
+    </div>
+
+    <div id="reply-preview" class="hidden bg-gray-700 p-2 mx-4 mb-2 rounded-lg border-l-4 border-blue-500">
+      <div class="flex justify-between items-center">
+        <div class="flex-1">
+          <p class="text-xs text-gray-300" id="reply-user"></p>
+          <p class="text-sm text-gray-200 truncate" id="reply-content"></p>
+        </div>
+        <button id="cancel-reply" class="text-gray-400 hover:text-white px-2">
+          &times;
+        </button>
+      </div>
+    </div>
+
+    <div class="p-4 bg-gray-800 border-t border-gray-700 shadow-lg">
+      <div class="flex items-center space-x-2">
+        <input type="text" id="message-input" placeholder="Type a message..."
+          class="flex-1 p-3 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 transition-all duration-200 ease-in-out hover:bg-gray-600 focus:bg-gray-600" />
+        <button id="send-button"
+          class="p-3 bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
           </svg>
         </button>
       </div>
     </div>
-    
-    <div id="users-list" class="p-4 space-y-2 overflow-y-auto max-h-[calc(100vh-5rem)]">
-      <!-- Users will be inserted here -->
+    <div class="p-2 bg-gray-800 border-t border-gray-700 text-center text-sm text-gray-400">
+      Built with ❤️ by Hamdan Khubaib
     </div>
-  </div>
-
-  <div class="p-4 bg-gray-800 border-b border-gray-700 shadow-lg flex justify-between items-center">
-    <h1 class="text-2xl font-bold app-title cursor-pointer hover:text-blue-400 transition-colors">QChat</h1>
-
-<div class="relative">
-  <button id="profile-button" class="w-10 h-10 rounded-full flex items-center justify-center font-bold shadow-md hover:scale-105 transition-transform">
-    <div id="profile-avatar" class="w-full h-full rounded-full flex items-center justify-center"></div>
-  </button>
-
-  <div id="profile-popup" class="hidden absolute right-0 top-12 w-72 bg-gray-800 rounded-xl shadow-xl border border-gray-700 p-4 z-50">
-    <div class="flex flex-col items-center space-y-3">
-      <div id="profile-popup-avatar" class="w-16 h-16 rounded-full flex items-center justify-center font-bold shadow-md">
-        <!-- Avatar will be set via JavaScript -->
-      </div>
-      <div class="text-center">
-        <h3 id="profile-name" class="font-semibold text-lg"></h3>
-        <p id="profile-email" class="text-gray-400 text-sm"></p>
-      </div>
-      <button id="logout-button" 
-        class="w-full mt-4 bg-red-500/10 hover:bg-red-500/30 text-red-500 py-2 rounded-lg transition-colors flex items-center justify-center space-x-2">
-        <i class="ph ph-sign-out text-lg"></i>
-        <span>Logout</span>
-      </button>
-    </div>
-  </div>
-</div>
-  </div>
-
-  <div class="flex-1 p-4 overflow-y-auto space-y-4" id="chat">
-  </div>
-
-  <div id="reply-preview" class="hidden bg-gray-700 p-2 mx-4 mb-2 rounded-lg border-l-4 border-blue-500">
-    <div class="flex justify-between items-center">
-      <div class="flex-1">
-        <p class="text-xs text-gray-300" id="reply-user"></p>
-        <p class="text-sm text-gray-200 truncate" id="reply-content"></p>
-      </div>
-      <button id="cancel-reply" class="text-gray-400 hover:text-white px-2">
-        &times;
-      </button>
-    </div>
-  </div>
-
-  <div class="p-4 bg-gray-800 border-t border-gray-700 shadow-lg">
-    <div class="flex items-center space-x-2">
-      <input type="text" id="message-input" placeholder="Type a message..."
-        class="flex-1 p-3 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 transition-all duration-200 ease-in-out hover:bg-gray-600 focus:bg-gray-600" />
-      <button id="send-button"
-        class="p-3 bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-        </svg>
-      </button>
-    </div>
-  </div>
-  <div class="p-2 bg-gray-800 border-t border-gray-700 text-center text-sm text-gray-400">
-    Built with ❤️ by Hamdan Khubaib
-  </div>
-</body>
-
+  </body>
 </html>
