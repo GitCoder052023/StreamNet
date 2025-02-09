@@ -1,3 +1,5 @@
+lucide.createIcons();
+
 document.getElementById('signupForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -22,7 +24,7 @@ document.getElementById('signupForm').addEventListener('submit', async function 
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 email: formData.email,
-                fullName: formData.fullName 
+                fullName: formData.fullName
             })
         });
 

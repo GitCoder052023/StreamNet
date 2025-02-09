@@ -101,5 +101,11 @@ Note: This is an automated message, please do not reply to this email.
     authController.logout.bind(authController)
   );
 
+  router.get(
+    '/user-info',
+    authenticate,
+    authController.getUserInfo.bind(authController)
+  );
+
   return router;
 };

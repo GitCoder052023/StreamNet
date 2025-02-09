@@ -1,3 +1,5 @@
+lucide.createIcons();
+
 document.getElementById('loginForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -32,7 +34,6 @@ document.getElementById('loginForm').addEventListener('submit', async function (
     } catch (error) {
         errorDiv.textContent = error.message;
         submitButton.innerHTML = `<span>Sign In</span><i data-lucide="log-in" class="w-5 h-5"></i>`;
-        lucide.createIcons();
     } finally {
         submitButton.disabled = false;
     }
