@@ -104,6 +104,111 @@ npm run dev
 - `npm run lint` - Run ESLint
 - `npm run format` - Format with Prettier
 
+### Project Structure
+
+```
+├───Public
+│   │   style.css
+│   │
+│   ├───scripts
+│   │   │   contact.js
+│   │   │   LandingPage.js
+│   │   │   main.js
+│   │   │
+│   │   ├───Auth
+│   │   │       login.js
+│   │   │       signup.js
+│   │   │       verifyOtp.js
+│   │   │
+│   │   ├───chat
+│   │   │       chat.js
+│   │   │       elements.js
+│   │   │       helpers.js
+│   │   │       profile.js
+│   │   │       socket.js
+│   │   │       users.js
+│   │   │
+│   │   └───info
+│   │           terms.js
+│   │
+│   ├───styles
+│   │   │   404.css
+│   │   │   index.css
+│   │   │   LandingPage.css
+│   │   │
+│   │   └───info
+│   │           terms.css
+│   │
+│   └───templates
+│       │   404.html
+│       │   index.html
+│       │   LandingPage.html
+│       │
+│       ├───Auth
+│       │       login.html
+│       │       Reset_Password.html
+│       │       signup.html
+│       │
+│       ├───info
+│       │       terms.html
+│       │
+│       ├───support
+│       │       contact.html
+│       │
+│       └───utility
+│               Verify_OTP.html
+│
+├───Routes
+│       auth.js
+│       chat.js
+│       static.js
+│
+├───Server
+│   │   server.js
+│   │
+│   ├───config
+│   │       db.js
+│   │       security.js
+│   │
+│   ├───controllers
+│   │       authController.js
+│   │       queryController.js
+│   │
+│   ├───models
+│   │       Message.js
+│   │       OTP.js
+│   │       Query.js
+│   │       User.js
+│   │
+│   ├───routes
+│   │       authRoutes.js
+│   │       queryRoutes.js
+│   │
+│   └───utils
+│           authMiddleware.js
+│           emailService.js
+│           ipConfig.js
+│           validation.js
+│
+└───src
+    │   app.js
+    │   tailwind.css
+    │
+    └───Engine
+        │   Engine.js
+        │
+        ├───config
+        │       app.config.js
+        │       ssl.config.js
+        │
+        ├───sockets
+        │       connectionHandler.js
+        │
+        └───utils
+                auth.utils.js
+                rateLimit.utils.js
+```
+
 ## 📝 Contributing
 
 Please read our Contributing Guide and Code of Conduct before submitting pull requests.
