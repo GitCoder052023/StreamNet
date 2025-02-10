@@ -1,33 +1,33 @@
-# QChat - Real-time Secure Network Chat
+# QChat - Secure, Real-time Chat for Local Networks
 
 ![QChat Interface](Media/preview.jpeg)
 
-QChat is a secure, real-time chat application designed for local network communication. Built with modern web technologies and emphasizing security, it provides a seamless, encrypted chatting experience within your network.
+QChat is a secure, real-time chat application designed for local network communications. Built with modern web technologies and a focus on security, QChat delivers a seamless, encrypted messaging experience tailored for your local network. Enjoy features like instant messaging, robust security protocols, and an intuitive design.
 
 ## ✨ Key Features
 
 ### 💬 Messaging
-- Real-time messaging with WebSocket encryption
-- Message threading and replies
-- Typing indicators and presence detection
-- Rate limiting (5 messages/10 seconds)
-- Support for messages up to 5000 characters
+- Real-time messaging powered by encrypted WebSockets.
+- Message threading and reply functionality.
+- Typing indicators and presence detection.
+- Rate limiting: 5 messages per 10 seconds.
+- Support for messages up to 5000 characters.
 
 ### 🛡️ Security
-- End-to-end SSL/TLS encryption
-- Message signing with HMAC-SHA256
-- Input sanitization against XSS attacks
-- Configurable CORS protection
-- Rate limiting and spam prevention
-- Secure user authentication
+- End-to-end SSL/TLS encryption.
+- Message signing with HMAC-SHA256.
+- Comprehensive input sanitization against XSS attacks.
+- Configurable CORS protection.
+- Built-in rate limiting and spam prevention.
+- Secure user authentication.
 
-### 🎨 Interface
-- Modern responsive design with Tailwind CSS
-- Dark mode support
-- Animated transitions and interactions
-- User avatars
-- Online/offline status indicators
-- Mobile-friendly layout
+### 🎨 User Interface
+- Modern, responsive design built with Tailwind CSS.
+- Dark mode support for comfortable viewing.
+- Animated transitions and interactive UI elements.
+- Customizable user avatars.
+- Real-time online/offline status indicators.
+- Mobile-friendly layout.
 
 ## 🚀 Getting Started
 
@@ -36,48 +36,45 @@ QChat is a secure, real-time chat application designed for local network communi
 - MongoDB
 - SSL certificate and key
 - npm or yarn
-- Gmail account (for sending OTP emails)
+- Gmail account for OTP email integration
 
 ### Installation Steps
 
-1. Clone the repository
-```bash
-git clone https://github.com/GitCoder052023/QChat.git
-cd QChat
-```
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/GitCoder052023/QChat.git
+   cd QChat
+   ```
 
-2. Install dependencies
-```bash
-npm install
-```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-3. Configure environment
-```bash
-cp .env.example .env
-```
+3. **Configure the environment:**
+   ```bash
+   cp .env.example .env
+   ```
 
-### Database Setup
+4. **Database Setup:**
+   - Install and start MongoDB.
+   - Open MongoDB Compass or your shell.
+   - Create a new connection using: `mongodb://localhost:27017`.
+   - Create a database named `QChat` with the following collections:
+     - `Users` – for user accounts.
+     - `Messages` – for chat messages.
+     - `otps` – for OTP verification codes.
 
-1. Install and start MongoDB
-2. Open MongoDB Compass or shell
-3. Create a new connection using: `mongodb://localhost:27017`
-4. Create a new database named `QChat`
-5. Inside QChat database, create these collections:
-   - `Users` - Stores user accounts
-   - `Messages` - Stores chat messages
-   - `otps` - Stores OTP verification codes
-
-### Gmail App Password Setup
-
-1. Go to your Google Account settings
-2. Navigate to Security → 2-Step Verification
-3. At the bottom, select "App passwords"
-4. Select "Other" as app and give it a name (e.g. "QChat")
-5. Copy the generated 16-character password
+5. **Gmail App Password Setup:**
+   - Sign in to your [Google Account](https://myaccount.google.com/).
+   - Navigate to Security → 2-Step Verification.
+   - Under "App passwords," select "Other" and enter a label (e.g., "QChat").
+   - Copy the generated 16-character password.
 
 ### Environment Configuration
 
-#### Update .env with your settings:
+Update your `.env` file with your settings:
+
 ```env
 HOST=YOUR_IP_ADDRESS
 PORT=3000
@@ -107,6 +104,7 @@ npm run dev
 ### Project Structure
 
 ```
+│
 ├───Public
 │   │   style.css
 │   │
