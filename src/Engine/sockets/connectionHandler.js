@@ -36,17 +36,22 @@ module.exports = (io) => {
       const chatHistory = await messageModel.getLastMessages();
       socket.emit('chat-history', chatHistory);
 
+      const storedColor = socket.handshake.auth.colorPreference;
+
+
       onlineUsers.set(socket.user.userId, {
         username: socket.user.fullName,
         socketId: socket.id,
         lastSeen: new Date().toISOString(),
-        status: 'online'
+        status: 'online',
+        colorClass: storedColor || null
       });
 
       io.emit('user-connected', {
         userId: socket.user.userId,
         username: socket.user.fullName,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        colorClass: storedColor || null
       });
     } catch (error) {
       console.error('Error during connection setup:', error);
@@ -57,7 +62,8 @@ module.exports = (io) => {
         userId,
         username: data.username,
         lastSeen: data.lastSeen,
-        status: data.status
+        status: data.status,
+        colorClass: data.colorClass || null
       }));
       socket.emit('users-list-update', usersList);
     });
@@ -72,7 +78,8 @@ module.exports = (io) => {
           userId,
           username: data.username,
           lastSeen: data.lastSeen,
-          status: data.status
+          status: data.status,
+          colorClass: data.colorClass || null
         })));
       }
     });
@@ -104,6 +111,12 @@ module.exports = (io) => {
 
       updateCount(socket.id);
       const signature = signMessage(messageData.content);
+
+      const currentColor =
+        onlineUsers.get(socket.user.userId)?.colorClass ||
+        socket.handshake.auth.colorPreference ||
+        null;
+
       const newMessage = {
         id: socket.user.userId,
         username: socket.user.fullName,
@@ -111,7 +124,8 @@ module.exports = (io) => {
         messageId: messageData.messageId,
         replyTo: messageData.replyTo,
         signature,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        colorClass: currentColor
       };
 
       try {
@@ -119,6 +133,17 @@ module.exports = (io) => {
         io.emit('chat-message', newMessage);
       } catch (error) {
         console.error('Error storing message:', error);
+      }
+    });
+
+    socket.on('update-avatar-color', (data) => {
+      if (data.userId === socket.user.userId) {
+        const currentUser = onlineUsers.get(socket.user.userId);
+        if (currentUser) {
+          currentUser.colorClass = data.colorClass;
+          onlineUsers.set(socket.user.userId, currentUser);
+        }
+        io.emit('update-avatar-color', data);
       }
     });
 
@@ -133,7 +158,8 @@ module.exports = (io) => {
             userId,
             username: data.username,
             lastSeen: data.lastSeen,
-            status: data.status
+            status: data.status,
+            colorClass: data.colorClass || null
           })));
         }, 300000);
       }

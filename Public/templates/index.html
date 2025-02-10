@@ -47,7 +47,7 @@
       </button>
 
       <div id="profile-popup"
-        class="hidden absolute right-0 top-12 w-72 bg-gray-800 rounded-xl shadow-xl border border-gray-700 p-4 z-50">
+        class="absolute right-0 top-12 w-72 bg-gray-800 rounded-xl shadow-xl border border-gray-700 p-4 z-50">
         <div class="flex flex-col items-center space-y-3">
           <div id="profile-popup-avatar"
             class="w-16 h-16 rounded-full flex items-center justify-center font-bold shadow-md">
@@ -57,6 +57,25 @@
             <h3 id="profile-name" class="font-semibold text-lg"></h3>
             <p id="profile-email" class="text-gray-400 text-sm"></p>
           </div>
+          <!-- Preferences Section: Avatar Color Choices Only -->
+          <div id="preferences-section" class="w-full">
+            <div class="mb-2">
+              <span class="text-sm text-white block mb-1">Avatar Color:</span>
+              <div id="avatar-colors" class="flex gap-2 justify-center">
+                <span class="avatar-color-choice w-6 h-6 rounded-full cursor-pointer bg-red-500"
+                  data-color="bg-red-500"></span>
+                <span class="avatar-color-choice w-6 h-6 rounded-full cursor-pointer bg-green-500"
+                  data-color="bg-green-500"></span>
+                <span class="avatar-color-choice w-6 h-6 rounded-full cursor-pointer bg-blue-500"
+                  data-color="bg-blue-500"></span>
+                <span class="avatar-color-choice w-6 h-6 rounded-full cursor-pointer bg-purple-500"
+                  data-color="bg-purple-500"></span>
+                <span class="avatar-color-choice w-6 h-6 rounded-full cursor-pointer bg-orange-500"
+                  data-color="bg-orange-500"></span>
+              </div>
+            </div>
+          </div>
+          <!-- Logout Button -->
           <button id="logout-button"
             class="w-full mt-4 bg-red-500/10 hover:bg-red-500/30 text-red-500 py-2 rounded-lg transition-colors flex items-center justify-center space-x-2">
             <i class="ph ph-sign-out text-lg"></i>

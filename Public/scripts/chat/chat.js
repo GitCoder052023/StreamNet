@@ -2,6 +2,8 @@ import { chat, messageInput, replyPreview } from './elements.js';
 import { sanitizeMessage, getColorClass, getInitial, scrollToBottom, createStatusMessage } from './helpers.js';
 import { socket } from './socket.js';
 import { myEmail } from './profile.js';
+import { onlineUsers } from './users.js';
+
 export const messagesCache = {};
 export let currentReplyId = null;
 export const typingIndicators = {};
@@ -24,11 +26,21 @@ export function generateReplyPreview(original, senderId) {
 export function generateMessageHTML(data, isMyMessage, replyPreviewHTML, time) {
   const senderNameDisplay = isMyMessage ? 'You' : data.username;
   const messageContent = sanitizeMessage(data.message);
+  let userColor;
+
+  if (data.colorClass) {
+    userColor = data.colorClass;
+  } else if (data.id === myEmail) {
+    userColor = localStorage.getItem('avatarColorPreference') || getColorClass(data.id);
+  } else {
+    userColor = onlineUsers.get(data.id)?.colorClass || getColorClass(data.id);
+  }
+
   if (isMyMessage) {
     return `
       <div class="flex-grow"></div>
       <div class="sent-message-container flex items-start gap-3">
-        <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md sent-avatar">
+        <div class="w-10 h-10 ${userColor} rounded-full flex items-center justify-center font-bold shadow-md sent-avatar">
           ${getInitial(data.username)}
         </div>
         <div class="text-left max-w-md">
@@ -44,7 +56,7 @@ export function generateMessageHTML(data, isMyMessage, replyPreviewHTML, time) {
   } else {
     return `
       <div class="received-message-container flex items-start gap-3">
-        <div class="w-10 h-10 ${getColorClass(data.id)} rounded-full flex items-center justify-center font-bold shadow-md">
+        <div class="w-10 h-10 ${userColor} rounded-full flex items-center justify-center font-bold shadow-md">
           ${getInitial(data.username)}
         </div>
         <div class="max-w-md">
@@ -90,6 +102,7 @@ export function processIncomingMessage(data) {
     senderName: data.username,
     timestamp: data.timestamp
   };
+
   const messageElement = createMessageElement(data);
   chat.appendChild(messageElement);
   scrollToBottom();

@@ -64,14 +64,18 @@
 }
 
 #profile-popup {
-  transform-origin: top right;
-  transition: all 0.2s ease-in-out;
-}
-
-#profile-popup.hidden {
   opacity: 0;
   transform: scale(0.95);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
   pointer-events: none;
+}
+
+#profile-popup.visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
 }
 
 #profile-avatar,
@@ -105,4 +109,23 @@
 
 #sidebar-resizer:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-theme {
+  background: linear-gradient(to bottom right, #1a202c, #2d3748) !important;
+  color: #ffffff !important;
+}
+
+body.light-theme {
+  background: linear-gradient(to bottom right, #edf2f7, #f7fafc) !important;
+  color: #2d3748 !important;
+}
+
+/* Optionally, adjust other elements as needed. For example, you might want links or buttons styled differently in light mode: */
+body.light-theme a {
+  color: #2b6cb0;
+}
+
+body.dark-theme a {
+  color: #63b3ed;
 }

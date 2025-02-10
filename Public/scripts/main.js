@@ -5,7 +5,7 @@ import {
 } from './chat/elements.js';
 import { initUserProfile, setupProfileEvents } from './chat/profile.js';
 import { sendMessage, processIncomingMessage, messagesCache, handleMessageClick, typingIndicators, clearReply, updateMessageAlignment } from './chat/chat.js';
-import { updateUsersList, handleUserConnected, handleUserDisconnected, updateUsersListFromUsers } from './chat/users.js';
+import { updateUsersList, handleUserConnected, handleUserDisconnected, updateUsersListFromUsers, onlineUsers } from './chat/users.js';
 import { scrollToBottom, getColorClass, getInitial } from './chat/helpers.js';
 
 let typingTimeout;
@@ -75,8 +75,11 @@ function setupSocketListeners() {
         const typingElement = document.createElement('div');
         typingElement.className = 'message-container flex items-start gap-3 mb-4';
         typingElement.id = `typing-${userId}`;
+
+        const userColor = onlineUsers.get(userId)?.colorClass || getColorClass(userId);
+
         typingElement.innerHTML = `
-          <div class="w-10 h-10 ${getColorClass(userId)} rounded-full flex items-center justify-center font-bold shadow-md">
+          <div class="w-10 h-10 ${userColor} rounded-full flex items-center justify-center font-bold shadow-md">
             ${getInitial(username)}
           </div>
           <div class="bg-gray-700 p-3 rounded-lg max-w-md shadow-md flex items-center">
@@ -141,6 +144,15 @@ function setupSocketListeners() {
   socket.on('reconnect', () => {
     console.log('Reconnected to server');
     reconnectAttempts = 0;
+  });
+
+  socket.on('update-avatar-color', (data) => {
+    if (onlineUsers.has(data.userId)) {
+      const currentUser = onlineUsers.get(data.userId);
+      currentUser.colorClass = data.colorClass;
+      onlineUsers.set(data.userId, currentUser);
+      updateUsersList();
+    }
   });
 }
 

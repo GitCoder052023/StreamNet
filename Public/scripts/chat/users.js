@@ -1,5 +1,6 @@
 import { usersListEl, chat } from './elements.js';
 import { getColorClass, getInitial, scrollToBottom, createStatusMessage } from './helpers.js';
+import { myEmail } from './profile.js';
 
 export let onlineUsers = new Map();
 
@@ -26,10 +27,12 @@ export function updateUsersList() {
 }
 
 export function handleUserConnected(data) {
+  const colorClass = data.colorClass || getColorClass(data.userId);
   onlineUsers.set(data.userId, {
     username: data.username,
     avatar: getInitial(data.username),
-    colorClass: getColorClass(data.userId)
+    colorClass: colorClass,
+    status: 'online'
   });
   updateUsersList();
   chat.appendChild(createStatusMessage(data.username, 'connected', data.timestamp));
@@ -49,8 +52,9 @@ export function updateUsersListFromUsers(users) {
     onlineUsers.set(user.userId, {
       username: user.username,
       avatar: getInitial(user.username),
-      colorClass: getColorClass(user.userId),
-      lastSeen: user.lastSeen
+      colorClass: user.colorClass || getColorClass(user.userId),
+      lastSeen: user.lastSeen,
+      status: user.status || 'online'
     });
   });
   updateUsersList();
