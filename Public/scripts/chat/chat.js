@@ -61,14 +61,26 @@ export function generateMessageHTML(data, isMyMessage, replyPreviewHTML, time) {
 }
 
 export function createMessageElement(data) {
-  const isMyMessage = data.id === myEmail;
+  const isMyMessage = myEmail && data.id === myEmail;
   const messageElement = document.createElement('div');
+  messageElement.dataset.senderId = data.id;
   messageElement.className = `message-container flex items-start gap-3 mb-4 ${isMyMessage ? 'justify-end' : ''}`;
   messageElement.addEventListener('click', () => handleMessageClick(data.messageId));
   const replyPreviewHTML = data.replyTo ? generateReplyPreview(messagesCache[data.replyTo], data.id) : '';
   const time = new Date(data.timestamp).toLocaleTimeString();
   messageElement.innerHTML = generateMessageHTML(data, isMyMessage, replyPreviewHTML, time);
   return messageElement;
+}
+
+export function updateMessageAlignment() {
+  const messages = chat.querySelectorAll('.message-container');
+  messages.forEach(messageElement => {
+    if (messageElement.dataset.senderId === myEmail) {
+      messageElement.classList.add('justify-end');
+    } else {
+      messageElement.classList.remove('justify-end');
+    }
+  });
 }
 
 export function processIncomingMessage(data) {

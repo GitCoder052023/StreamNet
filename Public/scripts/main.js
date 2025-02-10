@@ -4,7 +4,7 @@ import {
   messageInput, sendButton, cancelReplyButton, chat
 } from './chat/elements.js';
 import { initUserProfile, setupProfileEvents } from './chat/profile.js';
-import { sendMessage, processIncomingMessage, messagesCache, handleMessageClick, typingIndicators, clearReply } from './chat/chat.js';
+import { sendMessage, processIncomingMessage, messagesCache, handleMessageClick, typingIndicators, clearReply, updateMessageAlignment } from './chat/chat.js';
 import { updateUsersList, handleUserConnected, handleUserDisconnected, updateUsersListFromUsers } from './chat/users.js';
 import { scrollToBottom, getColorClass, getInitial } from './chat/helpers.js';
 
@@ -41,8 +41,9 @@ function setupUIListeners() {
 }
 
 function setupSocketListeners() {
-  socket.on('connect', () => {
-    initUserProfile();
+  socket.on('connect', async () => {
+    await initUserProfile();
+    updateMessageAlignment();
   });
 
   socket.on('chat-message', (data) => {
@@ -147,10 +148,40 @@ window.addEventListener('beforeunload', () => {
   socket.emit('user-status-update', { userId: '', status: 'offline' });
 });
 
+function setupSidebarResizer() {
+  if (window.innerWidth < 768) return;
+  const sidebarResizer = document.getElementById('sidebar-resizer');
+  if (!sidebarResizer) return;
+  let isResizing = false;
+  const defaultMaxWidth = parseFloat(window.getComputedStyle(sidebar).width);
+  const minWidth = window.innerWidth * 0.20;
+  sidebarResizer.addEventListener('mousedown', (e) => {
+    isResizing = true;
+    document.body.style.cursor = 'ew-resize';
+    document.body.style.userSelect = 'none';
+  });
+  document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+    const sidebarRect = sidebar.getBoundingClientRect();
+    let newWidth = e.clientX - sidebarRect.left;
+    if (newWidth < minWidth) newWidth = minWidth;
+    if (newWidth > defaultMaxWidth) newWidth = defaultMaxWidth;
+    sidebar.style.width = newWidth + 'px';
+  });
+  document.addEventListener('mouseup', () => {
+    if (isResizing) {
+      isResizing = false;
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+  });
+}
+
 function init() {
   setupUIListeners();
   setupSocketListeners();
   setupProfileEvents();
+  setupSidebarResizer();
 }
 
 init();
