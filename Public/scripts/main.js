@@ -154,6 +154,13 @@ function setupSocketListeners() {
       updateUsersList();
     }
   });
+
+  socket.on('message-deleted', (data) => {
+    const messageElement = chat.querySelector(`[data-message-id="${data.messageId}"]`);
+    if (messageElement) {
+      messageElement.remove();
+    }
+  });
 }
 
 window.addEventListener('beforeunload', () => {

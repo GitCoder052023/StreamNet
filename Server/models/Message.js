@@ -13,6 +13,10 @@ class Message {
             .limit(limit)
             .toArray();
     }
+
+    async deleteMessage(messageId) {
+        return this.collection.deleteOne({ messageId });
+    }
 }
 
 module.exports = Message;

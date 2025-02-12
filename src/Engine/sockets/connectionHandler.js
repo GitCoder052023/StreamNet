@@ -147,6 +147,24 @@ module.exports = (io) => {
       }
     });
 
+    socket.on('delete-message', async (messageId) => {
+      try {
+        const message = await messageModel.collection.findOne({ messageId });
+        if (!message) {
+          console.error('Message not found for deletion');
+          return;
+        }
+        if (message.id !== socket.user.userId) {
+          console.error('Unauthorized deletion attempt');
+          return;
+        }
+        await messageModel.deleteMessage(messageId);
+        io.emit('message-deleted', { messageId });
+      } catch (error) {
+        console.error('Error deleting message:', error);
+      }
+    });
+
     socket.on('disconnect', () => {
       const user = onlineUsers.get(socket.user.userId);
       if (user) {

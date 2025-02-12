@@ -1,3 +1,22 @@
+@media (max-width: 768px) {
+  body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  input, textarea {
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+}
+
 .reply-preview {
   max-width: 80%;
 }
@@ -121,11 +140,15 @@ body.light-theme {
   color: #2d3748 !important;
 }
 
-/* Optionally, adjust other elements as needed. For example, you might want links or buttons styled differently in light mode: */
-body.light-theme a {
-  color: #2b6cb0;
+#message-context-menu {
+  position: absolute;
+  z-index: 50;
+  background-color: #2d3748; 
+  color: #ffffff;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  display: none;
 }
-
-body.dark-theme a {
-  color: #63b3ed;
+#message-context-menu:not(.hidden) {
+  display: block;
 }
