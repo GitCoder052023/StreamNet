@@ -208,24 +208,30 @@ const contextMenu = document.createElement('div');
 contextMenu.id = 'message-context-menu';
 contextMenu.className = 'absolute z-50 bg-gray-800 text-white rounded shadow-lg hidden';
 contextMenu.innerHTML = `
-  <div id="context-delete" class="context-option flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-red-600">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4a1 1 0 011 1v2H9V4a1 1 0 011-1z" />
-    </svg>
-    <span class="text-red-400">Delete Message</span>
-  </div>
-  <div id="context-edit" class="context-option flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-700">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-300" viewBox="0 0 20 20" fill="currentColor">
-      <path d="M17.414 2.586a2 2 0 010 2.828l-9.9 9.9a1 1 0 01-.293.207l-4 1.5a1 1 0 01-1.26-1.26l1.5-4a1 1 0 01.207-.293l9.9-9.9a2 2 0 012.828 0z" />
-    </svg>
-    <span class="text-gray-300">Edit Message</span>
-  </div>
-  <div id="context-seen" class="context-option flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-700">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-    </svg>
-    <span class="text-gray-300">Seen Receipt</span>
+  <div class="context-menu-container min-w-[180px] py-1">
+    <div id="context-delete" class="context-option flex items-center gap-3 px-4 py-3 hover:bg-red-500/10 transition-colors duration-150 cursor-pointer group">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 group-hover:text-red-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+      </svg>
+      <span class="text-red-400 group-hover:text-red-300 text-sm font-medium">Delete</span>
+    </div>
+
+    <div class="border-t border-gray-700/50 my-1"></div>
+
+    <div id="context-edit" class="context-option flex items-center gap-3 px-4 py-3 hover:bg-gray-700/50 transition-colors duration-150 cursor-pointer group">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400 group-hover:text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+      </svg>
+      <span class="text-blue-400 group-hover:text-blue-300 text-sm font-medium">Edit</span>
+    </div>
+
+    <div id="context-seen" class="context-option flex items-center gap-3 px-4 py-3 hover:bg-gray-700/50 transition-colors duration-150 cursor-pointer group">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400 group-hover:text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+      </svg>
+      <span class="text-green-400 group-hover:text-green-300 text-sm font-medium">Seen</span>
+    </div>
   </div>
 `;
 document.body.appendChild(contextMenu);

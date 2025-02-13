@@ -80,5 +80,7 @@ connectToDb((err) => {
   const server = https.createServer(sslOptions, app);
   server.listen(PORT, HOST, () => {
     console.log(`Server is running on https://${HOST}:${PORT}`);
+    console.log(`[NETWORK INTERFACE] - QChat is running on https://${HOST}:3000`);
+    console.log(`[LOCAL INTERFACE] - QChat is running on https://localhost:3000`);
   });
 });
