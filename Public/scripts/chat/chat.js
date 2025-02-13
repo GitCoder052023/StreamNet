@@ -4,6 +4,9 @@ import { socket } from './socket.js';
 import { myEmail } from './profile.js';
 import { onlineUsers } from './users.js';
 
+let isEditing = false;
+let editingMessageId = null;
+
 export const messagesCache = {};
 export let currentReplyId = null;
 export const typingIndicators = {};
@@ -111,6 +114,81 @@ export function createMessageElement(data) {
   return messageElement;
 }
 
+function enterEditMode(messageId) {
+  const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+  const messageContent = messageElement.querySelector('.bg-blue-500 p, .bg-gray-700 p');
+  const originalText = messagesCache[messageId].content;
+
+  isEditing = true;
+  editingMessageId = messageId;
+
+  messageContent.innerHTML = `
+      <div class="edit-container">
+          <textarea class="w-full bg-transparent border-none resize-none focus:outline-none text-white"
+              rows="1">${originalText}</textarea>
+          <div class="flex gap-2 mt-2">
+              <button class="save-edit text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded hover:bg-green-500/30 transition-colors">
+                  Save
+              </button>
+              <button class="cancel-edit text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded hover:bg-red-500/30 transition-colors">
+                  Cancel
+              </button>
+          </div>
+      </div>
+  `;
+
+  const textarea = messageContent.querySelector('textarea');
+  textarea.focus();
+  textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + 'px';
+  textarea.addEventListener('input', () => {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  });
+
+  messageContent.querySelector('.save-edit').addEventListener('click', (e) => {
+    e.stopPropagation();
+    saveEdit(messageId, textarea.value);
+  });
+
+  messageContent.querySelector('.cancel-edit').addEventListener('click', (e) => {
+    e.stopPropagation();
+    cancelEdit(messageId);
+  });
+}
+
+function saveEdit(messageId, newContent) {
+  if (!newContent.trim()) return;
+
+  const originalContent = messagesCache[messageId].content;
+  if (newContent.trim() === originalContent.trim()) {
+      const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+      const messageContent = messageElement.querySelector('.bg-blue-500 p, .bg-gray-700 p');
+      messageContent.textContent = originalContent;
+      isEditing = false;
+      editingMessageId = null;
+      return;
+  }
+
+  socket.emit('edit-message', {
+      messageId,
+      newContent: newContent.trim()
+  });
+  isEditing = false;
+  editingMessageId = null;
+}
+
+
+function cancelEdit(messageId) {
+  const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+  const messageContent = messageElement.querySelector('.bg-blue-500 p, .bg-gray-700 p');
+  messageContent.textContent = messagesCache[messageId].content;
+  isEditing = false;
+  editingMessageId = null;
+}
+
 
 export function handleDeleteMessage(e, messageId, confirmDelete = true) {
   e.stopPropagation();
@@ -133,32 +211,32 @@ export function updateMessageAlignment() {
 
 export function processIncomingMessage(data) {
   messagesCache[data.messageId] = {
-      content: data.message,
-      senderId: data.id,
-      senderName: data.username,
-      timestamp: data.timestamp
+    content: data.message,
+    senderId: data.id,
+    senderName: data.username,
+    timestamp: data.timestamp
   };
 
   const messageElement = createMessageElement(data);
 
   const currentUserEmail = myEmail || localStorage.getItem("qchat_email");
   if (data.id === currentUserEmail) {
-      messageElement.addEventListener('contextmenu', function (e) {
-          e.preventDefault();
-          showContextMenu(e, data.messageId);
-      });
+    messageElement.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+      showContextMenu(e, data.messageId);
+    });
 
-      let touchTimer = null;
-      messageElement.addEventListener('touchstart', function (e) {
-          touchTimer = setTimeout(() => {
-              showContextMenu(e, data.messageId);
-          }, 2000);
-      });
-      messageElement.addEventListener('touchend', function (e) {
-          if (touchTimer) {
-              clearTimeout(touchTimer);
-          }
-      });
+    let touchTimer = null;
+    messageElement.addEventListener('touchstart', function (e) {
+      touchTimer = setTimeout(() => {
+        showContextMenu(e, data.messageId);
+      }, 2000);
+    });
+    messageElement.addEventListener('touchend', function (e) {
+      if (touchTimer) {
+        clearTimeout(touchTimer);
+      }
+    });
   }
 
   chat.appendChild(messageElement);
@@ -225,6 +303,8 @@ contextMenu.innerHTML = `
       <span class="text-blue-400 group-hover:text-blue-300 text-sm font-medium">Edit</span>
     </div>
 
+    <div class="border-t border-gray-700/50 my-1"></div>
+
     <div id="context-seen" class="context-option flex items-center gap-3 px-4 py-3 hover:bg-gray-700/50 transition-colors duration-150 cursor-pointer group">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400 group-hover:text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -251,12 +331,12 @@ function showContextMenu(event, messageId) {
   let posX = rect.left;
 
   if (windowWidth <= 768) {
-      posX = Math.max(10, posX);
-      posX = Math.min(windowWidth - menuWidth - 10, posX);
+    posX = Math.max(10, posX);
+    posX = Math.min(windowWidth - menuWidth - 10, posX);
   }
 
   if (posX + menuWidth > windowWidth) {
-      posX = windowWidth - menuWidth - 10;
+    posX = windowWidth - menuWidth - 10;
   }
 
   contextMenu.style.left = `${posX - 70}px`;
@@ -264,7 +344,7 @@ function showContextMenu(event, messageId) {
   contextMenu.classList.remove('hidden');
 }
 
-chat.addEventListener('contextmenu', function(e) {
+chat.addEventListener('contextmenu', function (e) {
   const messageContainer = e.target.closest('.message-container');
   if (!messageContainer) return;
 
@@ -272,12 +352,12 @@ chat.addEventListener('contextmenu', function(e) {
   const currentUserEmail = myEmail || localStorage.getItem("qchat_email");
 
   if (senderId === currentUserEmail) {
-      e.preventDefault();
-      showContextMenu(e, messageContainer.dataset.messageId);
+    e.preventDefault();
+    showContextMenu(e, messageContainer.dataset.messageId);
   }
 });
 
-chat.addEventListener('touchstart', function(e) {
+chat.addEventListener('touchstart', function (e) {
   const messageContainer = e.target.closest('.message-container');
   if (!messageContainer) return;
 
@@ -285,13 +365,13 @@ chat.addEventListener('touchstart', function(e) {
   const currentUserEmail = myEmail || localStorage.getItem("qchat_email");
 
   if (senderId === currentUserEmail) {
-      let touchTimer = setTimeout(() => {
-          showContextMenu(e, messageContainer.dataset.messageId);
-      }, 2000);
+    let touchTimer = setTimeout(() => {
+      showContextMenu(e, messageContainer.dataset.messageId);
+    }, 2000);
 
-      messageContainer.addEventListener('touchend', () => {
-          clearTimeout(touchTimer);
-      }, { once: true });
+    messageContainer.addEventListener('touchend', () => {
+      clearTimeout(touchTimer);
+    }, { once: true });
   }
 });
 
@@ -306,10 +386,11 @@ contextMenu.querySelector('#context-delete').addEventListener('click', function 
   contextMenu.classList.add('hidden');
 });
 
-// Edit option (placeholder)
 contextMenu.querySelector('#context-edit').addEventListener('click', function (e) {
   e.stopPropagation();
-  console.log('Edit message functionality not implemented yet.');
+  if (!isEditing) {
+    enterEditMode(currentContextMessageId);
+  }
   contextMenu.classList.add('hidden');
 });
 
@@ -318,4 +399,21 @@ contextMenu.querySelector('#context-seen').addEventListener('click', function (e
   e.stopPropagation();
   console.log('Seen receipt functionality not implemented yet.');
   contextMenu.classList.add('hidden');
+});
+
+socket.on('message-edited', (data) => {
+  const messageElement = document.querySelector(`[data-message-id="${data.messageId}"]`);
+  if (messageElement) {
+    const messageContent = messageElement.querySelector('.bg-blue-500 p, .bg-gray-700 p');
+    messageContent.textContent = data.newContent;
+
+    // Add edited indicator
+    const timeElement = messageElement.querySelector('.text-gray-500');
+    timeElement.textContent += ' (edited)';
+
+    // Update cache
+    messagesCache[data.messageId].content = data.newContent;
+    messagesCache[data.messageId].edited = true;
+    messagesCache[data.messageId].editedAt = data.editedAt;
+  }
 });

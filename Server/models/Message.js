@@ -17,6 +17,20 @@ class Message {
     async deleteMessage(messageId) {
         return this.collection.deleteOne({ messageId });
     }
+
+    async updateMessage(messageId, newContent) {
+        return this.collection.updateOne(
+            { messageId },
+            {
+                $set: {
+                    message: newContent,
+                    edited: true,
+                    editedAt: new Date().toISOString()
+                }
+            }
+        );
+    }
+
 }
 
 module.exports = Message;

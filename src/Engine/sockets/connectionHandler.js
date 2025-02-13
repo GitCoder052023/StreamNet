@@ -165,6 +165,24 @@ module.exports = (io) => {
       }
     });
 
+    socket.on('edit-message', async (data) => {
+      try {
+        const message = await messageModel.collection.findOne({ messageId: data.messageId });
+        if (!message || message.id !== socket.user.userId) {
+          return;
+        }
+        await messageModel.updateMessage(data.messageId, data.newContent);
+        io.emit('message-edited', {
+          messageId: data.messageId,
+          newContent: data.newContent,
+          editedAt: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Error editing message:', error);
+      }
+    });
+
+
     socket.on('disconnect', () => {
       const user = onlineUsers.get(socket.user.userId);
       if (user) {

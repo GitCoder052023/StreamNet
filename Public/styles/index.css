@@ -159,3 +159,19 @@
 #message-context-menu:not(.hidden) {
   display: block;
 }
+
+.edit-container textarea {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: -4px -8px;
+  transition: background-color 0.2s ease;
+}
+
+.edit-container textarea:focus {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.message-container.editing {
+  background: rgba(59, 130, 246, 0.1);
+}
