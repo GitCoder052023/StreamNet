@@ -9,53 +9,58 @@ nav.sticky-glass {
 }
 
 .scroll-animate {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
 
-  .scroll-animate.from-left {
-    transform: translateX(-30px);
-  }
+.scroll-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-  .scroll-animate.from-right {
-    transform: translateX(30px);
-  }
+.scroll-animate:nth-child(2) {
+  transition-delay: 0.1s;
+}
 
-  .scroll-animate.visible {
-    opacity: 1;
-    transform: translateY(0) translateX(0);
-  }
+.scroll-animate:nth-child(3) {
+  transition-delay: 0.2s;
+}
 
-  .hero-fade-in {
-    animation: fade-in 1s ease forwards;
-  }
+.scroll-animate:nth-child(4) {
+  transition-delay: 0.3s;
+}
 
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+.scroll-animate.fade-in {
+  transform: translateY(0);
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
+.scroll-animate.slide-left {
+  transform: translateX(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
 
-    .scroll-animate {
-      transition: none;
-      opacity: 1;
-      transform: none;
-    }
+.scroll-animate.slide-right {
+  transform: translateX(-30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
 
-    .hero-fade-in {
-      animation: none;
-      opacity: 1;
-      transform: none;
-    }
-  }
+.scroll-animate.slide-left.visible,
+.scroll-animate.slide-right.visible {
+  transform: translateX(0);
+}
+
+.scroll-animate.zoom {
+  transform: scale(0.95);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.scroll-animate.zoom.visible {
+  transform: scale(1);
+}
+
+h1.scroll-animate,
+h2.scroll-animate,
+h3.scroll-animate {
+  transform: translateY(20px); 
+}

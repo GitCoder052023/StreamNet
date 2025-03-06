@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const scrollAnimationElements = document.querySelectorAll('.scroll-animate');
     const GetStarted_Btn = document.getElementById("GetStarted_Btn");
     const RegisterBtn = document.getElementById("signUpButton");
     const ExploreRepoButton = document.getElementById("ExploreRepoBtn");
@@ -12,8 +11,47 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = "/auth/signup";
     });
 
-    ExploreRepoButton.addEventListener("click", () => {
-        window.location.href = "https://github.com/GitCoder052023/LChat";
+    if (ExploreRepoButton) {
+        ExploreRepoButton.addEventListener("click", () => {
+            window.location.href = "https://github.com/GitCoder052023/LChat";
+        });
+    }
+
+    const elementsToAnimate = [
+        { selector: 'section:first-of-type h1', animationType: 'scroll-animate' },
+        { selector: 'section:first-of-type p', animationType: 'scroll-animate' },
+        { selector: 'section:first-of-type div.flex', animationType: 'scroll-animate' },
+
+        { selector: '#features h2', animationType: 'scroll-animate' },
+        { selector: '#features .grid > div', animationType: 'scroll-animate' },
+
+        { selector: '#chatllama .text-center', animationType: 'scroll-animate' },
+        { selector: '#chatllama .flex.justify-center > div', animationType: 'scroll-animate' },
+        { selector: '#chatllama .flex.items-start', animationType: 'scroll-animate' },
+
+        { selector: '.bg-gradient-to-r h3', animationType: 'scroll-animate fade-in' },
+        { selector: '.bg-gradient-to-r p', animationType: 'scroll-animate fade-in' },
+        { selector: '.bg-gradient-to-r .grid > div', animationType: 'scroll-animate zoom' },
+        { selector: '.bg-gradient-to-r .mt-16', animationType: 'scroll-animate' },
+
+        { selector: '.bg-white h3', animationType: 'scroll-animate slide-right' },
+        { selector: '.bg-white p', animationType: 'scroll-animate slide-right' },
+        { selector: '.bg-white .space-y-4 > div', animationType: 'scroll-animate slide-right' },
+        { selector: '.bg-white .rounded-2xl', animationType: 'scroll-animate slide-left' },
+
+        { selector: '#community h2', animationType: 'scroll-animate' },
+        { selector: '#community p', animationType: 'scroll-animate' },
+        { selector: '#community .flex.justify-center', animationType: 'scroll-animate' },
+
+        { selector: 'footer h2', animationType: 'scroll-animate' },
+        { selector: 'footer .max-w-6xl > div > div', animationType: 'scroll-animate' }
+    ];
+
+    elementsToAnimate.forEach(item => {
+        const elements = document.querySelectorAll(item.selector);
+        elements.forEach(element => {
+            element.classList.add(...item.animationType.split(' '));
+        });
     });
 
     const scrollObserver = new IntersectionObserver(
@@ -21,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    scrollObserver.unobserve(entry.target);
                 }
             });
         },
@@ -32,11 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     );
 
-    scrollAnimationElements.forEach(element => {
+    document.querySelectorAll('.scroll-animate').forEach(element => {
         scrollObserver.observe(element);
     });
 
-    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href').substring(1);
@@ -48,5 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         });
+    });
+
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            nav.classList.add('sticky-glass');
+        } else {
+            nav.classList.remove('sticky-glass');
+        }
     });
 });
