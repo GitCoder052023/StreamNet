@@ -1,8 +1,8 @@
-# LChat - Secure, Real-time Chat for Local Networks
+# LChat - Secure, Real-time Chat with AI for Local Networks
 
-![LChat Interface](Media/preview.jpeg)
+![LChat Interface](Media/preview.png)
 
-LChat is a secure, real-time chat application designed for local network communications. Built with modern web technologies and a focus on security, LChat delivers a seamless, encrypted messaging experience tailored for your local network. Enjoy features like instant messaging, robust security protocols, and an intuitive design.
+LChat is a secure, real-time chat application designed for local network communications with integrated AI capabilities. Built with modern web technologies and a focus on security, LChat delivers a seamless, encrypted messaging experience tailored for your local network. Enjoy features like instant messaging, AI-powered conversations through ChatLLama, robust security protocols, and an intuitive design.
 
 ## ✨ Key Features
 
@@ -12,6 +12,15 @@ LChat is a secure, real-time chat application designed for local network communi
 - Typing indicators and presence detection.
 - Rate limiting: 5 messages per 10 seconds.
 - Support for messages up to 5000 characters.
+
+### 🤖 ChatLLama
+- **Local AI Integration:** Chat with Ollama models running on your local network.
+- **Real-Time Streaming:** Experience character-by-character AI responses powered by Socket.io.
+- **Model Selection:** Choose from various Ollama models for different conversation needs.
+- **Advanced Formatting:** Full markdown support with code syntax highlighting.
+- **Streaming Controls:** Pause or stop AI responses at any time.
+- **Conversation Management:** Auto-generated titles and searchable history.
+- **Theme Customization:** Light, Dark, and System theme options.
 
 ### 🛡️ Security
 - End-to-end SSL/TLS encryption.
@@ -37,6 +46,7 @@ LChat is a secure, real-time chat application designed for local network communi
 - SSL certificate and key
 - npm or yarn
 - Gmail account for OTP email integration
+- Ollama installed locally (for ChatLLama functionality)
 
 ### Installation Steps
 
@@ -64,12 +74,23 @@ LChat is a secure, real-time chat application designed for local network communi
      - `Users` – for user accounts.
      - `Messages` – for chat messages.
      - `otps` – for OTP verification codes.
+     - `Conversations` – for ChatLLama conversation history.
 
 5. **Gmail App Password Setup:**
    - Sign in to your [Google Account](https://myaccount.google.com/).
    - Navigate to Security → 2-Step Verification.
    - Under "App passwords," select "Other" and enter a label (e.g., "LChat").
    - Copy the generated 16-character password.
+
+6. **Ollama Setup (for ChatLLama):**
+   - Install Ollama from [ollama.ai](https://ollama.ai).
+   - Pull your preferred models:
+     ```bash
+     ollama pull llama2
+     ollama pull llama2-uncensored
+     ollama pull mistral
+     ```
+   - Ensure Ollama is running before starting LChat.
 
 ### Environment Configuration
 
@@ -90,12 +111,36 @@ SALT_ROUNDS=10
 EMAIL_USER="REPLACE IT WITH YOUR EMAIL"
 EMAIL_PASSWORD=REPLACE IT WITH YOUR PASSWORD
 MONGODB_URI=mongodb://localhost:27017/LChat
+OLLAMA_BASE_URL="http://localhost:11434"
 ```
 
 ### Start Development Server
 ```bash
 npm run dev
 ```
+
+## 🤖 Using ChatLLama
+
+ChatLLama provides an interactive AI chat experience using your local Ollama models:
+
+1. **Access ChatLLama:**
+   - Click on the ChatLLama icon in the sidebar.
+   - Or select "New AI Chat" from the conversations menu.
+
+2. **Select a Model:**
+   - Choose from available models in the dropdown.
+   - Different models offer various capabilities and response styles.
+
+3. **Chat Features:**
+   - **Stream Control:** Pause or stop generation with the control buttons.
+   - **Formatting:** Use markdown in your messages. AI responses support code blocks with syntax highlighting.
+   - **History:** Browse past conversations that are automatically named based on content.
+   - **Themes:** Switch between light and dark themes from the settings panel.
+
+4. **Best Practices:**
+   - Be clear and specific in your prompts for better results.
+   - For code assistance, specify the programming language.
+   - Use the search feature to find previous conversations on similar topics.
 
 ## 🛠️ Development
 
@@ -105,111 +150,9 @@ npm run dev
 - `npm run lint` - Run ESLint
 - `npm run format` - Format with Prettier
 
-### Project Structure
+## 📝 License
 
-```
-│
-├───Public
-│   │   style.css
-│   │
-│   ├───scripts
-│   │   │   contact.js
-│   │   │   LandingPage.js
-│   │   │   main.js
-│   │   │
-│   │   ├───Auth
-│   │   │       login.js
-│   │   │       signup.js
-│   │   │       verifyOtp.js
-│   │   │
-│   │   ├───chat
-│   │   │       chat.js
-│   │   │       elements.js
-│   │   │       helpers.js
-│   │   │       profile.js
-│   │   │       socket.js
-│   │   │       users.js
-│   │   │
-│   │   └───info
-│   │           terms.js
-│   │
-│   ├───styles
-│   │   │   404.css
-│   │   │   index.css
-│   │   │   LandingPage.css
-│   │   │
-│   │   └───info
-│   │           terms.css
-│   │
-│   └───templates
-│       │   404.html
-│       │   index.html
-│       │   LandingPage.html
-│       │
-│       ├───Auth
-│       │       login.html
-│       │       Reset_Password.html
-│       │       signup.html
-│       │
-│       ├───info
-│       │       terms.html
-│       │
-│       ├───support
-│       │       contact.html
-│       │
-│       └───utility
-│               Verify_OTP.html
-│
-├───Routes
-│       auth.js
-│       chat.js
-│       static.js
-│
-├───Server
-│   │   server.js
-│   │
-│   ├───config
-│   │       db.js
-│   │       security.js
-│   │
-│   ├───controllers
-│   │       authController.js
-│   │       queryController.js
-│   │
-│   ├───models
-│   │       Message.js
-│   │       OTP.js
-│   │       Query.js
-│   │       User.js
-│   │
-│   ├───routes
-│   │       authRoutes.js
-│   │       queryRoutes.js
-│   │
-│   └───utils
-│           authMiddleware.js
-│           emailService.js
-│           ipConfig.js
-│           validation.js
-│
-└───src
-    │   app.js
-    │   tailwind.css
-    │
-    └───Engine
-        │   Engine.js
-        │
-        ├───config
-        │       app.config.js
-        │       ssl.config.js
-        │
-        ├───sockets
-        │       connectionHandler.js
-        │
-        └───utils
-                auth.utils.js
-                rateLimit.utils.js
-```
+This project is licensed under the MIT License.
 
 ## 📝 Contributing
 
