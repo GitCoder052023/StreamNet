@@ -77,7 +77,7 @@ export function generateMessageHTML(data, isMyMessage, replyPreviewHTML, time) {
 
 export function createMessageElement(data) {
   const senderId = data.id || data.senderId;
-  const currentUserEmail = myEmail || localStorage.getItem("qchat_email");
+  const currentUserEmail = myEmail || localStorage.getItem("LChat_email");
   const isMyMessage = currentUserEmail && (senderId === currentUserEmail);
 
   const messageElement = document.createElement('div');
@@ -164,17 +164,17 @@ function saveEdit(messageId, newContent) {
 
   const originalContent = messagesCache[messageId].content;
   if (newContent.trim() === originalContent.trim()) {
-      const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
-      const messageContent = messageElement.querySelector('.bg-blue-500 p, .bg-gray-700 p');
-      messageContent.textContent = originalContent;
-      isEditing = false;
-      editingMessageId = null;
-      return;
+    const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+    const messageContent = messageElement.querySelector('.bg-blue-500 p, .bg-gray-700 p');
+    messageContent.textContent = originalContent;
+    isEditing = false;
+    editingMessageId = null;
+    return;
   }
 
   socket.emit('edit-message', {
-      messageId,
-      newContent: newContent.trim()
+    messageId,
+    newContent: newContent.trim()
   });
   isEditing = false;
   editingMessageId = null;
@@ -219,7 +219,7 @@ export function processIncomingMessage(data) {
 
   const messageElement = createMessageElement(data);
 
-  const currentUserEmail = myEmail || localStorage.getItem("qchat_email");
+  const currentUserEmail = myEmail || localStorage.getItem("LChat_email");
   if (data.id === currentUserEmail) {
     messageElement.addEventListener('contextmenu', function (e) {
       e.preventDefault();
@@ -349,7 +349,7 @@ chat.addEventListener('contextmenu', function (e) {
   if (!messageContainer) return;
 
   const senderId = messageContainer.dataset.senderId;
-  const currentUserEmail = myEmail || localStorage.getItem("qchat_email");
+  const currentUserEmail = myEmail || localStorage.getItem("LChat_email");
 
   if (senderId === currentUserEmail) {
     e.preventDefault();
@@ -362,7 +362,7 @@ chat.addEventListener('touchstart', function (e) {
   if (!messageContainer) return;
 
   const senderId = messageContainer.dataset.senderId;
-  const currentUserEmail = myEmail || localStorage.getItem("qchat_email");
+  const currentUserEmail = myEmail || localStorage.getItem("LChat_email");
 
   if (senderId === currentUserEmail) {
     let touchTimer = setTimeout(() => {

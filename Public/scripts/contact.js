@@ -1,4 +1,4 @@
-document.getElementById('contactForm').addEventListener('submit', async function(e) {
+document.getElementById('contactForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const message = document.getElementById('message').value.trim();
@@ -9,7 +9,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
         submitButton.disabled = true;
         submitButton.innerHTML = 'Sending...';
 
-        const token = localStorage.getItem('qchat_token');
+        const token = localStorage.getItem('LChat_token');
         if (!token) {
             window.location.href = '/auth/login?redirect=/support/contact';
             return;

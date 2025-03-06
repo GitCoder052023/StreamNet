@@ -1,4 +1,4 @@
-const token = localStorage.getItem('qchat_token');
+const token = localStorage.getItem('LChat_token');
 const colorPreference = localStorage.getItem('avatarColorPreference');
 
 export const socket = io({

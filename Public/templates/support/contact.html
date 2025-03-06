@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="backend-host" content="<%= process.env.HOST %>">
-  <title>Contact Us | QChat</title>
+  <title>Contact Us | LChat</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.7/dist/tailwind.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="../../style.css" rel="stylesheet" />
 </head>
+
 <body class="font-sans">
-  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm py-3 px-4 md:py-4 md:px-6 flex items-center justify-between transition-all">
-    <div class="text-xl md:text-2xl font-bold text-gray-900">QChat</div>
+  <nav
+    class="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm py-3 px-4 md:py-4 md:px-6 flex items-center justify-between transition-all">
+    <div class="text-xl md:text-2xl font-bold text-gray-900">LChat</div>
     <div class="flex items-center">
-      <button type="button" id="signUpButton" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+      <button type="button" id="signUpButton"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
         Register
       </button>
     </div>
@@ -27,7 +31,9 @@
     <form id="contactForm" class="space-y-6 bg-white p-8 rounded-lg shadow-md">
       <div>
         <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
-        <textarea id="message" name="message" rows="5" placeholder="Your Message" class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+        <textarea id="message" name="message" rows="5" placeholder="Your Message"
+          class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required></textarea>
       </div>
       <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-full hover:bg-blue-700">
         Send Message
@@ -39,7 +45,7 @@
     <div class="max-w-6xl mx-auto py-12 px-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
-          <h3 class="text-xl font-bold mb-4">QChat</h3>
+          <h3 class="text-xl font-bold mb-4">LChat</h3>
           <p class="text-gray-400">Revolutionizing local communication with secure and seamless messaging.</p>
         </div>
         <div>
@@ -54,7 +60,7 @@
         <div>
           <h4 class="font-bold mb-4">Contact</h4>
           <ul class="space-y-2 text-gray-400">
-            <li><i class="fas fa-envelope"></i> info@qchat.com</li>
+            <li><i class="fas fa-envelope"></i> info@LChat.com</li>
             <li><i class="fas fa-phone"></i> (123) 456-7890</li>
             <li><a href="/support/contact">Contact Us</a></li>
           </ul>
@@ -69,10 +75,11 @@
         </div>
       </div>
       <div class="border-t border-gray-800 mt-8 pt-4 text-center text-gray-400">
-        <p>&copy; 2025 QChat. All rights reserved.</p>
+        <p>&copy; 2025 LChat. All rights reserved.</p>
       </div>
     </div>
   </footer>
   <script src="../../scripts/contact.js"></script>
 </body>
+
 </html>

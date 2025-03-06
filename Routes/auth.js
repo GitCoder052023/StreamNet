@@ -59,7 +59,7 @@ router.post('/send-signup-otp', async (req, res) => {
             expiresAt: new Date(Date.now() + 10 * 60 * 1000)
         });
 
-        await sendEmail(email, 'QChat Registration OTP',
+        await sendEmail(email, 'LChat Registration OTP',
             `Your OTP for registration is: ${otp}`);
 
         res.json({ message: 'OTP sent successfully' });

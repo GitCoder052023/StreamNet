@@ -1,8 +1,8 @@
-# QChat - Secure, Real-time Chat for Local Networks
+# LChat - Secure, Real-time Chat for Local Networks
 
-![QChat Interface](Media/preview.jpeg)
+![LChat Interface](Media/preview.jpeg)
 
-QChat is a secure, real-time chat application designed for local network communications. Built with modern web technologies and a focus on security, QChat delivers a seamless, encrypted messaging experience tailored for your local network. Enjoy features like instant messaging, robust security protocols, and an intuitive design.
+LChat is a secure, real-time chat application designed for local network communications. Built with modern web technologies and a focus on security, LChat delivers a seamless, encrypted messaging experience tailored for your local network. Enjoy features like instant messaging, robust security protocols, and an intuitive design.
 
 ## ✨ Key Features
 
@@ -42,8 +42,8 @@ QChat is a secure, real-time chat application designed for local network communi
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/GitCoder052023/QChat.git
-   cd QChat
+   git clone https://github.com/GitCoder052023/LChat.git
+   cd LChat
    ```
 
 2. **Install dependencies:**
@@ -60,7 +60,7 @@ QChat is a secure, real-time chat application designed for local network communi
    - Install and start MongoDB.
    - Open MongoDB Compass or your shell.
    - Create a new connection using: `mongodb://localhost:27017`.
-   - Create a database named `QChat` with the following collections:
+   - Create a database named `LChat` with the following collections:
      - `Users` – for user accounts.
      - `Messages` – for chat messages.
      - `otps` – for OTP verification codes.
@@ -68,7 +68,7 @@ QChat is a secure, real-time chat application designed for local network communi
 5. **Gmail App Password Setup:**
    - Sign in to your [Google Account](https://myaccount.google.com/).
    - Navigate to Security → 2-Step Verification.
-   - Under "App passwords," select "Other" and enter a label (e.g., "QChat").
+   - Under "App passwords," select "Other" and enter a label (e.g., "LChat").
    - Copy the generated 16-character password.
 
 ### Environment Configuration
@@ -80,12 +80,16 @@ HOST=YOUR_IP_ADDRESS
 PORT=3000
 SPORT=4000
 NODE_ENV=development
-MONGODB_URI=mongodb://localhost:27017/QChat
-SSL_KEY=/path/to/key.pem
-SSL_CERT=/path/to/cert.pem
-JWT_SECRET=your_jwt_secret
-EMAIL_USER=your.email@gmail.com
-EMAIL_PASSWORD=your-16-char-app-password
+ALLOWED_ORIGINS="https://<YOUR_IP_ADDRESS>:3000"
+SSL_KEY="/path/to/your/ssl/key.pem"
+SSL_CERT="/path/to/your/ssl/cert.pem"
+SECRET_KEY="your_secret_key_here"
+JWT_SECRET="your_jwt_secret_here"
+TOKEN_EXPIRY="24h"
+SALT_ROUNDS=10
+EMAIL_USER="REPLACE IT WITH YOUR EMAIL"
+EMAIL_PASSWORD=REPLACE IT WITH YOUR PASSWORD
+MONGODB_URI=mongodb://localhost:27017/LChat
 ```
 
 ### Start Development Server

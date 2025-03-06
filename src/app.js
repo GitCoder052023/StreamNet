@@ -36,7 +36,7 @@ app.get('/support/contact', (req, res) => {
   });
 });
 
-app.get('/terms', (req, res) => {
+app.get('/info/license', (req, res) => {
   res.render('info/terms.html', {
     process: {
       env: {

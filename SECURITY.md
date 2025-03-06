@@ -2,9 +2,9 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in QChat, please report it to us immediately. We take all security issues seriously and will address them as quickly as possible.
+If you discover a security vulnerability in LChat, please report it to us immediately. We take all security issues seriously and will address them as quickly as possible.
 
-To report a vulnerability, please email us at `hamdankhuabib959@gmail.com` with the subject line "Security Vulnerability in QChat". Please include the following details in your report:
+To report a vulnerability, please email us at `hamdankhuabib959@gmail.com` with the subject line "Security Vulnerability in LChat". Please include the following details in your report:
 
 - A description of the vulnerability
 - Steps to reproduce the issue
@@ -23,4 +23,4 @@ We will acknowledge receipt of your report within 48 hours and provide a timelin
 
 We follow the principle of responsible disclosure. We ask that you do not publicly disclose the vulnerability until we have had a chance to address it and provide a fix.
 
-Thank you for helping us keep QChat secure!
+Thank you for helping us keep LChat secure!

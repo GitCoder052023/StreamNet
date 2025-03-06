@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="backend-host" content="<%= process.env.HOST %>">
-    <title>QChat - Verify OTP</title>
+    <title>LChat - Verify OTP</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="../../style.css" rel="stylesheet" />
     <style>
-        html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+        }
+
         .glass-effect {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
         }
+
         .pattern-bg {
             background-color: #f8fafc;
             background-image: radial-gradient(#e2e8f0 0.5px, transparent 0.5px);
@@ -20,12 +25,13 @@
         }
     </style>
 </head>
+
 <body class="font-sans pattern-bg">
     <nav class="sticky top-0 z-50 glass-effect shadow-sm py-4 px-6">
         <div class="mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <i data-lucide="message-circle" class="w-8 h-8 text-blue-600"></i>
-                <span class="text-2xl font-bold text-gray-900">QChat</span>
+                <span class="text-2xl font-bold text-gray-900">LChat</span>
             </div>
         </div>
     </nav>
@@ -76,7 +82,8 @@
 
                     <div class="text-center text-sm text-gray-600">
                         Didn't receive code?
-                        <button type="button" class="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center">
+                        <button type="button"
+                            class="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center">
                             <i data-lucide="refresh-cw" class="w-4 h-4 mr-1"></i>
                             Resend
                         </button>
@@ -88,4 +95,5 @@
 
     <script src="../../scripts/Auth/verifyOtp.js"></script>
 </body>
+
 </html>

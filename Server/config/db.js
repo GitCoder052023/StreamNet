@@ -11,7 +11,7 @@ module.exports = {
     }
 
     isConnecting = true;
-    connectionPromise = MongoClient.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/QChat')
+    connectionPromise = MongoClient.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/LChat')
       .then(client => {
         console.log('Connected to MongoDB');
         dbConnection = client.db();

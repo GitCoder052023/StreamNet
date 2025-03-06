@@ -65,7 +65,7 @@ document.getElementById('resetForm2').addEventListener('submit', async function 
             }
 
             const data = await signupResponse.json();
-            localStorage.setItem('qchat_token', data.token);
+            localStorage.setItem('LChat_token', data.token);
             sessionStorage.removeItem('pendingSignup');
             window.location.href = '/chat';
         }

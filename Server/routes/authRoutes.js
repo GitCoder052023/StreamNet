@@ -28,7 +28,7 @@ module.exports = (authController, otpModel) => {
       const emailText = `
 Dear ${fullName},
 
-Welcome to QChat!
+Welcome to LChat!
 
 To complete your registration, please use the following verification code:
 
@@ -36,17 +36,17 @@ ${otp}
 
 This code will expire in 10 minutes for security purposes.
 
-If you did not attempt to create a QChat account, please ignore this email.
+If you did not attempt to create a LChat account, please ignore this email.
 
 Best regards,
-The QChat Team
+The LChat Team
 
 Note: This is an automated message, please do not reply to this email.
 `;
 
       const emailSent = await sendEmail(
         email,
-        'Welcome to QChat - Verify Your Email',
+        'Welcome to LChat - Verify Your Email',
         emailText
       );
 

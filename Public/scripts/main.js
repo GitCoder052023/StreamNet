@@ -4,7 +4,7 @@ import {
   messageInput, sendButton, cancelReplyButton, chat
 } from './chat/elements.js';
 import { initUserProfile, setupProfileEvents } from './chat/profile.js';
-import { sendMessage, processIncomingMessage, messagesCache, handleMessageClick, typingIndicators, clearReply, updateMessageAlignment } from './chat/chat.js';
+import { sendMessage, processIncomingMessage, messagesCache, typingIndicators, clearReply, updateMessageAlignment } from './chat/chat.js';
 import { updateUsersList, handleUserConnected, handleUserDisconnected, updateUsersListFromUsers, onlineUsers } from './chat/users.js';
 import { scrollToBottom, getColorClass, getInitial } from './chat/helpers.js';
 
@@ -104,7 +104,7 @@ function setupSocketListeners() {
   socket.on('user-connected', (data) => {
     handleUserConnected(data);
     try {
-      const token = localStorage.getItem('qchat_token');
+      const token = localStorage.getItem('LChat_token');
       const payload = JSON.parse(atob(token.split('.')[1]));
       if (payload.fullName && payload.userId) {
       }

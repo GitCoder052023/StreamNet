@@ -1,8 +1,61 @@
 html {
     scroll-behavior: smooth;
-}
+    scroll-padding-top: 80px;
+  }
 
 nav.sticky-glass {
     backdrop-filter: blur(10px);
     background-color: rgba(255, 255, 255, 0.8);
 }
+
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .scroll-animate.from-left {
+    transform: translateX(-30px);
+  }
+
+  .scroll-animate.from-right {
+    transform: translateX(30px);
+  }
+
+  .scroll-animate.visible {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+
+  .hero-fade-in {
+    animation: fade-in 1s ease forwards;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .scroll-animate {
+      transition: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .hero-fade-in {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
