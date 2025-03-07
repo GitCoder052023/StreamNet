@@ -104,7 +104,7 @@ function setupSocketListeners() {
   socket.on('user-connected', (data) => {
     handleUserConnected(data);
     try {
-      const token = localStorage.getItem('LChat_token');
+      const token = localStorage.getItem('StreamNet_token');
       const payload = JSON.parse(atob(token.split('.')[1]));
       if (payload.fullName && payload.userId) {
       }

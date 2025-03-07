@@ -27,7 +27,7 @@ class QueryController {
             const emailText = `
 Dear ${user.fullName},
 
-Thank you for reaching out to LChat Support. This is an automated response to confirm that we have received your request.
+Thank you for reaching out to StreamNet Support. This is an automated response to confirm that we have received your request.
 
 Our team is reviewing your inquiry and will get back to you as soon as possible. If your issue is urgent, please ensure you have provided all necessary details, such as your registered email, device information, and a brief description of the problem.
 
@@ -36,12 +36,12 @@ In the meantime, you may check our FAQ section or community forums for quick sol
 We appreciate your patience and will do our best to assist you promptly.
 
 Best regards,
-LChat Support Team
+StreamNet Support Team
             `;
 
             await sendEmail(
                 user.email,
-                'LChat Support – How Can We Assist You?',
+                'StreamNet Support – How Can We Assist You?',
                 emailText
             );
 

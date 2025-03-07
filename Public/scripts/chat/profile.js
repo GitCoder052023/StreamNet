@@ -6,7 +6,7 @@ import { onlineUsers, updateUsersList } from './users.js';
 export let myEmail = null;
 
 export async function initUserProfile() {
-  const token = localStorage.getItem('LChat_token');
+  const token = localStorage.getItem('StreamNet_token');
   try {
     const backendHost = document.querySelector('meta[name="backend-host"]').content;
     const response = await fetch(`https://${backendHost}:4000/api/auth/user-info`, {
@@ -67,7 +67,7 @@ export function setupProfileEvents() {
     if (!confirmed) return;
     localStorage.removeItem("avatarColorPreference");
 
-    const token = localStorage.getItem('LChat_token');
+    const token = localStorage.getItem('StreamNet_token');
     try {
       const backendHost =
         document.querySelector('meta[name="backend-host"]')?.content ||
@@ -83,7 +83,7 @@ export function setupProfileEvents() {
       if (!response.ok) {
         throw new Error('Logout failed');
       }
-      localStorage.removeItem('LChat_token');
+      localStorage.removeItem('StreamNet_token');
       window.location.href = '/';
     } catch (error) {
       console.error('Logout failed:', error);

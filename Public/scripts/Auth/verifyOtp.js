@@ -65,7 +65,7 @@ document.getElementById('resetForm2').addEventListener('submit', async function 
             }
 
             const data = await signupResponse.json();
-            localStorage.setItem('LChat_token', data.token);
+            localStorage.setItem('StreamNet_token', data.token);
             sessionStorage.removeItem('pendingSignup');
             window.location.href = '/chat';
         }

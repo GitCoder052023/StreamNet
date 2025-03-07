@@ -80,7 +80,7 @@ connectToDb((err) => {
   const server = https.createServer(sslOptions, app);
   server.listen(PORT, HOST, () => {
     console.log(`Server is running on https://${HOST}:${PORT}`);
-    console.log(`[NETWORK INTERFACE] - LChat is running on https://${HOST}:3000`);
-    console.log(`[LOCAL INTERFACE] - LChat is running on https://localhost:3000`);
+    console.log(`[NETWORK INTERFACE] - StreamNet is running on https://${HOST}:3000`);
+    console.log(`[LOCAL INTERFACE] - StreamNet is running on https://localhost:3000`);
   });
 });

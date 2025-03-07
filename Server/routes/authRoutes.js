@@ -28,7 +28,7 @@ module.exports = (authController, otpModel) => {
       const emailText = `
 Dear ${fullName},
 
-Welcome to LChat!
+Welcome to StreamNet!
 
 To complete your registration, please use the following verification code:
 
@@ -36,17 +36,17 @@ ${otp}
 
 This code will expire in 10 minutes for security purposes.
 
-If you did not attempt to create a LChat account, please ignore this email.
+If you did not attempt to create a StreamNet account, please ignore this email.
 
 Best regards,
-The LChat Team
+The StreamNet Team
 
 Note: This is an automated message, please do not reply to this email.
 `;
 
       const emailSent = await sendEmail(
         email,
-        'Welcome to LChat - Verify Your Email',
+        'Welcome to StreamNet - Verify Your Email',
         emailText
       );
 

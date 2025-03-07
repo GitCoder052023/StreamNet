@@ -29,7 +29,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
             throw new Error(data.message || 'Login failed');
         }
 
-        localStorage.setItem('LChat_token', data.token);
+        localStorage.setItem('StreamNet_token', data.token);
         window.location.href = '/chat';
     } catch (error) {
         errorDiv.textContent = error.message;

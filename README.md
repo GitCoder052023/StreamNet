@@ -1,8 +1,36 @@
-# LChat - Secure, Real-time Chat with AI for Local Networks
+# StreamNet – Secure, Real-Time Chat for Local Networks with AI Support
 
-![LChat Interface](Media/preview.png)
+![Real-Time Messaging](https://img.shields.io/badge/Real--Time%20Messaging-Instant-blue)
+![AI Chat](https://img.shields.io/badge/AI%20Chat-Ollama%20Powered-8A2BE2?logo=openai)
+![End-to-End Encryption](https://img.shields.io/badge/Security-E2E%20Encryption-00C853?logo=shield)
+![Local Network](https://img.shields.io/badge/Local%20Network-Offline%20Chat-FF9800?logo=wifi)
+![Dark Mode](https://img.shields.io/badge/UI-Dark%20Mode-212121?logo=visualstudiocode)
+![Mobile-Friendly](https://img.shields.io/badge/Responsive-Mobile%20Optimized-4CAF50?logo=android)
+![Community Driven](https://img.shields.io/badge/Community-Open%20for%20Feedback-1E88E5?logo=github)
+![MIT License](https://img.shields.io/badge/License-MIT-FDD835?logo=book)
 
-LChat is a secure, real-time chat application designed for local network communications with integrated AI capabilities. Built with modern web technologies and a focus on security, LChat delivers a seamless, encrypted messaging experience tailored for your local network. Enjoy features like instant messaging, AI-powered conversations through ChatLLama, robust security protocols, and an intuitive design.
+
+
+![StreamNet Interface](Media/preview.png)
+
+StreamNet is a secure, real-time chat application designed for local network communications with integrated AI capabilities. Built with modern web technologies and a focus on security, StreamNet delivers a seamless, encrypted messaging experience tailored for your local network. Enjoy features like instant messaging, AI-powered conversations through ChatLLama, robust security protocols, and an intuitive design.
+
+## Table of Contents
+- [Key Features](#-key-features)
+  - [Messaging](#-messaging)
+  - [ChatLLama](#-chatllama)
+  - [Security](#️-security)
+  - [User Interface](#-user-interface)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation Steps](#installation-steps)
+  - [Environment Configuration](#environment-configuration)
+  - [Start Development Server](#start-development-server)
+- [Using ChatLLama](#-using-chatllama)
+- [Development](#️-development)
+- [License](#-license)
+- [Contributing](#-contributing)
+- [Security](#-security)
 
 ## ✨ Key Features
 
@@ -52,8 +80,8 @@ LChat is a secure, real-time chat application designed for local network communi
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/GitCoder052023/LChat.git
-   cd LChat
+   git clone https://github.com/GitCoder052023/StreamNet.git
+   cd StreamNet
    ```
 
 2. **Install dependencies:**
@@ -70,7 +98,7 @@ LChat is a secure, real-time chat application designed for local network communi
    - Install and start MongoDB.
    - Open MongoDB Compass or your shell.
    - Create a new connection using: `mongodb://localhost:27017`.
-   - Create a database named `LChat` with the following collections:
+   - Create a database named `StreamNet` with the following collections:
      - `Users` – for user accounts.
      - `Messages` – for chat messages.
      - `otps` – for OTP verification codes.
@@ -79,7 +107,7 @@ LChat is a secure, real-time chat application designed for local network communi
 5. **Gmail App Password Setup:**
    - Sign in to your [Google Account](https://myaccount.google.com/).
    - Navigate to Security → 2-Step Verification.
-   - Under "App passwords," select "Other" and enter a label (e.g., "LChat").
+   - Under "App passwords," select "Other" and enter a label (e.g., "StreamNet").
    - Copy the generated 16-character password.
 
 6. **Ollama Setup (for ChatLLama):**
@@ -90,7 +118,7 @@ LChat is a secure, real-time chat application designed for local network communi
      ollama pull llama2-uncensored
      ollama pull mistral
      ```
-   - Ensure Ollama is running before starting LChat.
+   - Ensure Ollama is running before starting StreamNet.
 
 ### Environment Configuration
 
@@ -110,7 +138,7 @@ TOKEN_EXPIRY="24h"
 SALT_ROUNDS=10
 EMAIL_USER="REPLACE IT WITH YOUR EMAIL"
 EMAIL_PASSWORD=REPLACE IT WITH YOUR PASSWORD
-MONGODB_URI=mongodb://localhost:27017/LChat
+MONGODB_URI=mongodb://localhost:27017/StreamNet
 OLLAMA_BASE_URL="http://localhost:11434"
 ```
 

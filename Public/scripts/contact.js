@@ -9,7 +9,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
         submitButton.disabled = true;
         submitButton.innerHTML = 'Sending...';
 
-        const token = localStorage.getItem('LChat_token');
+        const token = localStorage.getItem('StreamNet_token');
         if (!token) {
             window.location.href = '/auth/login?redirect=/support/contact';
             return;

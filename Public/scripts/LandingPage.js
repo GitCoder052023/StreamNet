@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (ExploreRepoButton) {
         ExploreRepoButton.addEventListener("click", () => {
-            window.location.href = "https://github.com/GitCoder052023/LChat";
+            window.location.href = "https://github.com/GitCoder052023/StreamNet";
         });
     }
 
