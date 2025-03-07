@@ -9,8 +9,6 @@
 ![Community Driven](https://img.shields.io/badge/Community-Open%20for%20Feedback-1E88E5?logo=github)
 ![MIT License](https://img.shields.io/badge/License-MIT-FDD835?logo=book)
 
-
-
 ![StreamNet Interface](Media/preview.png)
 
 StreamNet is a secure, real-time chat application designed for local network communications with integrated AI capabilities. Built with modern web technologies and a focus on security, StreamNet delivers a seamless, encrypted messaging experience tailored for your local network. Enjoy features like instant messaging, AI-powered conversations through ChatLLama, robust security protocols, and an intuitive design.
@@ -149,6 +147,9 @@ npm run dev
 
 ## 🤖 Using ChatLLama
 
+> [!NOTE]
+> **Note:** ChatLLama is currently under active development and has not been launched yet. The integration with StreamNet is coming soon! The documentation provided here is a preview of planned features and may be subject to changes. Stay tuned for updates!
+
 ChatLLama provides an interactive AI chat experience using your local Ollama models:
 
 1. **Access ChatLLama:**
@@ -188,7 +189,7 @@ Please read our Contributing Guide and Code of Conduct before submitting pull re
 
 ## 🔒 Security
 
-For security issues, please review our Security Policy and report vulnerabilities to hamdankhuabib959@gmail.com.
+For security issues, please review our Security Policy and report vulnerabilities to contact.khub.dev@gmail.com.
 
 ---
 
