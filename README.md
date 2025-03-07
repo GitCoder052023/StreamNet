@@ -148,7 +148,7 @@ npm run dev
 ## 🤖 Using ChatLLama
 
 > [!NOTE]
-> **Note:** ChatLLama is currently under active development and has not been launched yet. The integration with StreamNet is coming soon! The documentation provided here is a preview of planned features and may be subject to changes. Stay tuned for updates!
+> ChatLLama is currently under active development and has not been launched yet. The integration with StreamNet is coming soon! The documentation provided here is a preview of planned features and may be subject to changes. Stay tuned for updates!
 
 ChatLLama provides an interactive AI chat experience using your local Ollama models:
 
