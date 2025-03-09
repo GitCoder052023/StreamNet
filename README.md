@@ -218,7 +218,7 @@ After running the development server, you'll see output similar to this:
 > [!IMPORTANT]
 > You may see a security warning like "Your connection is not private" or "This connection is not secure". This is normal when using self-signed SSL certificates in development.
 
-3. To proceed:
+2. To proceed:
    - On Chrome: Click "Advanced" and then "Proceed to site"
    - On Firefox: Click "Advanced..." and then "Accept the Risk and Continue"
    - On Edge: Click "Continue to site"
