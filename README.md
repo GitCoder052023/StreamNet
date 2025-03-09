@@ -102,14 +102,31 @@ StreamNet is a secure, real-time chat application designed for local network com
    ```
 
 4. **Database Setup:**
-   - Install and start MongoDB.
-   - Open MongoDB Compass or your shell.
-   - Create a new connection using: `mongodb://localhost:27017`.
-   - Create a database named `StreamNet` with the following collections:
-     - `Users` – for user accounts.
-     - `Messages` – for chat messages.
-     - `otps` – for OTP verification codes.
-     - `Conversations` – for ChatLLama conversation history.
+   - Install and start MongoDB
+   - Open MongoDB Compass or your shell
+   - Create a new connection using: `mongodb://localhost:27017`
+   - Create the following databases and collections:
+
+     **StreamNet Database:**
+     ```bash
+     Database: StreamNet
+     Collections:
+     - Users    # for user accounts
+     - Messages # for chat messages
+     - otps     # for OTP verification codes
+     - Conversations # for conversation history
+     ```
+
+     **ChatLLama Database:**
+     ```bash
+     Database: ChatLLama
+     Collections:
+     - users         # for ChatLLama user data
+     - conversations # for AI chat history
+     ```
+
+   > [!NOTE]
+   > Both databases must be created before starting the application. The collections will be automatically created if they don't exist.
 
 5. **Gmail App Password Setup:**
    - Sign in to your [Google Account](https://myaccount.google.com/).
