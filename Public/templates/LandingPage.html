@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="backend-host" content="<%= process.env.HOST %>">
   <title>StreamNet Open Source | Local Network Group Chat with ChatLLama</title>
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -195,6 +196,7 @@
 
       <div class="mt-16 text-center">
         <a href="#"
+          id="ChatLLama_link"
           class="inline-flex items-center bg-white text-blue-700 px-8 py-4 rounded-full hover:bg-blue-50 transition-all duration-300 font-medium shadow-lg hover:shadow-xl">
           <i class="fas fa-play-circle mr-2"></i> See ChatLLama in Action
         </a>

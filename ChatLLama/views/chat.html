@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ChatLLama - Chat With Your Local Ollama Models</title>
+  <meta name="backend-host" content="<%= process.env.HOST %>">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-white font-google-sans flex h-screen relative">
+  <aside id="sidebar" class="flex flex-col fixed z-50 inset-y-0 left-0 w-64 bg-white border-r border-gray-200 transform -translate-x-full transition-transform duration-300 ease-in-out md:relative md:translate-x-0">
+    <div class="p-4">
+      <button id="new-chat"
+        class="cursor-pointer w-full flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 hover:bg-gray-50">
+        <i class="fas fa-plus"></i>
+        <span>New chat</span>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-2">
+      <!-- Chat history will be populated here -->
+    </div>
+
+    <!-- Custom Model Selector at the bottom of the sidebar -->
+    <div id="model-selector-wrapper" class="p-4 border-t border-gray-200">
+      <div id="model-selector" class="relative mt-2">
+        <button id="model-button" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded inline-flex justify-between items-center cursor-pointer">
+          <span id="selected-model">Select a model</span>
+          <svg class="fill-current h-4 w-4 ml-2" viewBox="0 0 20 20">
+            <path d="M5.516 7.548L10 12.032l4.484-4.484L16 8.064 10 14.064 4 8.064z"/>
+          </svg>
+        </button>
+        <div id="model-options" class="origin-bottom-right absolute left-0 bottom-full mb-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+          <!-- Options will be appended dynamically -->
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="flex-1 flex flex-col">
+    <header class="border-b border-gray-200 p-4 flex justify-between items-center">
+      <div class="flex items-center">
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center">
+            <i class="fas fa-comments text-white text-lg"></i>
+          </div>
+          <h1 id="header-title" class="text-2xl font-bold text-gray-800">ChatLLama</h1>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div id="profile-section">
+          <div class="relative">
+            <div id="profile-icon"
+              class="w-10 h-10 rounded-full bg-gray-800 text-white font-semibold flex items-center justify-center cursor-pointer relative">
+              <span id="profile-initials"></span>
+            </div>
+            <div id="profile-popup"
+              class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-100 rounded-md shadow-lg z-50">
+              <div class="p-4 border-b border-gray-200">
+                <p id="popup-username" class="text-md font-medium text-gray-800"></p>
+                <p id="popup-email" class="text-sm text-gray-500"></p>
+              </div>
+              <button id="popup-logout"
+                class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors">
+                <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+              </button>
+              <div class="border-b border-gray-200 p-4">
+                <p class="text-sm font-medium text-gray-700 mb-2">Theme</p>
+                <div class="flex gap-2">
+                  <button data-theme="light" class="theme-btn px-3 py-1 rounded-md text-sm hover:bg-gray-100">Light</button>
+                  <button data-theme="dark" class="theme-btn px-3 py-1 rounded-md text-sm hover:bg-gray-100">Dark</button>
+                  <button data-theme="system" class="theme-btn px-3 py-1 rounded-md text-sm hover:bg-gray-100">System</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="chat-window" class="flex-1 overflow-y-auto p-4 space-y-6">
+      <!-- Chat messages will be appended here -->
+    </div>
+
+    <footer class="border-t border-gray-200 p-4">
+      <form id="chat-form" class="max-w-4xl mx-auto relative">
+        <input type="text" id="chat-input"
+          class="w-full p-4 pr-12 rounded-2xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          placeholder="Type your message...">
+        <button type="submit" class="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center
+               bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all
+               shadow-md hover:shadow-lg active:scale-95">
+          <i class="fas fa-paper-plane text-lg"></i>
+        </button>
+      </form>
+    </footer>
+  </main>
+  <script src="/js/chat.js" type="module"></script>
+</body>
+
+</html>

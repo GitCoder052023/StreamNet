@@ -14,18 +14,27 @@
 StreamNet is a secure, real-time chat application designed for local network communications with integrated AI capabilities. Built with modern web technologies and a focus on security, StreamNet delivers a seamless, encrypted messaging experience tailored for your local network. Enjoy features like instant messaging, AI-powered conversations through ChatLLama, robust security protocols, and an intuitive design.
 
 ## Table of Contents
-- [Key Features](#-key-features)
-- [Messaging](#-messaging)
-- [ChatLLama](#-chatllama)
-- [Security](#️-security)
-- [User Interface](#-user-interface)
+### Core Features
+- [Key Features Overview](#-key-features)
+  - [Messaging System](#-messaging)
+  - [ChatLLama Integration](#-chatllama)
+  - [Security Features](#️-security)
+  - [User Interface](#-user-interface)
+
+### Setup & Installation
 - [Getting Started](#-getting-started)
-- [Prerequisites](#prerequisites)
-- [Installation Steps](#installation-steps)
-- [Environment Configuration](#environment-configuration)
-- [Start Development Server](#start-development-server)
+  - [Prerequisites](#prerequisites)
+  - [Installation Steps](#installation-steps)
+  - [Environment Configuration](#environment-configuration)
+  - [Start Development Server](#start-development-server)
+  - [Accessing the Application](#accessing-the-application)
+
+### Usage & Development
 - [Using ChatLLama](#-using-chatllama)
 - [Development](#️-development)
+  - [Available Scripts](#available-scripts)
+
+### Project Information
 - [License](#-license)
 - [Contributing](#-contributing)
 - [Security](#-security)
@@ -123,21 +132,23 @@ StreamNet is a secure, real-time chat application designed for local network com
 Update your `.env` file with your settings:
 
 ```env
-HOST=YOUR_IP_ADDRESS
 PORT=3000
 SPORT=4000
+HOST="System will configure it automatically"
 NODE_ENV=development
-ALLOWED_ORIGINS="https://<YOUR_IP_ADDRESS>:3000"
-SSL_KEY="/path/to/your/ssl/key.pem"
-SSL_CERT="/path/to/your/ssl/cert.pem"
-SECRET_KEY="your_secret_key_here"
-JWT_SECRET="your_jwt_secret_here"
+JWT_SECRET="your_secure_jwt_secret"
+ALLOWED_ORIGINS="System will configure it automatically"
+SSL_KEY="path to your ssl key"
+SSL_CERT="path to your ssl cert"
+SECRET_KEY="your_secure_secret_key"
 TOKEN_EXPIRY="24h"
 SALT_ROUNDS=10
-EMAIL_USER="REPLACE IT WITH YOUR EMAIL"
-EMAIL_PASSWORD=REPLACE IT WITH YOUR PASSWORD
+EMAIL_USER="your_email_address"
+EMAIL_PASSWORD="your_app_password"
 MONGODB_URI=mongodb://localhost:27017/StreamNet
-OLLAMA_BASE_URL="http://localhost:11434"
+FRONTEND_ORIGIN="System will configure it automatically"
+OLLAMA_API_URL="http://localhost:11434"
+ChatLLama_MONGODB_URI="mongodb://localhost:27017/ChatLLama"
 ```
 
 ### Start Development Server
@@ -145,10 +156,36 @@ OLLAMA_BASE_URL="http://localhost:11434"
 npm run dev
 ```
 
-## 🤖 Using ChatLLama
+After running the development server, you'll see output similar to this:
 
-> [!NOTE]
-> ChatLLama is currently under active development and has not been launched yet. The integration with StreamNet is coming soon! The documentation provided here is a preview of planned features and may be subject to changes. Stay tuned for updates!
+```bash
+[ChatLLama:start] ChatLLama app running on port http://192.168.1.5:3001
+[start] Connected to MongoDB
+[start] Engine is running on port 3000
+[server] Connected to MongoDB
+[server] Server is running on https://192.168.1.5:4000
+[server] [NETWORK INTERFACE] - StreamNet is running on https://192.168.1.5:3000
+[server] [LOCAL INTERFACE] - StreamNet is running on https://localhost:3000
+[ChatLLama:server] ChatLLama Server running on port http://192.168.1.5:5000
+[ChatLLama:server] MongoDB connected
+```
+
+### Accessing the Application
+
+1. Open your browser and navigate to the Network Interface URL shown in the console (e.g., `https://192.168.1.5:3000`).
+
+> [!IMPORTANT]
+> You may see a security warning like "Your connection is not private" or "This connection is not secure". This is normal when using self-signed SSL certificates in development.
+
+3. To proceed:
+   - On Chrome: Click "Advanced" and then "Proceed to site"
+   - On Firefox: Click "Advanced..." and then "Accept the Risk and Continue"
+   - On Edge: Click "Continue to site"
+
+The warning appears because we're using a self-signed certificate for local development. The connection is still encrypted and safe for local network use.
+
+
+## 🤖 Using ChatLLama
 
 ChatLLama provides an interactive AI chat experience using your local Ollama models:
 
@@ -174,10 +211,20 @@ ChatLLama provides an interactive AI chat experience using your local Ollama mod
 ## 🛠️ Development
 
 ### Available Scripts
-- `npm run dev` - Start development server
-- `npm run build:css` - Build Tailwind CSS
-- `npm run lint` - Run ESLint
-- `npm run format` - Format with Prettier
+
+- `npm run dev` - Start all services concurrently (recommended for development)
+- `npm start` - Start the main Engine service
+- `npm run server` - Start the WebSocket server
+- `npm run ChatLLama:start` - Start the ChatLLama frontend
+- `npm run ChatLLama:server` - Start the ChatLLama backend server
+- `npm run build:css` - Build and watch Tailwind CSS changes
+- `npm run lint` - Run ESLint checks
+- `npm run lint:fix` - Fix ESLint issues automatically
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check code formatting without making changes
+
+> [!TIP]
+> For development, using `npm run dev` is recommended as it starts all required services simultaneously.
 
 ## 📝 License
 

@@ -2,14 +2,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const GetStarted_Btn = document.getElementById("GetStarted_Btn");
     const RegisterBtn = document.getElementById("signUpButton");
     const ExploreRepoButton = document.getElementById("ExploreRepoBtn");
+    const ChatLLamaButton = document.getElementById("ChatLLama_link");
+    const backendHost = document.querySelector('meta[name="backend-host"]').content;
 
-    GetStarted_Btn.addEventListener("click", () => {
-        window.location.href = "/auth/login";
-    });
+    if (GetStarted_Btn) {
+        GetStarted_Btn.addEventListener("click", () => {
+            window.location.href = "/auth/login";
+        });
+    }
 
-    RegisterBtn.addEventListener("click", () => {
-        window.location.href = "/auth/signup";
-    });
+    if (RegisterBtn) {
+        RegisterBtn.addEventListener("click", () => {
+            window.location.href = "/auth/signup";
+        });
+    }
+
+    if (ChatLLamaButton) {
+        ChatLLamaButton.addEventListener("click", () => {
+            window.location.href = `http://${backendHost}:3001/`;
+        });
+    }
 
     if (ExploreRepoButton) {
         ExploreRepoButton.addEventListener("click", () => {

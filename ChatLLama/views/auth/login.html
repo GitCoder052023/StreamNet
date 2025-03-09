@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="backend-host" content="<%= process.env.HOST %>">
+  <title>Login - ChatLLama</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen font-inter">
+  <div class="min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white/90 backdrop-blur-xl shadow-2xl rounded-2xl p-8 w-full max-w-md transition-all
+                hover:shadow-3xl border border-gray-100">
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <i class="fas fa-comments text-2xl text-white"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
+        <p class="text-gray-500">Sign in to continue</p>
+      </div>
+
+      <form id="login-form" class="space-y-5">
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+          <div class="relative">
+            <input id="username" type="text" required
+                   class="w-full px-4 py-3 bg-gray-50/70 border-0 rounded-lg focus:ring-2
+                          focus:ring-blue-400/50 placeholder-gray-400 transition-all
+                          pl-12 hover:bg-gray-50 focus:bg-white"
+                   placeholder="Enter your username">
+            <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+          <div class="relative">
+            <input id="password" type="password" required
+                   class="w-full px-4 py-3 bg-gray-50/70 border-0 rounded-lg focus:ring-2
+                          focus:ring-blue-400/50 placeholder-gray-400 transition-all
+                          pl-12 hover:bg-gray-50 focus:bg-white"
+                   placeholder="••••••••">
+            <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          </div>
+        </div>
+
+        <button type="submit"
+                class="w-full py-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700
+                       transition-all flex items-center justify-center space-x-2
+                       active:scale-95 shadow-md hover:shadow-lg">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Sign In</span>
+        </button>
+      </form>
+
+      <div class="text-center mt-6">
+        <p class="text-gray-500">
+          Don't have an account?
+          <a href="/signup" class="text-blue-600 hover:text-blue-700 font-medium transition-all">Sign up</a>
+        </p>
+      </div>
+      <div id="login-message" class="mt-4 text-center text-sm"></div>
+    </div>
+  </div>
+  <script src="/js/auth/login.js"></script>
+</body>
+</html>

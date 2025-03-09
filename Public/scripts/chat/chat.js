@@ -5,7 +5,6 @@ import { myEmail } from './profile.js';
 import { onlineUsers } from './users.js';
 
 let isEditing = false;
-let editingMessageId = null;
 
 export const messagesCache = {};
 export let currentReplyId = null;
@@ -394,7 +393,6 @@ contextMenu.querySelector('#context-edit').addEventListener('click', function (e
   contextMenu.classList.add('hidden');
 });
 
-// Seen receipt option (placeholder)
 contextMenu.querySelector('#context-seen').addEventListener('click', function (e) {
   e.stopPropagation();
   console.log('Seen receipt functionality not implemented yet.');
@@ -407,11 +405,9 @@ socket.on('message-edited', (data) => {
     const messageContent = messageElement.querySelector('.bg-blue-500 p, .bg-gray-700 p');
     messageContent.textContent = data.newContent;
 
-    // Add edited indicator
     const timeElement = messageElement.querySelector('.text-gray-500');
     timeElement.textContent += ' (edited)';
 
-    // Update cache
     messagesCache[data.messageId].content = data.newContent;
     messagesCache[data.messageId].edited = true;
     messagesCache[data.messageId].editedAt = data.editedAt;

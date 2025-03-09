@@ -4,7 +4,13 @@ const fs = require('fs');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Public/templates/LandingPage.html'));
+  res.render('LandingPage.html', {
+    process: {
+      env: {
+        HOST: process.env.HOST
+      }
+    }
+  });
 });
 
 router.get('/styles', (req, res) => {
