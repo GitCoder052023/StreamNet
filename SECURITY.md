@@ -4,7 +4,7 @@
 
 If you discover a security vulnerability in StreamNet, please report it to us immediately. We take all security issues seriously and will address them as quickly as possible.
 
-To report a vulnerability, please email us at `hamdankhuabib959@gmail.com` with the subject line "Security Vulnerability in StreamNet". Please include the following details in your report:
+To report a vulnerability, please email us at `contact.khub.dev@gmail.com` with the subject line "Security Vulnerability in StreamNet". Please include the following details in your report:
 
 - A description of the vulnerability
 - Steps to reproduce the issue

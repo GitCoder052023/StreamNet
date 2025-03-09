@@ -83,6 +83,48 @@ StreamNet is a secure, real-time chat application designed for local network com
 - Gmail account for OTP email integration
 - Ollama installed locally (for ChatLLama functionality)
 
+#### Node.js and npm
+- Download Node.js v14+ from [nodejs.org](https://nodejs.org/)
+- Run the installer and follow the prompts
+- Verify installation:
+  ```bash
+  node --version
+  npm --version
+  ```
+
+#### MongoDB and Compass
+1. Install MongoDB Community Server:
+   - Download from [mongodb.com](https://www.mongodb.com/try/download/community)
+   - Run installer with "Complete" setup
+   - Install MongoDB Compass when prompted
+
+2. Verify MongoDB installation:
+   ```bash
+   mongod --version
+   ```
+
+#### SSL Certificate Setup
+1. Install OpenSSL for Windows:
+   - Download from [slproweb.com/products/Win32OpenSSL.html](https://slproweb.com/products/Win32OpenSSL.html)
+   - Choose Win64 OpenSSL v1.1.1 or later
+
+2. Generate SSL certificate (run in project root):
+   ```bash
+   openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./ssl/private.key -out ./ssl/certificate.crt
+   ```
+
+#### Package Manager
+- npm (comes with Node.js)
+  OR
+- Yarn installation:
+  ```bash
+  npm install -g yarn
+  ```
+
+> [!TIP]
+> For Windows users: Run all commands in PowerShell or Command Prompt as Administrator
+
+
 ### Installation Steps
 
 1. **Clone the repository:**
