@@ -125,8 +125,8 @@ StreamNet is a secure, real-time chat application designed for local network com
      - conversations # for AI chat history
      ```
 
-   > [!NOTE]
-   > Both databases must be created before starting the application. The collections will be automatically created if they don't exist.
+> [!NOTE]
+> Both databases must be created before starting the application. The collections will be automatically created if they don't exist.
 
 5. **Gmail App Password Setup:**
    - Sign in to your [Google Account](https://myaccount.google.com/).
