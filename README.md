@@ -29,8 +29,7 @@ StreamNet is a secure, real-time chat application designed for local network com
   - [Start Development Server](#start-development-server)
   - [Accessing the Application](#accessing-the-application)
 
-### Usage & Development
-- [Using ChatLLama](#-using-chatllama)
+### Development
 - [Development](#️-development)
   - [Available Scripts](#available-scripts)
 
@@ -135,18 +134,18 @@ StreamNet is a secure, real-time chat application designed for local network com
      ```bash
      Database: StreamNet
      Collections:
-     - Users    # for user accounts
-     - Messages # for chat messages
-     - otps     # for OTP verification codes
-     - Conversations # for conversation history
+     - Users
+     - Messages
+     - otps
+     - Conversations
      ```
 
      **ChatLLama Database:**
      ```bash
      Database: ChatLLama
      Collections:
-     - users         # for ChatLLama user data
-     - conversations # for AI chat history
+     - users
+     - conversations
      ```
 
 > [!NOTE]
@@ -225,30 +224,6 @@ After running the development server, you'll see output similar to this:
 
 The warning appears because we're using a self-signed certificate for local development. The connection is still encrypted and safe for local network use.
 
-
-## 🤖 Using ChatLLama
-
-ChatLLama provides an interactive AI chat experience using your local Ollama models:
-
-1. **Access ChatLLama:**
-   - Click on the ChatLLama icon in the sidebar.
-   - Or select "New AI Chat" from the conversations menu.
-
-2. **Select a Model:**
-   - Choose from available models in the dropdown.
-   - Different models offer various capabilities and response styles.
-
-3. **Chat Features:**
-   - **Stream Control:** Pause or stop generation with the control buttons.
-   - **Formatting:** Use markdown in your messages. AI responses support code blocks with syntax highlighting.
-   - **History:** Browse past conversations that are automatically named based on content.
-   - **Themes:** Switch between light and dark themes from the settings panel.
-
-4. **Best Practices:**
-   - Be clear and specific in your prompts for better results.
-   - For code assistance, specify the programming language.
-   - Use the search feature to find previous conversations on similar topics.
-
 ## 🛠️ Development
 
 ### Available Scripts
@@ -273,11 +248,11 @@ This project is licensed under the MIT License.
 
 ## 📝 Contributing
 
-Please read our Contributing Guide and Code of Conduct before submitting pull requests.
+Please read our [Contributing](https://github.com/GitCoder052023/StreamNet/blob/main/CONTRIBUTING.md) Guide and Code of Conduct before submitting pull requests.
 
 ## 🔒 Security
 
-For security issues, please review our Security Policy and report vulnerabilities to contact.khub.dev@gmail.com.
+For security issues, please review our [Security](https://github.com/GitCoder052023/StreamNet/blob/main/SECURITY.md) Policy and report vulnerabilities to contact.khub.dev@gmail.com.
 
 ---
 
