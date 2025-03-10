@@ -14,31 +14,48 @@
 StreamNet is a secure, real-time chat application designed for local network communications with integrated AI capabilities. Built with modern web technologies and a focus on security, StreamNet delivers a seamless, encrypted messaging experience tailored for your local network. Enjoy features like instant messaging, AI-powered conversations through ChatLLama, robust security protocols, and an intuitive design.
 
 ## Table of Contents
-### Core Features
+
+### Overview
+- [About StreamNet](#streamnet--secure-real-time-chat-for-local-networks-with-ai-support)
+- [Preview](#streamnet-interface)
+
+### Features
 - [Key Features Overview](#-key-features)
-  - [Messaging System](#-messaging)
+  - [Real-Time Messaging](#-messaging)
   - [ChatLLama Integration](#-chatllama)
-  - [Security Features](#️-security)
+  - [Security Features](#-security)
   - [User Interface](#-user-interface)
 
-### Setup & Installation
+### Setup Guide
 - [Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation Steps](#installation-steps)
-  - [Environment Configuration](#environment-configuration)
-  - [Start Development Server](#start-development-server)
-  - [Accessing the Application](#accessing-the-application)
+  - [System Requirements](#prerequisites)
+  - [Installation Guide](#installation-steps)
+  - [Configuration](#environment-configuration)
+  - [Development Server](#start-development-server)
+  - [First Launch](#accessing-the-application)
 
-### Development
-- [Development](#️-development)
-  - [Available Scripts](#available-scripts)
+### Development Resources
+- [Development Guide](#-development)
+  - [NPM Scripts](#available-scripts)
+  - [Database Setup](#database-setup)
+  - [SSL Configuration](#ssl-certificate-setup)
+  - [Gmail Integration](#gmail-app-password-setup)
+  - [Ollama Setup](#ollama-setup-for-chatllama)
 
-### Project Information
-- [License](#-license)
-- [Contributing](#-contributing)
-- [Security](#-security)
+### Project Info
+- [License Information](#-license)
+- [Contribution Guidelines](#-contributing)
+- [Security Policy](#-security)
+  - [Vulnerability Reporting](#reporting-a-vulnerability)
+  - [Security Features](#security-measures)
+  - [Disclosure Policy](#responsible-disclosure)
 
-## ✨ Key Features
+### Community
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Contributing Guide](CONTRIBUTING.md)
+- [Support](#built-with-️-by-hamdan-khubaib)
+
+## Key Features
 
 ### 💬 Messaging
 - Real-time messaging powered by encrypted WebSockets.
@@ -47,7 +64,7 @@ StreamNet is a secure, real-time chat application designed for local network com
 - Rate limiting: 5 messages per 10 seconds.
 - Support for messages up to 5000 characters.
 
-### 🤖 ChatLLama
+### ChatLLama
 - **Local AI Integration:** Chat with Ollama models running on your local network.
 - **Real-Time Streaming:** Experience character-by-character AI responses powered by Socket.io.
 - **Model Selection:** Choose from various Ollama models for different conversation needs.
@@ -56,7 +73,7 @@ StreamNet is a secure, real-time chat application designed for local network com
 - **Conversation Management:** Auto-generated titles and searchable history.
 - **Theme Customization:** Light, Dark, and System theme options.
 
-### 🛡️ Security
+### Security
 - End-to-end SSL/TLS encryption.
 - Message signing with HMAC-SHA256.
 - Comprehensive input sanitization against XSS attacks.
@@ -64,7 +81,7 @@ StreamNet is a secure, real-time chat application designed for local network com
 - Built-in rate limiting and spam prevention.
 - Secure user authentication.
 
-### 🎨 User Interface
+### User Interface
 - Modern, responsive design built with Tailwind CSS.
 - Dark mode support for comfortable viewing.
 - Animated transitions and interactive UI elements.
@@ -72,7 +89,7 @@ StreamNet is a secure, real-time chat application designed for local network com
 - Real-time online/offline status indicators.
 - Mobile-friendly layout.
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js v14 or higher
@@ -224,7 +241,7 @@ After running the development server, you'll see output similar to this:
 
 The warning appears because we're using a self-signed certificate for local development. The connection is still encrypted and safe for local network use.
 
-## 🛠️ Development
+## Development
 
 ### Available Scripts
 
@@ -242,18 +259,96 @@ The warning appears because we're using a self-signed certificate for local deve
 > [!TIP]
 > For development, using `npm run dev` is recommended as it starts all required services simultaneously.
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License.
 
-## 📝 Contributing
+## Contributing
 
-Please read our [Contributing](https://github.com/GitCoder052023/StreamNet/blob/main/CONTRIBUTING.md) Guide and Code of Conduct before submitting pull requests.
+We welcome contributions from the community! Here's how you can help make StreamNet better:
 
-## 🔒 Security
+### Getting Started
 
-For security issues, please review our [Security](https://github.com/GitCoder052023/StreamNet/blob/main/SECURITY.md) Policy and report vulnerabilities to contact.khub.dev@gmail.com.
+1. **Fork the Repository**
+   - Click the 'Fork' button on GitHub
+   - Clone your fork locally:
+     ```bash
+     git clone https://github.com/GitCoder052023/StreamNet.git
+     ```
+
+2. **Create a Branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+### Development Guidelines
+
+- Follow our coding style and conventions
+- Write clear, documented code
+- Add unit tests for new features
+- Update documentation as needed
+- Ensure all tests pass before submitting
+
+### Pull Request Process
+
+1. Update your fork with the latest changes:
+   ```bash
+   git remote add upstream https://github.com/GitCoder052023/StreamNet.git
+   git fetch upstream
+   git merge upstream/main
+   ```
+
+2. Push your changes:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+3. Open a Pull Request with:
+   - Clear title and description
+   - Screenshots for UI changes
+   - List of changes made
+
+### Types of Contributions
+
+- Bug fixes
+- New features
+- Documentation improvements
+- UI/UX enhancements
+- Performance improvements
+- Test coverage
+
+For detailed guidelines, please read our [Contributing Guide](https://github.com/GitCoder052023/StreamNet/blob/main/CONTRIBUTING.md).
+
+> [!NOTE]
+> By contributing, you agree to follow our [Code of Conduct](https://github.com/GitCoder052023/StreamNet/blob/main/CODE_OF_CONDUCT.md).
+
+## Security
+
+### Reporting a Vulnerability
+
+If you discover a security vulnerability in StreamNet, please report it to us immediately. We take all security issues seriously and will address them as quickly as possible.
+
+To report a vulnerability, please email us at `contact.khub.dev@gmail.com` with the subject line "Security Vulnerability in StreamNet". Please include the following details in your report:
+
+- A description of the vulnerability
+- Steps to reproduce the issue
+- Any potential impact of the vulnerability
+- Your contact information (optional)
+
+We will acknowledge receipt of your report within 48 hours and provide a timeline for addressing the issue.
+
+### Security Measures
+
+- **Encryption**: All communications are encrypted using WebSockets (wss://).
+- **Input Validation**: User inputs are validated to prevent injection attacks.
+- **Dependency Monitoring**: We regularly update dependencies to ensure no known vulnerabilities are present.
+
+### Responsible Disclosure
+
+We follow the principle of responsible disclosure. We ask that you do not publicly disclose the vulnerability until we have had a chance to address it and provide a fix.
+
+Thank you for helping us keep StreamNet secure!
 
 ---
 
-Built with ❤️ by Hamdan Khubaib
+Built with ❤️ by Hamdan Khubaib for the community.
