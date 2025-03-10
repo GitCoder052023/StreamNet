@@ -43,9 +43,13 @@ StreamNet is a secure, real-time chat application designed for local network com
   - [Ollama Setup](#ollama-setup-for-chatllama)
 
 ### Project Info
-- [License Information](#-license)
-- [Contribution Guidelines](#-contributing)
-- [Security Policy](#-security)
+- [License Information](#license)
+- [Contribution Guidelines](#contributing)
+  - [Getting Started](#getting-started-1)
+  - [Development Guidelines](#development-guidelines)
+  - [Pull Request Process](#pull-request-process)
+  - [Types of Contributions](#types-of-contributions)
+- [Security Policy](#security-1)
   - [Vulnerability Reporting](#reporting-a-vulnerability)
   - [Security Features](#security-measures)
   - [Disclosure Policy](#responsible-disclosure)
@@ -53,7 +57,6 @@ StreamNet is a secure, real-time chat application designed for local network com
 ### Community
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Contributing Guide](CONTRIBUTING.md)
-- [Support](#built-with-️-by-hamdan-khubaib)
 
 ## Key Features
 
